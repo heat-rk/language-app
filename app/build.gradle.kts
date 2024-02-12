@@ -84,6 +84,7 @@ dependencies {
     implementation(AppDependencies.Compose.activity)
     implementation(AppDependencies.Compose.navigation)
     implementation(AppDependencies.Compose.preview)
+    implementation(AppDependencies.Splash.allImplementations)
 
     debugImplementation(AppDependencies.Compose.debugImplementations)
 }

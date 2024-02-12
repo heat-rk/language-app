@@ -38,6 +38,11 @@ object AppDependencies {
         val debugImplementations = arrayOf(debugPreview)
     }
 
+    object Splash {
+        const val core = "androidx.core:core-splashscreen:${Versions.splash}"
+        val allImplementations = arrayOf(core)
+    }
+
     object Coroutines {
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
@@ -97,5 +102,6 @@ object AppDependencies {
         const val junit = "4.13.2"
         const val andoridJunitExtensions = "1.1.5"
         const val espresso = "3.5.1"
+        const val splash = "1.0.1"
     }
 }

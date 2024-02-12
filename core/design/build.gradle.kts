@@ -59,4 +59,5 @@ dependencies {
 
     implementation(AppDependencies.Ktx.allImplementations)
     implementation(AppDependencies.Compose.allImplementations)
+    implementation(AppDependencies.Splash.allImplementations)
 }

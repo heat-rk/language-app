@@ -6,11 +6,12 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.launchIn
@@ -24,6 +25,8 @@ import ru.heatrk.languageapp.presentation.navigation.composeRoute
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
+
         super.onCreate(savedInstanceState)
 
         setContent {
@@ -35,7 +38,9 @@ class MainActivity : ComponentActivity() {
 
                 AppNavHost(
                     navController = navController,
-                    modifier = Modifier.background(AppTheme.colors.background),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(AppTheme.colors.background),
                 )
             }
         }
@@ -79,13 +84,11 @@ class MainActivity : ComponentActivity() {
                 )
             } else {
                 enableEdgeToEdge(
-                    statusBarStyle = SystemBarStyle.light(
-                        scrim = statusBarColor,
-                        darkScrim = statusBarColor
+                    statusBarStyle = SystemBarStyle.dark(
+                        scrim = statusBarColor
                     ),
-                    navigationBarStyle = SystemBarStyle.light(
-                        scrim = navigationBarColor,
-                        darkScrim = navigationBarColor
+                    navigationBarStyle = SystemBarStyle.dark(
+                        scrim = navigationBarColor
                     ),
                 )
             }
