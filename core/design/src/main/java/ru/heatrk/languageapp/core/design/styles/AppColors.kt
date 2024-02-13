@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package ru.heatrk.languageapp.core.design.styles
 
 import androidx.compose.material3.ColorScheme

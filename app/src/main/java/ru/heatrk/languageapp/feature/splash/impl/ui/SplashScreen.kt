@@ -12,7 +12,7 @@ fun SplashScreen(
         factory = SplashComponent.splashViewModelFactory
     )
 ) {
-
+    // TODO
 }
 
 @Composable

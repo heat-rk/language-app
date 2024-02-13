@@ -51,51 +51,20 @@ fun AppBar(
 
     TopAppBar(
         title = {
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
+            AppBarTitle(
+                title = title,
+                icon = icon,
+                color = color,
+                onGoBackClick = onGoBackClick,
                 modifier = Modifier
                     .wrapContentSize()
-            ) {
-                if (onGoBackClick != null) {
-                    Spacer(modifier = Modifier.width(Insets.Small))
-                }
-
-                Text(
-                    text = title,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = AppTheme.typography.titleMedium,
-                    modifier = Modifier
-                )
-
-                Spacer(modifier = Modifier.requiredWidth(Insets.Small))
-
-                Image(
-                    painter = icon,
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(color),
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier
-                        .requiredWidth(Sizes.AppBarIcon)
-                )
-            }
+            )
         },
         navigationIcon = {
-             if (onGoBackClick != null) {
-                 IconButton(
-                     onClick = { onGoBackClick.invoke() },
-                     modifier = Modifier
-                 ) {
-                     Image(
-                         painter = painterResource(R.drawable.icon_arrow_left),
-                         contentDescription = stringResource(R.string.go_back_icon_content_description),
-                         colorFilter = ColorFilter.tint(color),
-                         modifier = Modifier
-                             .width(Sizes.AppBarIcon)
-                     )
-                 }
-             }
+            AppBarNavigationIcon(
+                color = color,
+                onGoBackClick = onGoBackClick
+            )
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = containerColor,
@@ -104,22 +73,95 @@ fun AppBar(
             actionIconContentColor = AppTheme.colors.primary,
         ),
         actions = {
-            actions.forEach { action ->
-                IconButton(
-                    onClick = action.onClick
-                ) {
-                    Icon(
-                        painter = action.icon.extract(),
-                        contentDescription = action.contentDescription.extract(),
-                        modifier = Modifier
-                            .width(Sizes.AppBarIcon)
-                    )
-                }
-            }
+            AppBarActions(actions = actions)
         },
         modifier = modifier
     )
 }
+
+@Composable
+private fun AppBarTitle(
+    title: String,
+    icon: Painter,
+    color: Color,
+    onGoBackClick: (() -> Unit)?,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ) {
+        if (onGoBackClick != null) {
+            Spacer(modifier = Modifier.width(Insets.Small))
+        }
+
+        Text(
+            text = title,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            style = AppTheme.typography.titleMedium,
+            modifier = Modifier
+        )
+
+        Spacer(modifier = Modifier.requiredWidth(Insets.Small))
+
+        Image(
+            painter = icon,
+            contentDescription = null,
+            colorFilter = ColorFilter.tint(color),
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier
+                .requiredWidth(Sizes.AppBarIcon)
+        )
+    }
+}
+
+@Composable
+private fun AppBarNavigationIcon(
+    color: Color,
+    onGoBackClick: (() -> Unit)?,
+    modifier: Modifier = Modifier,
+) {
+    if (onGoBackClick != null) {
+        IconButton(
+            onClick = { onGoBackClick.invoke() },
+            modifier = modifier
+        ) {
+            Image(
+                painter = painterResource(R.drawable.icon_arrow_left),
+                contentDescription = stringResource(R.string.go_back_icon_content_description),
+                colorFilter = ColorFilter.tint(color),
+                modifier = Modifier
+                    .width(Sizes.AppBarIcon)
+            )
+        }
+    }
+}
+
+@Composable
+private fun AppBarActions(
+    actions: List<AppBarActionItem>,
+) {
+    actions.forEach { action ->
+        IconButton(
+            onClick = action.onClick
+        ) {
+            Icon(
+                painter = action.icon.extract(),
+                contentDescription = action.contentDescription.extract(),
+                modifier = Modifier
+                    .width(Sizes.AppBarIcon)
+            )
+        }
+    }
+}
+
+data class AppBarActionItem(
+    val icon: PainterResource,
+    val contentDescription: StringResource,
+    val onClick: () -> Unit,
+)
 
 @Composable
 @Preview
@@ -142,9 +184,3 @@ private fun AppBarPreview() {
         )
     }
 }
-
-data class AppBarActionItem(
-    val icon: PainterResource,
-    val contentDescription: StringResource,
-    val onClick: () -> Unit,
-)
