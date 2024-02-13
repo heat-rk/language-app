@@ -10,18 +10,11 @@ import ru.heatalways.amazingapplication.core.design.R
 private val defaultTypography = Typography()
 
 private val appFont = FontFamily(
-    Font(R.font.shantell_sans_italic, weight = FontWeight.Normal, style = FontStyle.Italic),
-    Font(R.font.shantell_sans_light, weight = FontWeight.Light, style = FontStyle.Normal),
-    Font(R.font.shantell_sans_light_italic, weight = FontWeight.Light, style = FontStyle.Italic),
-    Font(R.font.shantell_sans_regular, weight = FontWeight.Normal, style = FontStyle.Normal),
-    Font(R.font.shantell_sans_medium, weight = FontWeight.Medium, style = FontStyle.Normal),
-    Font(R.font.shantell_sans_medium_italic, weight = FontWeight.Medium, style = FontStyle.Italic),
-    Font(R.font.shantell_sans_semi_bold, weight = FontWeight.SemiBold, style = FontStyle.Normal),
-    Font(R.font.shantell_sans_semi_bold_italic, weight = FontWeight.SemiBold, style = FontStyle.Italic),
-    Font(R.font.shantell_sans_bold, weight = FontWeight.Bold, style = FontStyle.Normal),
-    Font(R.font.shantell_sans_bold_italic, weight = FontWeight.Bold, style = FontStyle.Italic),
-    Font(R.font.shantell_sans_extra_bold, weight = FontWeight.ExtraBold, style = FontStyle.Normal),
-    Font(R.font.shantell_sans_extra_bold_italic, weight = FontWeight.ExtraBold, style = FontStyle.Italic),
+    Font(R.font.fredoka_light, weight = FontWeight.Light, style = FontStyle.Normal),
+    Font(R.font.fredoka_regular, weight = FontWeight.Normal, style = FontStyle.Normal),
+    Font(R.font.fredoka_medium, weight = FontWeight.Medium, style = FontStyle.Normal),
+    Font(R.font.fredoka_semibold, weight = FontWeight.SemiBold, style = FontStyle.Normal),
+    Font(R.font.fredoka_bold, weight = FontWeight.Bold, style = FontStyle.Normal),
 )
 
 val appTypography = Typography(
