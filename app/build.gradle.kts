@@ -68,6 +68,9 @@ dependencies {
     implementation(project(":core:data:db"))
     implementation(project(":core:data:http-client"))
 
+    implementation(project(":features:onboarding:api"))
+    implementation(project(":features:onboarding:compose-impl"))
+
     // dependencies
     platformImplementation(AppDependencies.Compose.platformImplementations)
 

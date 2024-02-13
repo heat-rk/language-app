@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.heatalways.amazingapplication.core.coroutines.dispatchers"
+    namespace = "ru.heatrk.languageapp.core.coroutines.dispatchers"
 
     compileSdk = AppConfig.Sdk.compile
 

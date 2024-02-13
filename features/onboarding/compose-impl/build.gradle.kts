@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.heatrk.languageapp.core.design"
+    namespace = "ru.heatrk.languageapp.onboarding.impl"
 
     compileSdk = AppConfig.Sdk.compile
 
@@ -51,15 +51,16 @@ android {
 }
 
 dependencies {
-    // modules
+    // Modules
+    implementation(project(":core:navigation:api"))
     implementation(project(":common:utils"))
+    implementation(project(":core:design"))
 
-    // dependencies
-    platformImplementation(AppDependencies.Compose.platformImplementations)
-
-    implementation(AppDependencies.Ktx.allImplementations)
+    // Dependencies
+    implementation(AppDependencies.Scout.allImplementations)
+    implementation(AppDependencies.Orbit.allImplementations)
+    implementation(AppDependencies.Coroutines.allImplementations)
     implementation(AppDependencies.Compose.allImplementations)
-    implementation(AppDependencies.Splash.allImplementations)
 
     debugImplementation(AppDependencies.Compose.debugImplementations)
 }

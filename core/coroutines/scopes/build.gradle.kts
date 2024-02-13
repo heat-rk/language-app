@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.heatalways.amazingapplication.core.coroutines.scopes"
+    namespace = "ru.heatrk.languageapp.core.coroutines.scopes"
 
     compileSdk = AppConfig.Sdk.compile
 

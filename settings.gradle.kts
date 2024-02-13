@@ -25,5 +25,6 @@ include(
     ":core:coroutines:scopes",
     ":core:data:db",
     ":core:data:http-client",
+    ":features:onboarding:api",
+    ":features:onboarding:compose-impl",
 )
- 

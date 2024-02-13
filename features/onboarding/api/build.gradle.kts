@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.heatrk.languageapp.core.navigation.api"
+    namespace = "ru.heatrk.languageapp.onboarding.api"
 
     compileSdk = AppConfig.Sdk.compile
 
@@ -18,16 +18,6 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("debug")
-
-            AppConfig.buildConfigFields.forEach { field ->
-                buildConfigField(field.type, field.name, "\"${field.releaseValue}\"")
-            }
-        }
-
-        debug {
-            AppConfig.buildConfigFields.forEach { field ->
-                buildConfigField(field.type, field.name, "\"${field.debugValue}\"")
-            }
         }
     }
 
@@ -39,12 +29,9 @@ android {
     kotlinOptions {
         jvmTarget = AppConfig.jvmTarget
     }
-
-    buildFeatures {
-        buildConfig = true
-    }
 }
 
 dependencies {
-    implementation(AppDependencies.Coroutines.allImplementations)
+    // Modules
+    implementation(project(":core:navigation:api"))
 }

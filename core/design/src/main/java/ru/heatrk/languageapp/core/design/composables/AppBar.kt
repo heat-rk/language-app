@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -22,39 +21,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import ru.heatalways.amazingapplication.core.design.R
+import androidx.compose.ui.unit.dp
 import ru.heatrk.languageapp.common.utils.PainterResource
 import ru.heatrk.languageapp.common.utils.StringResource
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.common.utils.strRes
+import ru.heatrk.languageapp.core.design.R
 import ru.heatrk.languageapp.core.design.styles.AppTheme
-import ru.heatrk.languageapp.core.design.styles.Insets
 import ru.heatrk.languageapp.core.design.styles.Sizes
 
 @Composable
 fun AppBar(
     title: String,
-    icon: Painter,
     modifier: Modifier = Modifier,
     actions: List<AppBarActionItem> = emptyList(),
-    containerColor: Color = AppTheme.colors.background,
+    containerColor: Color = AppTheme.colors.primary,
+    contentColor: Color = AppTheme.colors.onPrimary,
     onGoBackClick: (() -> Unit)? = null,
 ) {
-    val color = AppTheme.colors.primary
-
     TopAppBar(
         title = {
             AppBarTitle(
                 title = title,
-                icon = icon,
-                color = color,
                 onGoBackClick = onGoBackClick,
                 modifier = Modifier
                     .wrapContentSize()
@@ -62,15 +55,15 @@ fun AppBar(
         },
         navigationIcon = {
             AppBarNavigationIcon(
-                color = color,
+                color = contentColor,
                 onGoBackClick = onGoBackClick
             )
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = containerColor,
-            navigationIconContentColor = AppTheme.colors.primary,
-            titleContentColor = AppTheme.colors.primary,
-            actionIconContentColor = AppTheme.colors.primary,
+            navigationIconContentColor = contentColor,
+            titleContentColor = contentColor,
+            actionIconContentColor = contentColor,
         ),
         actions = {
             AppBarActions(actions = actions)
@@ -82,8 +75,6 @@ fun AppBar(
 @Composable
 private fun AppBarTitle(
     title: String,
-    icon: Painter,
-    color: Color,
     onGoBackClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
@@ -93,7 +84,7 @@ private fun AppBarTitle(
         modifier = modifier
     ) {
         if (onGoBackClick != null) {
-            Spacer(modifier = Modifier.width(Insets.Small))
+            Spacer(modifier = Modifier.width(8.dp))
         }
 
         Text(
@@ -102,17 +93,6 @@ private fun AppBarTitle(
             overflow = TextOverflow.Ellipsis,
             style = AppTheme.typography.titleMedium,
             modifier = Modifier
-        )
-
-        Spacer(modifier = Modifier.requiredWidth(Insets.Small))
-
-        Image(
-            painter = icon,
-            contentDescription = null,
-            colorFilter = ColorFilter.tint(color),
-            contentScale = ContentScale.FillWidth,
-            modifier = Modifier
-                .requiredWidth(Sizes.AppBarIcon)
         )
     }
 }
@@ -129,7 +109,7 @@ private fun AppBarNavigationIcon(
             modifier = modifier
         ) {
             Image(
-                painter = painterResource(R.drawable.icon_arrow_left),
+                painter = painterResource(R.drawable.ic_arrow_left_20),
                 contentDescription = stringResource(R.string.go_back_icon_content_description),
                 colorFilter = ColorFilter.tint(color),
                 modifier = Modifier
@@ -169,10 +149,9 @@ private fun AppBarPreview() {
     AppTheme {
         AppBar(
             title = "Какой-то экран",
-            icon = painterResource(R.drawable.icon_cat),
             actions = listOf(
                 AppBarActionItem(
-                    icon = painterRes(R.drawable.icon_leaderboard),
+                    icon = painterRes(R.drawable.ic_logo_28),
                     contentDescription = strRes(""),
                     onClick = {},
                 )

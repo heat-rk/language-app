@@ -9,19 +9,19 @@ import androidx.navigation.NavHostController
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRoute
 import ru.heatrk.languageapp.core.navigation.compose_impl.NavHost
 import ru.heatrk.languageapp.core.navigation.compose_impl.composable
-import ru.heatrk.languageapp.feature.splash.impl.ui.SplashScreen
+import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingScreen
 
-object ComposeSplashScreen {
+object ComposeOnboardingScreen {
     object Route : ComposeRoute() {
         @Composable
         override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
-            SplashScreen()
+            OnboardingScreen()
         }
     }
 }
 
 private fun NavGraphBuilder.buildGraph() {
-    composable(ComposeSplashScreen.Route)
+    composable(ComposeOnboardingScreen.Route)
 }
 
 @Composable
@@ -31,7 +31,7 @@ fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = ComposeSplashScreen.Route,
+        startDestination = ComposeOnboardingScreen.Route,
         builder = NavGraphBuilder::buildGraph,
         modifier = modifier,
     )

@@ -5,7 +5,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import ru.heatalways.amazingapplication.core.design.R
+import ru.heatrk.languageapp.core.design.R
 
 private val defaultTypography = Typography()
 

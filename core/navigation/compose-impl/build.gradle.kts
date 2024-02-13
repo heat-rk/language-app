@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.heatalways.amazingapplication.core.navigation.compose_impl"
+    namespace = "ru.heatrk.languageapp.core.navigation.compose_impl"
 
     compileSdk = AppConfig.Sdk.compile
 

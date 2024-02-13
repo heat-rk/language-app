@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.heatalways.amazingapplication.core.data.db"
+    namespace = "ru.heatrk.languageapp.core.data.db"
 
     compileSdk = AppConfig.Sdk.compile
 

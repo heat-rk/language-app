@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.heatalways.amazingapplication.common.utils"
+    namespace = "ru.heatrk.languageapp.common.utils"
 
     compileSdk = AppConfig.Sdk.compile
 
