@@ -1,3 +1,5 @@
+import dependencies.AppDependencies
+
 plugins {
     id(AppPlugins.androidLibrary)
     id(AppPlugins.androidKotlin)
@@ -46,5 +48,6 @@ android {
 }
 
 dependencies {
-    implementation(AppDependencies.Coroutines.allImplementations)
+    dependency(AppDependencies.Coroutines.core)
+    dependency(AppDependencies.Coroutines.android)
 }

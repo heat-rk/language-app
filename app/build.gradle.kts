@@ -1,3 +1,5 @@
+import dependencies.AppDependencies
+
 plugins {
     id(AppPlugins.androidApplication)
     id(AppPlugins.androidKotlin)
@@ -58,36 +60,35 @@ android {
 }
 
 dependencies {
-    // modules
-    implementation(project(":common:utils"))
-    implementation(project(":core:design"))
-    implementation(project(":core:navigation:api"))
-    implementation(project(":core:navigation:compose-impl"))
-    implementation(project(":core:coroutines:dispatchers"))
-    implementation(project(":core:coroutines:scopes"))
-    implementation(project(":core:data:db"))
-    implementation(project(":core:data:http-client"))
+    modules(
+        ":common:utils",
+        ":core:design",
+        ":core:navigation:api",
+        ":core:navigation:compose-impl",
+        ":core:coroutines:dispatchers",
+        ":core:coroutines:scopes",
+        ":core:data:db",
+        ":core:data:http-client",
+        ":features:onboarding:api",
+        ":features:onboarding:compose-impl",
+    )
 
-    implementation(project(":features:onboarding:api"))
-    implementation(project(":features:onboarding:compose-impl"))
-
-    // dependencies
-    platformImplementation(AppDependencies.Compose.platformImplementations)
-
-    implementation(AppDependencies.immutableCollections)
-    implementation(AppDependencies.Ktx.allImplementations)
-
-    implementation(AppDependencies.Coroutines.allImplementations)
-    implementation(AppDependencies.Scout.allImplementations)
-    implementation(AppDependencies.Accompanist.allImplementations)
-    implementation(AppDependencies.Orbit.allImplementations)
-    implementation(AppDependencies.Coil.allImplementations)
-    implementation(AppDependencies.Compose.material)
-    implementation(AppDependencies.Compose.lifeCycleRuntime)
-    implementation(AppDependencies.Compose.activity)
-    implementation(AppDependencies.Compose.navigation)
-    implementation(AppDependencies.Compose.preview)
-    implementation(AppDependencies.Splash.allImplementations)
-
-    debugImplementation(AppDependencies.Compose.debugImplementations)
+    dependency(AppDependencies.immutableCollections)
+    dependency(AppDependencies.Ktx.core)
+    dependency(AppDependencies.Coroutines.core)
+    dependency(AppDependencies.Coroutines.android)
+    dependency(AppDependencies.Scout.core)
+    dependency(AppDependencies.Accompanist.permissions)
+    dependency(AppDependencies.Orbit.viewModel)
+    dependency(AppDependencies.Orbit.compose)
+    dependency(AppDependencies.Coil.compose)
+    dependency(AppDependencies.Coil.gif)
+    dependency(AppDependencies.Compose.bom)
+    dependency(AppDependencies.Compose.material)
+    dependency(AppDependencies.Compose.lifeCycleRuntime)
+    dependency(AppDependencies.Compose.activity)
+    dependency(AppDependencies.Compose.navigation)
+    dependency(AppDependencies.Compose.preview)
+    dependency(AppDependencies.Compose.debugPreview)
+    dependency(AppDependencies.Splash.core)
 }

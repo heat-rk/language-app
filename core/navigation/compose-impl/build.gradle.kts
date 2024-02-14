@@ -1,3 +1,5 @@
+import dependencies.AppDependencies
+
 plugins {
     id(AppPlugins.androidLibrary)
     id(AppPlugins.androidKotlin)
@@ -53,10 +55,10 @@ android {
 }
 
 dependencies {
-    // Modules
-    implementation(project(":core:navigation:api"))
+    modules(
+        ":core:navigation:api",
+    )
 
-    // Dependencies
-    implementation(AppDependencies.Compose.navigation)
-    implementation(AppDependencies.Scout.allImplementations)
+    dependency(AppDependencies.Compose.navigation)
+    dependency(AppDependencies.Scout.core)
 }

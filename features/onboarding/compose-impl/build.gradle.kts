@@ -1,3 +1,5 @@
+import dependencies.AppDependencies
+
 plugins {
     id(AppPlugins.androidLibrary)
     id(AppPlugins.androidKotlin)
@@ -51,16 +53,18 @@ android {
 }
 
 dependencies {
-    // Modules
-    implementation(project(":core:navigation:api"))
-    implementation(project(":common:utils"))
-    implementation(project(":core:design"))
+    modules(
+        ":core:navigation:api",
+        ":core:design",
+        ":common:utils",
+    )
 
-    // Dependencies
-    implementation(AppDependencies.Scout.allImplementations)
-    implementation(AppDependencies.Orbit.allImplementations)
-    implementation(AppDependencies.Coroutines.allImplementations)
-    implementation(AppDependencies.Compose.allImplementations)
-
-    debugImplementation(AppDependencies.Compose.debugImplementations)
+    dependency(AppDependencies.Scout.core)
+    dependency(AppDependencies.Orbit.viewModel)
+    dependency(AppDependencies.Orbit.compose)
+    dependency(AppDependencies.Coroutines.core)
+    dependency(AppDependencies.Coroutines.android)
+    dependency(AppDependencies.Compose.viewModel)
+    dependency(AppDependencies.Compose.preview)
+    dependency(AppDependencies.Compose.debugPreview)
 }

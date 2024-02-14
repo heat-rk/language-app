@@ -1,3 +1,5 @@
+import dependencies.AppDependencies
+
 plugins {
     id(AppPlugins.androidLibrary)
     id(AppPlugins.androidKotlin)
@@ -51,15 +53,14 @@ android {
 }
 
 dependencies {
-    // modules
-    implementation(project(":common:utils"))
+    modules(
+        ":common:utils",
+    )
 
-    // dependencies
-    platformImplementation(AppDependencies.Compose.platformImplementations)
-
-    implementation(AppDependencies.Ktx.allImplementations)
-    implementation(AppDependencies.Compose.allImplementations)
-    implementation(AppDependencies.Splash.allImplementations)
-
-    debugImplementation(AppDependencies.Compose.debugImplementations)
+    dependency(AppDependencies.Ktx.core)
+    dependency(AppDependencies.Splash.core)
+    dependency(AppDependencies.Compose.bom)
+    dependency(AppDependencies.Compose.material)
+    dependency(AppDependencies.Compose.preview)
+    dependency(AppDependencies.Compose.debugPreview)
 }

@@ -1,3 +1,5 @@
+import dependencies.AppDependencies
+
 plugins {
     id(AppPlugins.androidLibrary)
     id(AppPlugins.androidKotlin)
@@ -46,7 +48,10 @@ android {
 }
 
 dependencies {
-    // dependencies
-    implementation(AppDependencies.Ktor.allImplementations)
-    implementation(AppDependencies.Scout.allImplementations)
+    dependency(AppDependencies.Ktor.core)
+    dependency(AppDependencies.Ktor.engine)
+    dependency(AppDependencies.Ktor.logging)
+    dependency(AppDependencies.Ktor.serialization)
+    dependency(AppDependencies.Ktor.negotiation)
+    dependency(AppDependencies.Scout.core)
 }

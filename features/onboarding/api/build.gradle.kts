@@ -32,6 +32,7 @@ android {
 }
 
 dependencies {
-    // Modules
-    implementation(project(":core:navigation:api"))
+    modules(
+        ":core:navigation:api",
+    )
 }

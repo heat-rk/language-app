@@ -1,3 +1,5 @@
+import dependencies.AppDependencies
+
 plugins {
     id(AppPlugins.androidLibrary)
     id(AppPlugins.androidKotlin)
@@ -51,9 +53,8 @@ android {
 }
 
 dependencies {
-    platformImplementation(AppDependencies.Compose.platformImplementations)
-
-    implementation(AppDependencies.Ktx.allImplementations)
-    implementation(AppDependencies.Compose.allImplementations)
-    implementation(AppDependencies.Coil.allImplementations)
+    dependency(AppDependencies.Compose.bom)
+    dependency(AppDependencies.Ktx.core)
+    dependency(AppDependencies.Compose.navigation)
+    dependency(AppDependencies.Coil.compose)
 }
