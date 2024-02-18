@@ -1,4 +1,5 @@
 import dependencies.AppDependencies
+import dependencies.ImplementationType
 
 plugins {
     id(AppPlugins.androidLibrary)
@@ -54,9 +55,18 @@ android {
 
 dependencies {
     modules(
+        ":features:onboarding:api",
+        ":features:login:api",
         ":core:navigation:api",
         ":core:design",
+        ":core:coroutines:dispatchers",
         ":common:utils",
+    )
+
+    androidTestModules(
+        ":core:navigation:compose-impl",
+        ":core:navigation:compose-test",
+        ":features:login:compose-impl",
     )
 
     dependency(AppDependencies.Scout.core)
@@ -64,7 +74,17 @@ dependencies {
     dependency(AppDependencies.Orbit.compose)
     dependency(AppDependencies.Coroutines.core)
     dependency(AppDependencies.Coroutines.android)
+    dependency(AppDependencies.Compose.bom)
     dependency(AppDependencies.Compose.viewModel)
+    dependency(AppDependencies.Compose.lifeCycleRuntime)
+    dependency(AppDependencies.Compose.material)
     dependency(AppDependencies.Compose.preview)
     dependency(AppDependencies.Compose.debugPreview)
+    dependency(AppDependencies.Compose.bom, forcedImplementationType = ImplementationType.ANDROID_TEST)
+    dependency(AppDependencies.Testing.composeJunit)
+    dependency(AppDependencies.Testing.composeManifest)
+    dependency(AppDependencies.Testing.mockitoCore)
+    dependency(AppDependencies.Testing.mockitoKotlin)
+    dependency(AppDependencies.Testing.composeNavigation)
+    dependency(AppDependencies.Compose.navigation, forcedImplementationType = ImplementationType.ANDROID_TEST)
 }

@@ -2,18 +2,111 @@ package ru.heatrk.languageapp.onboarding.impl.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
+import ru.heatrk.languageapp.common.utils.strRes
+import ru.heatrk.languageapp.common.utils.vectorRes
+import ru.heatrk.languageapp.core.navigation.api.Router
+import ru.heatrk.languageapp.login.api.LoginScreenRoute
+import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
+import ru.heatrk.languageapp.onboarding.api.domain.models.OnboardingUnit
+import ru.heatrk.languageapp.onboarding.impl.R
+import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingContract.Intent
+import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingContract.State
 
-class OnboardingViewModel : ViewModel() {
+class OnboardingViewModel(
+    private val onboardingRepository: OnboardingRepository,
+    private val router: Router,
+) : ViewModel(), ContainerHost<State, Unit> {
+    override val container = container<State, Unit>(
+        initialState = State.Loading
+    )
+
+    private val allUnitsFlow = MutableStateFlow(emptyList<OnboardingUnit>())
+    private val progressFlow = MutableStateFlow(0)
+
     init {
-        viewModelScope.launch {
-            delay(SPLASH_DELAY)
+        intent {
+            allUnitsFlow.value = onboardingRepository.getUnwatchedUnits()
 
+            allUnitsFlow
+                .combine(progressFlow) { allUnits, progress ->
+                    onboardingRepository.saveWatchedUnit(allUnits[progress])
+                    reduceUnitState(allUnits, progress)
+                }
+                .launchIn(viewModelScope)
         }
     }
 
-    companion object {
-        private const val SPLASH_DELAY = 1000L
+    fun processIntent(intent: Intent) = intent {
+        when (intent) {
+            Intent.Next -> {
+                if (progressFlow.value < allUnitsFlow.value.size - 1) {
+                    progressFlow.value += 1
+                } else {
+                    router.navigate(LoginScreenRoute)
+                }
+            }
+            Intent.Skip -> {
+                router.navigate(LoginScreenRoute)
+            }
+        }
+    }
+
+    private suspend fun SimpleSyntax<State, Unit>.reduceUnitState(
+        allUnits: List<OnboardingUnit>,
+        progress: Int,
+    ) {
+        reduce {
+            if (allUnits.isEmpty()) {
+                State.Loading
+            } else {
+                mapUnitToState(
+                    unit = allUnits[progress],
+                    progress = progress,
+                    total = allUnits.size
+                )
+            }
+        }
+    }
+
+    private fun mapUnitToState(
+        unit: OnboardingUnit,
+        total: Int,
+        progress: Int,
+    ) = when (unit) {
+        OnboardingUnit.CONVERSATION_BASED_LEARNING -> {
+            State.Loaded(
+                image = vectorRes(R.drawable.onboarding_conversation_based_learning),
+                title = strRes(R.string.onboarding_conversation_based_learning_title),
+                description = strRes(R.string.onboarding_conversation_based_learning_description),
+                progress = progress,
+                total = total,
+            )
+        }
+        OnboardingUnit.ANYTIME_LEARNING -> {
+            State.Loaded(
+                image = vectorRes(R.drawable.onboarding_anytime_learning),
+                title = strRes(R.string.onboarding_anytime_learning_title),
+                description = strRes(R.string.onboarding_anytime_learning_description),
+                progress = progress,
+                total = total,
+            )
+        }
+        OnboardingUnit.VARIETY_LEARNING -> {
+            State.Loaded(
+                image = vectorRes(R.drawable.onboarding_variety_learning),
+                title = strRes(R.string.onboarding_variety_learning_title),
+                description = strRes(R.string.onboarding_variety_learning_description),
+                progress = progress,
+                total = total,
+            )
+        }
     }
 }

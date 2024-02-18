@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.presentation.splash
+package ru.heatrk.languageapp.features.splash.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

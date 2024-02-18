@@ -28,8 +28,8 @@ private const val SHIMMER_REPEAT_DELAY = 1200
 
 @Composable
 fun Modifier.shimmerEffect(
-    shimmerBackgroundColor: Color = AppTheme.colors.primaryContainer,
-    shimmerForegroundColor: Color = AppTheme.colors.primary,
+    shimmerBackgroundColor: Color = AppTheme.colors.shimmerBackground,
+    shimmerForegroundColor: Color = AppTheme.colors.shimmerForeground,
 ): Modifier = composed {
     var size by remember { mutableStateOf(IntSize.Zero) }
     var position by remember { mutableStateOf(Offset.Zero) }

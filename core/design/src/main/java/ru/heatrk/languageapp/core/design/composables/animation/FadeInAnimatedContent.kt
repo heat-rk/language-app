@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.core.design.composables
+package ru.heatrk.languageapp.core.design.composables.animation
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope

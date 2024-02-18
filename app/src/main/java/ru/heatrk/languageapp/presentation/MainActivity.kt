@@ -19,14 +19,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import ru.heatrk.languageapp.core.design.composables.FadeInAnimatedContent
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingAction
 import ru.heatrk.languageapp.di.AppComponent
 import ru.heatrk.languageapp.presentation.navigation.AppNavHost
 import ru.heatrk.languageapp.presentation.navigation.composeRoute
-import ru.heatrk.languageapp.presentation.splash.SplashScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,32 +34,26 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppTheme { isDarkTheme ->
-                val viewModel: MainViewModel = viewModel()
+                val viewModel: MainViewModel = viewModel(
+                    factory = AppComponent.mainViewModelFactory
+                )
+
                 val isInitializationFinished by viewModel.isInitializationFinished.collectAsStateWithLifecycle()
                 val navController = rememberNavController()
-
-                LaunchedRouterEffect(navController = navController)
 
                 SystemBarsThemeEffect(
                     isDarkTheme = isDarkTheme,
                     forceSplashTheme = !isInitializationFinished
                 )
 
-                FadeInAnimatedContent(
-                    targetState = isInitializationFinished,
-                    label = "SplashScreenAnimation"
-                ) { shouldShowApplicationScreens ->
-                    if (shouldShowApplicationScreens) {
-                        AppNavHost(
-                            navController = navController,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(AppTheme.colors.background),
-                        )
-                    } else {
-                        SplashScreen()
-                    }
-                }
+                AppNavHost(
+                    navController = navController,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(AppTheme.colors.background),
+                )
+
+                LaunchedRouterEffect(navController = navController)
             }
         }
     }

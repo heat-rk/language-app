@@ -9,7 +9,18 @@ import androidx.navigation.NavHostController
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRoute
 import ru.heatrk.languageapp.core.navigation.compose_impl.NavHost
 import ru.heatrk.languageapp.core.navigation.compose_impl.composable
+import ru.heatrk.languageapp.features.splash.ui.SplashScreen
+import ru.heatrk.languageapp.login.impl.ui.LoginScreen
 import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingScreen
+
+object ComposeSplashScreen {
+    object Route : ComposeRoute() {
+        @Composable
+        override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
+            SplashScreen()
+        }
+    }
+}
 
 object ComposeOnboardingScreen {
     object Route : ComposeRoute() {
@@ -20,8 +31,19 @@ object ComposeOnboardingScreen {
     }
 }
 
+object ComposeLoginScreen {
+    object Route : ComposeRoute() {
+        @Composable
+        override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
+            LoginScreen()
+        }
+    }
+}
+
 private fun NavGraphBuilder.buildGraph() {
+    composable(ComposeSplashScreen.Route)
     composable(ComposeOnboardingScreen.Route)
+    composable(ComposeLoginScreen.Route)
 }
 
 @Composable
@@ -31,7 +53,7 @@ fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = ComposeOnboardingScreen.Route,
+        startDestination = ComposeSplashScreen.Route,
         builder = NavGraphBuilder::buildGraph,
         modifier = modifier,
     )

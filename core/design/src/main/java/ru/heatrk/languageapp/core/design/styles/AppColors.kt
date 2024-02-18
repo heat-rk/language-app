@@ -12,6 +12,10 @@ import androidx.compose.ui.graphics.Color
 @Immutable
 data class AppColors(
     val materialColors: ColorScheme,
+    val shimmerBackground: Color,
+    val shimmerForeground: Color,
+    val progressBackground: Color,
+    val textBody: Color,
 ) {
     val primary = materialColors.primary
     val onPrimary = materialColors.onPrimary
@@ -32,10 +36,14 @@ data class AppColors(
 }
 
 val darkAppColors = AppColors(
+    shimmerBackground = Color(0xFF111930),
+    shimmerForeground = Color(0xFF1E2847),
+    progressBackground = Color(0x4DFFFFFF),
+    textBody = Color(0x99FFFFFF),
     materialColors = darkColorScheme(
         primary = Color(0xFF410FA3),
         onPrimary = Color(0xFFFFFFFF),
-        primaryContainer = Color(0xFF410FA3),
+        primaryContainer = Color(0xFFF76400),
         onPrimaryContainer = Color(0xFFFFFFFF),
         secondary = Color(0xFF5B7BFE),
         onSecondary = Color(0xFFFFFFFF),
@@ -56,11 +64,15 @@ val darkAppColors = AppColors(
 )
 
 val lightAppColors = AppColors(
+    shimmerBackground = Color(0xFFE0E0E0),
+    shimmerForeground = Color(0xFFE7E7E7),
+    progressBackground = Color(0x33080E1E),
+    textBody = Color(0x99080E1E),
     materialColors = lightColorScheme(
         primary = Color(0xFF410FA3),
         onPrimary = Color(0xFFFFFFFF),
-        primaryContainer = Color(0xFF410FA3),
-        onPrimaryContainer = Color(0xFFFFFFFF),
+        primaryContainer = Color(0xFFF76400),
+        onPrimaryContainer = Color(0xFF000000),
         secondary = Color(0xFF5B7BFE),
         onSecondary = Color(0xFFFFFFFF),
         secondaryContainer = Color(0xFF5B7BFE),

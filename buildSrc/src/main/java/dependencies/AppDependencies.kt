@@ -174,6 +174,29 @@ object AppDependencies {
             notation = "androidx.test.espresso:espresso-core",
             version = Versions.espresso,
         )
+
+        val composeJunit = androidTestDependency(
+            notation = "androidx.compose.ui:ui-test-junit4",
+        )
+
+        val composeManifest = debugDependency(
+            notation = "androidx.compose.ui:ui-test-manifest",
+        )
+
+        val mockitoCore = androidTestDependency(
+            notation = "org.mockito:mockito-core",
+            version = Versions.mockitoCore,
+        )
+
+        val mockitoKotlin = androidTestDependency(
+            notation = "org.mockito.kotlin:mockito-kotlin",
+            version = Versions.mockitoKotlin,
+        )
+
+        val composeNavigation = androidTestDependency(
+            notation = "androidx.navigation:navigation-testing",
+            version = Versions.composeNavigation,
+        )
     }
 
     object Versions {
@@ -196,5 +219,7 @@ object AppDependencies {
         const val andoridJunitExtensions = "1.1.5"
         const val espresso = "3.5.1"
         const val splash = "1.0.1"
+        const val mockitoCore = "5.10.0"
+        const val mockitoKotlin = "5.2.1"
     }
 }

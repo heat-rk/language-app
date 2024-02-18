@@ -24,3 +24,9 @@ fun DependencyHandler.modules(vararg names: String) {
         add("implementation", project(name))
     }
 }
+
+fun DependencyHandler.androidTestModules(vararg names: String) {
+    names.forEach { name ->
+        add("androidTestImplementation", project(name))
+    }
+}

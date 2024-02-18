@@ -71,6 +71,8 @@ dependencies {
         ":core:data:http-client",
         ":features:onboarding:api",
         ":features:onboarding:compose-impl",
+        ":features:login:api",
+        ":features:login:compose-impl",
     )
 
     dependency(AppDependencies.immutableCollections)
