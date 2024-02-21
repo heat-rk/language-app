@@ -28,6 +28,6 @@ include(
     ":core:data:http-client",
     ":features:onboarding:api",
     ":features:onboarding:compose-impl",
-    ":features:login:api",
-    ":features:login:compose-impl",
+    ":features:auth:api",
+    ":features:auth:compose-impl",
 )

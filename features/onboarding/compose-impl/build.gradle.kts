@@ -55,7 +55,7 @@ android {
 dependencies {
     modules(
         ":features:onboarding:api",
-        ":features:login:api",
+        ":features:auth:api",
         ":core:navigation:api",
         ":core:design",
         ":core:coroutines:dispatchers",
@@ -65,7 +65,7 @@ dependencies {
     androidTestModules(
         ":core:navigation:compose-impl",
         ":core:navigation:compose-test",
-        ":features:login:compose-impl",
+        ":features:auth:compose-impl",
     )
 
     dependencies(

@@ -10,7 +10,7 @@ import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRoute
 import ru.heatrk.languageapp.core.navigation.compose_impl.NavHost
 import ru.heatrk.languageapp.core.navigation.compose_impl.composable
 import ru.heatrk.languageapp.features.splash.ui.SplashScreen
-import ru.heatrk.languageapp.login.impl.ui.LoginScreen
+import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreen
 import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingScreen
 
 object ComposeSplashScreen {

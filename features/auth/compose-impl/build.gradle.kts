@@ -1,30 +1,23 @@
 import dependencies.AppDependencies
 
 plugins {
-    id(AppPlugins.androidApplication)
+    id(AppPlugins.androidLibrary)
     id(AppPlugins.androidKotlin)
-    id(AppPlugins.kotlinKapt)
 }
 
 android {
-    namespace = AppConfig.applicationId
+    namespace = "ru.heatrk.languageapp.auth.impl"
+
     compileSdk = AppConfig.Sdk.compile
 
     defaultConfig {
-        applicationId = AppConfig.applicationId
         minSdk = AppConfig.Sdk.min
-        targetSdk = AppConfig.Sdk.target
-        versionCode = AppConfig.Version.code
-        versionName = AppConfig.Version.name
-
         testInstrumentationRunner = AppConfig.testInstrumentationRunner
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
-
+            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("debug")
 
@@ -61,46 +54,25 @@ android {
 
 dependencies {
     modules(
-        ":common:utils",
-        ":core:design",
-        ":core:navigation:api",
-        ":core:navigation:compose-impl",
-        ":core:coroutines:dispatchers",
-        ":core:coroutines:scopes",
-        ":core:data:db",
-        ":core:data:http-client",
-        ":features:onboarding:api",
-        ":features:onboarding:compose-impl",
         ":features:auth:api",
-        ":features:auth:compose-impl",
+        ":core:navigation:api",
+        ":core:design",
+        ":common:utils",
     )
 
     dependencies(
-        AppDependencies.immutableCollections,
-        AppDependencies.Ktx.core,
-        AppDependencies.Coroutines.core,
-        AppDependencies.Coroutines.android,
         AppDependencies.Scout.core,
         AppDependencies.Orbit.viewModel,
         AppDependencies.Orbit.compose,
-        AppDependencies.Coil.compose,
-        AppDependencies.Coil.gif,
+        AppDependencies.Coroutines.core,
+        AppDependencies.Coroutines.android,
         AppDependencies.Compose.bom,
         AppDependencies.Compose.material,
-        AppDependencies.Compose.lifeCycleRuntime,
-        AppDependencies.Compose.activity,
-        AppDependencies.Compose.navigation,
+        AppDependencies.Compose.viewModel,
         AppDependencies.Compose.preview,
-        AppDependencies.Splash.core,
     )
 
     debugDependencies(
         AppDependencies.Compose.debugPreview,
-    )
-
-    testDependencies(
-        AppDependencies.Testing.junit,
-        AppDependencies.Scout.validator,
-        AppDependencies.Scout.graphCollector,
     )
 }

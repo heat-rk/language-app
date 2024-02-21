@@ -13,7 +13,7 @@ import org.orbitmvi.orbit.viewmodel.container
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.common.utils.vectorRes
 import ru.heatrk.languageapp.core.navigation.api.Router
-import ru.heatrk.languageapp.login.api.LoginScreenRoute
+import ru.heatrk.languageapp.auth.api.LoginScreenRoute
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
 import ru.heatrk.languageapp.onboarding.api.domain.models.OnboardingUnit
 import ru.heatrk.languageapp.onboarding.impl.R
