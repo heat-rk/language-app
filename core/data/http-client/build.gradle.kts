@@ -48,10 +48,12 @@ android {
 }
 
 dependencies {
-    dependency(AppDependencies.Ktor.core)
-    dependency(AppDependencies.Ktor.engine)
-    dependency(AppDependencies.Ktor.logging)
-    dependency(AppDependencies.Ktor.serialization)
-    dependency(AppDependencies.Ktor.negotiation)
-    dependency(AppDependencies.Scout.core)
+    dependencies(
+        AppDependencies.Ktor.core,
+        AppDependencies.Ktor.engine,
+        AppDependencies.Ktor.logging,
+        AppDependencies.Ktor.serialization,
+        AppDependencies.Ktor.negotiation,
+        AppDependencies.Scout.core,
+    )
 }

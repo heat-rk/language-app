@@ -1,23 +1,7 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.project
 import dependencies.Dependency
-import dependencies.ImplementationType
 import dependencies.notationWithVersion
-
-fun DependencyHandler.dependency(
-    dependency: Dependency,
-    forcedImplementationType: ImplementationType? = null,
-    forcedPlatform: Boolean? = null
-) {
-    add(
-        (forcedImplementationType ?: dependency.implementationType).configurationName,
-        if (forcedPlatform ?: dependency.isPlatform) {
-            platform(dependency.notationWithVersion)
-        } else {
-            dependency.notationWithVersion
-        },
-    )
-}
 
 fun DependencyHandler.modules(vararg names: String) {
     names.forEach { name ->
@@ -30,3 +14,48 @@ fun DependencyHandler.androidTestModules(vararg names: String) {
         add("androidTestImplementation", project(name))
     }
 }
+
+fun DependencyHandler.dependencies(vararg dependencies: Dependency) {
+    dependencies.forEach { dependency ->
+        addDependency("implementation", dependency)
+    }
+}
+
+fun DependencyHandler.apiDependencies(vararg dependencies: Dependency) {
+    dependencies.forEach { dependency ->
+        addDependency("api", dependency)
+    }
+}
+
+fun DependencyHandler.kaptDependencies(vararg dependencies: Dependency) {
+    dependencies.forEach { dependency ->
+        addDependency("kapt", dependency)
+    }
+}
+
+fun DependencyHandler.debugDependencies(vararg dependencies: Dependency) {
+    dependencies.forEach { dependency ->
+        addDependency("debugImplementation", dependency)
+    }
+}
+
+fun DependencyHandler.testDependencies(vararg dependencies: Dependency) {
+    dependencies.forEach { dependency ->
+        addDependency("testImplementation", dependency)
+    }
+}
+
+fun DependencyHandler.androidTestDependencies(vararg dependencies: Dependency) {
+    dependencies.forEach { dependency ->
+        addDependency("androidTestImplementation", dependency)
+    }
+}
+
+private fun DependencyHandler.addDependency(
+    configurationName: String,
+    dependency: Dependency,
+) {
+    val notation = dependency.notationWithVersion
+    add(configurationName, if (dependency.isPlatform) platform(notation) else notation)
+}
+

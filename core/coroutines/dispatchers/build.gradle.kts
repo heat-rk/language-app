@@ -48,7 +48,9 @@ android {
 }
 
 dependencies {
-    dependency(AppDependencies.Coroutines.core)
-    dependency(AppDependencies.Coroutines.android)
-    dependency(AppDependencies.Scout.core)
+    dependencies(
+        AppDependencies.Coroutines.core,
+        AppDependencies.Coroutines.android,
+        AppDependencies.Scout.core,
+    )
 }

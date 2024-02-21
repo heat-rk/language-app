@@ -57,10 +57,15 @@ dependencies {
         ":common:utils",
     )
 
-    dependency(AppDependencies.Ktx.core)
-    dependency(AppDependencies.Splash.core)
-    dependency(AppDependencies.Compose.bom)
-    dependency(AppDependencies.Compose.material)
-    dependency(AppDependencies.Compose.preview)
-    dependency(AppDependencies.Compose.debugPreview)
+    dependencies(
+        AppDependencies.Ktx.core,
+        AppDependencies.Splash.core,
+        AppDependencies.Compose.bom,
+        AppDependencies.Compose.material,
+        AppDependencies.Compose.preview,
+    )
+
+    debugDependencies(
+        AppDependencies.Compose.debugPreview,
+    )
 }

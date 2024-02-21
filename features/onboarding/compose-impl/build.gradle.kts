@@ -1,5 +1,4 @@
 import dependencies.AppDependencies
-import dependencies.ImplementationType
 
 plugins {
     id(AppPlugins.androidLibrary)
@@ -69,22 +68,30 @@ dependencies {
         ":features:login:compose-impl",
     )
 
-    dependency(AppDependencies.Scout.core)
-    dependency(AppDependencies.Orbit.viewModel)
-    dependency(AppDependencies.Orbit.compose)
-    dependency(AppDependencies.Coroutines.core)
-    dependency(AppDependencies.Coroutines.android)
-    dependency(AppDependencies.Compose.bom)
-    dependency(AppDependencies.Compose.viewModel)
-    dependency(AppDependencies.Compose.lifeCycleRuntime)
-    dependency(AppDependencies.Compose.material)
-    dependency(AppDependencies.Compose.preview)
-    dependency(AppDependencies.Compose.debugPreview)
-    dependency(AppDependencies.Compose.bom, forcedImplementationType = ImplementationType.ANDROID_TEST)
-    dependency(AppDependencies.Testing.composeJunit)
-    dependency(AppDependencies.Testing.composeManifest)
-    dependency(AppDependencies.Testing.mockitoCore)
-    dependency(AppDependencies.Testing.mockitoKotlin)
-    dependency(AppDependencies.Testing.composeNavigation)
-    dependency(AppDependencies.Compose.navigation, forcedImplementationType = ImplementationType.ANDROID_TEST)
+    dependencies(
+        AppDependencies.Scout.core,
+        AppDependencies.Orbit.viewModel,
+        AppDependencies.Orbit.compose,
+        AppDependencies.Coroutines.core,
+        AppDependencies.Coroutines.android,
+        AppDependencies.Compose.bom,
+        AppDependencies.Compose.viewModel,
+        AppDependencies.Compose.lifeCycleRuntime,
+        AppDependencies.Compose.material,
+        AppDependencies.Compose.preview,
+    )
+
+    debugDependencies(
+        AppDependencies.Compose.debugPreview,
+        AppDependencies.Testing.composeManifest,
+    )
+
+    androidTestDependencies(
+        AppDependencies.Compose.bom,
+        AppDependencies.Testing.composeJunit,
+        AppDependencies.Testing.mockitoCore,
+        AppDependencies.Testing.mockitoKotlin,
+        AppDependencies.Testing.composeNavigation,
+        AppDependencies.Compose.navigation,
+    )
 }

@@ -60,5 +60,7 @@ dependencies {
         ":core:navigation:compose-impl",
     )
 
-    dependency(AppDependencies.Compose.navigation)
+    dependencies(
+        AppDependencies.Compose.navigation,
+    )
 }

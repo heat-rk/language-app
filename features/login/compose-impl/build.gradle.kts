@@ -1,5 +1,4 @@
 import dependencies.AppDependencies
-import dependencies.ImplementationType
 
 plugins {
     id(AppPlugins.androidLibrary)
@@ -61,14 +60,19 @@ dependencies {
         ":common:utils",
     )
 
-    dependency(AppDependencies.Scout.core)
-    dependency(AppDependencies.Orbit.viewModel)
-    dependency(AppDependencies.Orbit.compose)
-    dependency(AppDependencies.Coroutines.core)
-    dependency(AppDependencies.Coroutines.android)
-    dependency(AppDependencies.Compose.bom)
-    dependency(AppDependencies.Compose.material)
-    dependency(AppDependencies.Compose.viewModel)
-    dependency(AppDependencies.Compose.preview)
-    dependency(AppDependencies.Compose.debugPreview)
+    dependencies(
+        AppDependencies.Scout.core,
+        AppDependencies.Orbit.viewModel,
+        AppDependencies.Orbit.compose,
+        AppDependencies.Coroutines.core,
+        AppDependencies.Coroutines.android,
+        AppDependencies.Compose.bom,
+        AppDependencies.Compose.material,
+        AppDependencies.Compose.viewModel,
+        AppDependencies.Compose.preview,
+    )
+
+    debugDependencies(
+        AppDependencies.Compose.debugPreview,
+    )
 }

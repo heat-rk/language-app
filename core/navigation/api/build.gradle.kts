@@ -48,6 +48,8 @@ android {
 }
 
 dependencies {
-    dependency(AppDependencies.Coroutines.core)
-    dependency(AppDependencies.Coroutines.android)
+    dependencies(
+        AppDependencies.Coroutines.core,
+        AppDependencies.Coroutines.android,
+    )
 }

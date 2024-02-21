@@ -49,8 +49,13 @@ android {
 }
 
 dependencies {
-    dependency(AppDependencies.Scout.core)
-    dependency(AppDependencies.Room.runtime)
-    dependency(AppDependencies.Room.compiler)
-    dependency(AppDependencies.Room.ktx)
+    dependencies(
+        AppDependencies.Scout.core,
+        AppDependencies.Room.runtime,
+        AppDependencies.Room.ktx,
+    )
+
+    kaptDependencies(
+        AppDependencies.Room.compiler,
+    )
 }

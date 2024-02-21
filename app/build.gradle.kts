@@ -75,25 +75,32 @@ dependencies {
         ":features:login:compose-impl",
     )
 
-    dependency(AppDependencies.immutableCollections)
-    dependency(AppDependencies.Ktx.core)
-    dependency(AppDependencies.Coroutines.core)
-    dependency(AppDependencies.Coroutines.android)
-    dependency(AppDependencies.Scout.core)
-    dependency(AppDependencies.Accompanist.permissions)
-    dependency(AppDependencies.Orbit.viewModel)
-    dependency(AppDependencies.Orbit.compose)
-    dependency(AppDependencies.Coil.compose)
-    dependency(AppDependencies.Coil.gif)
-    dependency(AppDependencies.Compose.bom)
-    dependency(AppDependencies.Compose.material)
-    dependency(AppDependencies.Compose.lifeCycleRuntime)
-    dependency(AppDependencies.Compose.activity)
-    dependency(AppDependencies.Compose.navigation)
-    dependency(AppDependencies.Compose.preview)
-    dependency(AppDependencies.Compose.debugPreview)
-    dependency(AppDependencies.Splash.core)
-    dependency(AppDependencies.Testing.junit)
-    dependency(AppDependencies.Scout.validator)
-    dependency(AppDependencies.Scout.graphCollector)
+    dependencies(
+        AppDependencies.immutableCollections,
+        AppDependencies.Ktx.core,
+        AppDependencies.Coroutines.core,
+        AppDependencies.Coroutines.android,
+        AppDependencies.Scout.core,
+        AppDependencies.Orbit.viewModel,
+        AppDependencies.Orbit.compose,
+        AppDependencies.Coil.compose,
+        AppDependencies.Coil.gif,
+        AppDependencies.Compose.bom,
+        AppDependencies.Compose.material,
+        AppDependencies.Compose.lifeCycleRuntime,
+        AppDependencies.Compose.activity,
+        AppDependencies.Compose.navigation,
+        AppDependencies.Compose.preview,
+        AppDependencies.Splash.core,
+    )
+
+    debugDependencies(
+        AppDependencies.Compose.debugPreview,
+    )
+
+    testDependencies(
+        AppDependencies.Testing.junit,
+        AppDependencies.Scout.validator,
+        AppDependencies.Scout.graphCollector,
+    )
 }

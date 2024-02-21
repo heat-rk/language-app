@@ -59,6 +59,8 @@ dependencies {
         ":core:navigation:api",
     )
 
-    dependency(AppDependencies.Compose.navigation)
-    dependency(AppDependencies.Scout.core)
+    dependencies(
+        AppDependencies.Compose.navigation,
+        AppDependencies.Scout.core,
+    )
 }
