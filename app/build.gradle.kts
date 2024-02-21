@@ -93,4 +93,7 @@ dependencies {
     dependency(AppDependencies.Compose.preview)
     dependency(AppDependencies.Compose.debugPreview)
     dependency(AppDependencies.Splash.core)
+    dependency(AppDependencies.Testing.junit)
+    dependency(AppDependencies.Scout.validator)
+    dependency(AppDependencies.Scout.graphCollector)
 }

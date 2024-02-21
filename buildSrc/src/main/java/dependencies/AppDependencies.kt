@@ -38,6 +38,16 @@ object AppDependencies {
             notation = "com.yandex.scout:scout-core",
             version = Versions.scout
         )
+
+        val validator = testDependency(
+            notation = "com.yandex.scout:scout-validator",
+            version = Versions.scout
+        )
+
+        val graphCollector = testDependency(
+            notation = "com.yandex.scout:classgraph-collector",
+            version = Versions.scout
+        )
     }
 
     object Accompanist {
