@@ -2,7 +2,6 @@
 
 package ru.heatrk.languageapp.core.design.composables
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,11 +20,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import ru.heatrk.languageapp.common.utils.PainterResource
 import ru.heatrk.languageapp.common.utils.StringResource
@@ -37,6 +38,76 @@ import ru.heatrk.languageapp.core.design.styles.Sizes
 
 @Composable
 fun AppBar(
+    title: String,
+    modifier: Modifier = Modifier,
+    titleGravity: AppBarTitleGravity = AppBarTitleGravity.START,
+    actions: List<AppBarActionItem> = emptyList(),
+    containerColor: Color = AppTheme.colors.primary,
+    contentColor: Color = AppTheme.colors.onPrimary,
+    onGoBackClick: (() -> Unit)? = null,
+) {
+    when (titleGravity) {
+        AppBarTitleGravity.START -> {
+            StartAlignedAppBar(
+                title = title,
+                actions = actions,
+                containerColor = containerColor,
+                contentColor = contentColor,
+                onGoBackClick = onGoBackClick,
+                modifier = modifier,
+            )
+        }
+        AppBarTitleGravity.CENTER -> {
+            CenterAlignedAppBar(
+                title = title,
+                actions = actions,
+                containerColor = containerColor,
+                contentColor = contentColor,
+                onGoBackClick = onGoBackClick,
+                modifier = modifier,
+            )
+        }
+    }
+}
+
+@Composable
+private fun CenterAlignedAppBar(
+    title: String,
+    modifier: Modifier = Modifier,
+    actions: List<AppBarActionItem> = emptyList(),
+    containerColor: Color = AppTheme.colors.primary,
+    contentColor: Color = AppTheme.colors.onPrimary,
+    onGoBackClick: (() -> Unit)? = null,
+) {
+    CenterAlignedTopAppBar(
+        title = {
+            AppBarTitle(
+                title = title,
+                onGoBackClick = onGoBackClick,
+                modifier = Modifier
+                    .wrapContentSize()
+            )
+        },
+        navigationIcon = {
+            AppBarNavigationIcon(
+                onGoBackClick = onGoBackClick,
+            )
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = containerColor,
+            navigationIconContentColor = contentColor,
+            titleContentColor = contentColor,
+            actionIconContentColor = contentColor,
+        ),
+        actions = {
+            AppBarActions(actions = actions)
+        },
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun StartAlignedAppBar(
     title: String,
     modifier: Modifier = Modifier,
     actions: List<AppBarActionItem> = emptyList(),
@@ -55,8 +126,7 @@ fun AppBar(
         },
         navigationIcon = {
             AppBarNavigationIcon(
-                color = contentColor,
-                onGoBackClick = onGoBackClick
+                onGoBackClick = onGoBackClick,
             )
         },
         colors = TopAppBarDefaults.topAppBarColors(
@@ -99,7 +169,6 @@ private fun AppBarTitle(
 
 @Composable
 private fun AppBarNavigationIcon(
-    color: Color,
     onGoBackClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
@@ -108,10 +177,9 @@ private fun AppBarNavigationIcon(
             onClick = { onGoBackClick.invoke() },
             modifier = modifier
         ) {
-            Image(
+            Icon(
                 painter = painterResource(R.drawable.ic_arrow_left_20),
                 contentDescription = stringResource(R.string.go_back_icon_content_description),
-                colorFilter = ColorFilter.tint(color),
                 modifier = Modifier
                     .width(Sizes.AppBarIcon)
             )
@@ -143,12 +211,27 @@ data class AppBarActionItem(
     val onClick: () -> Unit,
 )
 
+enum class AppBarTitleGravity {
+    START,
+    CENTER;
+}
+
+private class AppBarTitleGravityProvider : PreviewParameterProvider<AppBarTitleGravity> {
+    override val values = sequenceOf(
+        AppBarTitleGravity.START,
+        AppBarTitleGravity.CENTER
+    )
+}
+
 @Composable
 @Preview
-private fun AppBarPreview() {
+private fun AppBarPreview(
+    @PreviewParameter(AppBarTitleGravityProvider::class) titleGravity: AppBarTitleGravity,
+) {
     AppTheme {
         AppBar(
             title = "Какой-то экран",
+            titleGravity = titleGravity,
             actions = listOf(
                 AppBarActionItem(
                     icon = painterRes(R.drawable.ic_logo_28),
