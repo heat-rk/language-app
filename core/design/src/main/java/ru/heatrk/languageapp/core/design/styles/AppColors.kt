@@ -15,6 +15,9 @@ data class AppColors(
     val shimmerBackground: Color,
     val shimmerForeground: Color,
     val progressBackground: Color,
+    val inputFieldBackground: Color,
+    val inputFieldHint: Color,
+    val inputFieldText: Color,
     val textBody: Color,
 ) {
     val primary = materialColors.primary
@@ -40,6 +43,9 @@ val darkAppColors = AppColors(
     shimmerForeground = Color(0xFF1E2847),
     progressBackground = Color(0x4DFFFFFF),
     textBody = Color(0x99FFFFFF),
+    inputFieldBackground = Color(0x0D080E1E),
+    inputFieldHint = Color(0x80656872),
+    inputFieldText = Color(0xFF363B44),
     materialColors = darkColorScheme(
         primary = Color(0xFF410FA3),
         onPrimary = Color(0xFFFFFFFF),
@@ -68,6 +74,9 @@ val lightAppColors = AppColors(
     shimmerForeground = Color(0xFFE7E7E7),
     progressBackground = Color(0x33080E1E),
     textBody = Color(0x99080E1E),
+    inputFieldBackground = Color(0x0D080E1E),
+    inputFieldHint = Color(0x80656872),
+    inputFieldText = Color(0xFF363B44),
     materialColors = lightColorScheme(
         primary = Color(0xFF410FA3),
         onPrimary = Color(0xFFFFFFFF),

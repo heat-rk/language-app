@@ -1,5 +1,6 @@
 package ru.heatrk.languageapp.core.design.composables
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -8,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,6 +20,8 @@ fun AppTextButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    textColor: Color = Color.Unspecified,
+    contentPadding: PaddingValues = ButtonDefaults.TextButtonContentPadding,
 ) {
     TextButton(
         onClick = onClick,
@@ -25,6 +29,7 @@ fun AppTextButton(
         colors = ButtonDefaults.textButtonColors(
             contentColor = AppTheme.colors.onBackground
         ),
+        contentPadding = contentPadding,
         modifier = modifier
             .height(56.dp),
     ) {
@@ -32,6 +37,7 @@ fun AppTextButton(
             text = text,
             style = AppTheme.typography.bodyMedium,
             fontWeight = FontWeight.Normal,
+            color = textColor,
         )
     }
 }

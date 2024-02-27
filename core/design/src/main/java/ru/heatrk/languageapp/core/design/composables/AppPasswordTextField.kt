@@ -1,0 +1,90 @@
+package ru.heatrk.languageapp.core.design.composables
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.dp
+import ru.heatrk.languageapp.core.design.R
+import ru.heatrk.languageapp.core.design.styles.AppTheme
+
+@Composable
+fun AppPasswordTextField(
+    value: String,
+    label: String,
+    isPasswordVisible: Boolean,
+    onValueChange: (String) -> Unit,
+    onPasswordVisibilityToggleClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    isError: Boolean = false,
+) {
+    AppTextField(
+        value = value,
+        onValueChange = onValueChange,
+        isError = isError,
+        visualTransformation = if (isPasswordVisible) {
+            VisualTransformation.None
+        } else {
+            PasswordVisualTransformation(mask = PASSWORD_MASK)
+        },
+        trailingIcon = {
+            IconButton(
+                onClick = onPasswordVisibilityToggleClick
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_password_visibility),
+                    contentDescription = stringResource(R.string.login_toggle_password_visibility)
+                )
+            }
+        },
+        placeholder = PASSWORD_HINT,
+        label = label,
+        modifier = modifier,
+    )
+}
+
+private const val PASSWORD_PLACEHOLDER_LENGTH = 7
+private const val PASSWORD_MASK = '\u25CF'
+private val PASSWORD_HINT = PASSWORD_MASK.toString().repeat(PASSWORD_PLACEHOLDER_LENGTH)
+
+class PasswordVisibilityParameterProvider : PreviewParameterProvider<Boolean> {
+    override val values = sequenceOf(false, true)
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun AppPasswordTextFieldPreview(
+    @PreviewParameter(PasswordVisibilityParameterProvider::class) isPasswordVisible: Boolean,
+) {
+    AppTheme {
+        Box(
+            modifier = Modifier
+                .wrapContentSize()
+        ) {
+            AppPasswordTextField(
+                value = "",
+                isPasswordVisible = isPasswordVisible,
+                label = "Здесь ты пишешь что-то",
+                onValueChange = {},
+                onPasswordVisibilityToggleClick = {},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(12.dp)
+            )
+        }
+    }
+}
