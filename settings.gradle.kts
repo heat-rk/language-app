@@ -30,4 +30,6 @@ include(
     ":features:onboarding:compose-impl",
     ":features:auth:api",
     ":features:auth:compose-impl",
+    ":features:main:api",
+    ":features:main:compose-impl",
 )

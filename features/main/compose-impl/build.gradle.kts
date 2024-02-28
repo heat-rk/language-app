@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.heatrk.languageapp.auth.impl"
+    namespace = "ru.heatrk.languageapp.main.impl"
 
     compileSdk = AppConfig.Sdk.compile
 
@@ -54,7 +54,6 @@ android {
 
 dependencies {
     modules(
-        ":features:auth:api",
         ":features:main:api",
         ":core:navigation:api",
         ":core:design",
