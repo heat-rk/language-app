@@ -22,8 +22,8 @@ import ru.heatrk.languageapp.common.utils.testTag
 import ru.heatrk.languageapp.common.utils.vectorRes
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.navigation.compose_test.TestComposeRouter
-import ru.heatrk.languageapp.auth.api.LOGIN_SCREEN_TEST_TAG
-import ru.heatrk.languageapp.auth.api.LoginScreenRoute
+import ru.heatrk.languageapp.auth.api.ui.navigation.LOGIN_SCREEN_TEST_TAG
+import ru.heatrk.languageapp.auth.api.ui.navigation.LoginScreenRoute
 import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreen
 import ru.heatrk.languageapp.auth.impl.ui.login.LoginViewModel
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository

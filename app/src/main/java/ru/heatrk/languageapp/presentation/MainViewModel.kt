@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.heatrk.languageapp.core.navigation.api.Route
 import ru.heatrk.languageapp.core.navigation.api.Router
-import ru.heatrk.languageapp.auth.api.LoginScreenRoute
+import ru.heatrk.languageapp.auth.api.ui.navigation.LoginScreenRoute
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
 import ru.heatrk.languageapp.onboarding.api.ui.navigation.OnboardingScreenRoute
 

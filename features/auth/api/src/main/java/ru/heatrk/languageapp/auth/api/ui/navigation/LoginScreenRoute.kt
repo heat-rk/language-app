@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.api
+package ru.heatrk.languageapp.auth.api.ui.navigation
 
 import ru.heatrk.languageapp.core.navigation.api.Route
 

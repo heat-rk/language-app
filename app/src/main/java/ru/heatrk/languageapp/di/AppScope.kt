@@ -10,6 +10,8 @@ import ru.heatrk.languageapp.core.data.db.di.useDatabaseBeans
 import ru.heatrk.languageapp.core.data.http_client.di.useHttpClientBeans
 import ru.heatrk.languageapp.core.navigation.compose_impl.di.useComposeNavigationBeans
 import ru.heatrk.languageapp.auth.impl.di.includeAuthScope
+import ru.heatrk.languageapp.core.data.supabase.di.useSupaBaseBeans
+import ru.heatrk.languageapp.main.impl.di.includeMainScope
 import ru.heatrk.languageapp.onboarding.impl.di.includeOnboardingScope
 import ru.heatrk.languageapp.onboarding.impl.di.useOnboardingApiBeans
 import ru.heatrk.languageapp.presentation.MainViewModel
@@ -22,6 +24,7 @@ val appScope = scope("app_scope") {
     useCoroutineScopesBeans()
     useDatabaseBeans()
     useHttpClientBeans()
+    useSupaBaseBeans()
     useComposeNavigationBeans()
 
     useOnboardingApiBeans()
@@ -41,6 +44,7 @@ val appScope = scope("app_scope") {
 }.apply {
     includeOnboardingScope()
     includeAuthScope()
+    includeMainScope()
 }
 
 private fun Registry.useApplicationBeans() {

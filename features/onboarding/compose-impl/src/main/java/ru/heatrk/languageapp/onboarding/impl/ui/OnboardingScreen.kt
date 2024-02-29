@@ -37,7 +37,7 @@ import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.common.utils.testTag
 import ru.heatrk.languageapp.common.utils.vectorRes
-import ru.heatrk.languageapp.core.design.composables.AppButton
+import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.AppTextButton
 import ru.heatrk.languageapp.core.design.composables.DotsProgressIndicator
 import ru.heatrk.languageapp.core.design.composables.animation.FadeInAnimatedContent

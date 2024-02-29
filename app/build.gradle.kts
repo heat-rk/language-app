@@ -28,13 +28,13 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("debug")
 
-            AppConfig.buildConfigFields.forEach { field ->
+            AppConfig.buildConfigFields(project).forEach { field ->
                 buildConfigField(field.type, field.name, "\"${field.releaseValue}\"")
             }
         }
 
         debug {
-            AppConfig.buildConfigFields.forEach { field ->
+            AppConfig.buildConfigFields(project).forEach { field ->
                 buildConfigField(field.type, field.name, "\"${field.debugValue}\"")
             }
         }
@@ -69,10 +69,13 @@ dependencies {
         ":core:coroutines:scopes",
         ":core:data:db",
         ":core:data:http-client",
+        ":core:data:supabase",
         ":features:onboarding:api",
         ":features:onboarding:compose-impl",
         ":features:auth:api",
         ":features:auth:compose-impl",
+        ":features:main:api",
+        ":features:main:compose-impl",
     )
 
     dependencies(

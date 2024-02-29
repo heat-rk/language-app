@@ -1,5 +1,6 @@
 package ru.heatrk.languageapp.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -27,6 +28,11 @@ import ru.heatrk.languageapp.presentation.navigation.AppNavHost
 import ru.heatrk.languageapp.presentation.navigation.composeRoute
 
 class MainActivity : ComponentActivity() {
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
 

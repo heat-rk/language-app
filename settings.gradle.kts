@@ -26,6 +26,7 @@ include(
     ":core:coroutines:scopes",
     ":core:data:db",
     ":core:data:http-client",
+    ":core:data:supabase",
     ":features:onboarding:api",
     ":features:onboarding:compose-impl",
     ":features:auth:api",
