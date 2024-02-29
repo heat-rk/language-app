@@ -6,6 +6,22 @@ object AppDependencies {
         version = Versions.immutableCollections
     )
 
+    object Supabase {
+        val bom = Dependency(
+            notation = "io.github.jan-tennert.supabase:bom",
+            version = Versions.supabase,
+            isPlatform = true,
+        )
+
+        val auth = Dependency(
+            notation = "io.github.jan-tennert.supabase:gotrue-kt"
+        )
+
+        val composeAuth = Dependency(
+            notation = "io.github.jan-tennert.supabase:compose-auth"
+        )
+    }
+
     object Ktor {
         val core = Dependency(
             notation = "io.ktor:ktor-client-core",
@@ -231,5 +247,6 @@ object AppDependencies {
         const val splash = "1.0.1"
         const val mockitoCore = "5.10.0"
         const val mockitoKotlin = "5.2.1"
+        const val supabase = "2.1.5"
     }
 }

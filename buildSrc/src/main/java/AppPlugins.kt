@@ -12,6 +12,5 @@ object AppPlugins {
         const val androidLibrary = "7.3.1"
         const val androidKotlin = "1.9.22"
         const val detekt = "1.23.5"
-        const val serialization = "1.8.22"
     }
 }

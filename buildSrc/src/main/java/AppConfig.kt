@@ -1,10 +1,35 @@
+import org.gradle.api.Project
+import java.util.Properties
+
 object AppConfig {
     const val applicationId = "ru.heatrk.languageapp"
     const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     const val jvmTarget = "1.8"
     const val composeKotlinCompilerExtensionVersion = "1.5.9"
 
-    val buildConfigFields = emptyArray<BuildConfigField>()
+    fun buildConfigFields(project: Project): Array<BuildConfigField> {
+        val properties = Properties()
+
+        properties.load(project.rootProject.file("local.properties").inputStream())
+
+        val supaBaseAnonKey = properties.getProperty("supabase.anon.key")
+        val supaBaseUrl = properties.getProperty("supabase.url")
+
+        return arrayOf(
+            BuildConfigField(
+                type = "String",
+                name = "SUPABASE_ANON_KEY",
+                releaseValue = supaBaseAnonKey,
+                debugValue = supaBaseAnonKey,
+            ),
+            BuildConfigField(
+                type = "String",
+                name = "SUPABASE_URL",
+                releaseValue = supaBaseUrl,
+                debugValue = supaBaseUrl,
+            )
+        )
+    }
 
     object Sdk {
         const val compile = 34

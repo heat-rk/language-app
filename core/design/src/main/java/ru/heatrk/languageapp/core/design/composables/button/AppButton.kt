@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.core.design.composables
+package ru.heatrk.languageapp.core.design.composables.button
 
 import android.graphics.BlurMaskFilter
 import androidx.compose.foundation.layout.PaddingValues
@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,27 +26,44 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import ru.heatrk.languageapp.core.design.R
+import ru.heatrk.languageapp.core.design.composables.animation.FadeInAnimatedContent
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 
 @Composable
 fun AppButton(
     text: String,
+    buttonState: AppButtonState = AppButtonState.Idle,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val currentDensity = LocalDensity.current
     var buttonWidth by remember { mutableFloatStateOf(0f) }
-    val buttonColor = AppTheme.colors.secondary
     val buttonShape = AppTheme.shapes.medium
     val buttonBlurColor = AppTheme.colors.onSecondary.copy(BUTTON_BLUR_ALPHA)
     val buttonBlurSize = remember(currentDensity) {
         with(currentDensity) { BUTTON_BLUR_SIZE_DP.dp.toPx() }
     }
+
+    val buttonColors = AppButtonColors(
+        idleColor = AppTheme.colors.secondary,
+        idleContentColor = AppTheme.colors.onSecondary,
+        loadingColor = AppTheme.colors.progressBackground,
+        loadingContentColor = AppTheme.colors.primaryContainer,
+        successColor = AppTheme.colors.successColor,
+        successContentColor = AppTheme.colors.onSuccessColor,
+        errorColor = AppTheme.colors.error,
+        errorContentColor = AppTheme.colors.onError,
+    )
 
     val blurPaint = remember {
         Paint().apply {
@@ -89,35 +108,47 @@ fun AppButton(
         }
     }
 
-    AppButton(
-        text = text,
-        onClick = onClick,
-        buttonShape = buttonShape,
-        buttonColor = buttonColor,
-        blurPath = blurPath,
-        blurPaint = blurPaint,
-        modifier = modifier
-            .onGloballyPositioned { coordinates ->
-                buttonWidth = coordinates.size.width.toFloat()
-            }
-    )
+    FadeInAnimatedContent(
+        targetState = buttonState,
+        label = "AppButtonAnimation"
+    ) { state ->
+        AppButton(
+            text = text,
+            buttonState = state,
+            onClick = onClick,
+            buttonShape = buttonShape,
+            buttonColors = buttonColors,
+            blurPath = blurPath,
+            blurPaint = blurPaint,
+            modifier = modifier
+                .onGloballyPositioned { coordinates ->
+                    buttonWidth = coordinates.size.width.toFloat()
+                }
+        )
+    }
 }
 
 @Composable
 private fun AppButton(
     text: String,
+    buttonState: AppButtonState,
     buttonShape: Shape,
-    buttonColor: Color,
+    buttonColors: AppButtonColors,
     blurPath: Path,
     blurPaint: Paint,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val containerColor = buttonColors.containerColor(buttonState)
+    val contentColor = buttonColors.contentColor(buttonState)
+
     Button(
         onClick = onClick,
         shape = buttonShape,
+        enabled = buttonState == AppButtonState.Idle,
         colors = ButtonDefaults.buttonColors(
-            containerColor = buttonColor
+            containerColor = containerColor,
+            disabledContainerColor = containerColor
         ),
         contentPadding = PaddingValues(),
         modifier = modifier
@@ -134,23 +165,83 @@ private fun AppButton(
                 }
             }
     ) {
-        Text(
-            text = text,
-            style = AppTheme.typography.titleLarge,
-            fontWeight = FontWeight.Medium,
-        )
+        when (buttonState) {
+            AppButtonState.Idle -> {
+                Text(
+                    text = text,
+                    style = AppTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Medium,
+                    color = contentColor,
+                )
+            }
+            AppButtonState.Loading -> {
+                CircularProgressIndicator(
+                    color = contentColor
+                )
+            }
+            AppButtonState.Success -> {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_round_check_24),
+                    tint = contentColor,
+                    contentDescription = null
+                )
+            }
+            AppButtonState.Error -> {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_round_cross_24),
+                    tint = contentColor,
+                    contentDescription = null
+                )
+            }
+        }
     }
+}
+
+enum class AppButtonState {
+    Idle, Loading, Success, Error
+}
+
+private data class AppButtonColors(
+    val idleColor: Color,
+    val idleContentColor: Color,
+    val loadingColor: Color,
+    val loadingContentColor: Color,
+    val successColor: Color,
+    val successContentColor: Color,
+    val errorColor: Color,
+    val errorContentColor: Color,
+)
+
+private fun AppButtonColors.containerColor(buttonState: AppButtonState) = when (buttonState) {
+    AppButtonState.Idle -> idleColor
+    AppButtonState.Loading -> loadingColor
+    AppButtonState.Success -> successColor
+    AppButtonState.Error -> errorColor
+}
+
+private fun AppButtonColors.contentColor(buttonState: AppButtonState) = when (buttonState) {
+    AppButtonState.Idle -> idleContentColor
+    AppButtonState.Loading -> loadingContentColor
+    AppButtonState.Success -> successContentColor
+    AppButtonState.Error -> errorContentColor
 }
 
 private const val BUTTON_BLUR_ALPHA = 0.2f
 private const val BUTTON_BLUR_SIZE_DP = 4
 
+class AppButtonStateProvider : PreviewParameterProvider<AppButtonState> {
+    override val values = AppButtonState.entries.asSequence()
+}
+
 @Composable
-@Preview
-private fun AppButtonPreview() {
+@Preview(showBackground = true)
+private fun AppButtonPreview(
+    @PreviewParameter(AppButtonStateProvider::class) state: AppButtonState,
+) {
     AppTheme {
         AppButton(
             text = "Нажми меня",
+            buttonState = state,
             onClick = { /* ... */ },
             modifier = Modifier
                 .fillMaxWidth()
