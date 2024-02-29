@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
@@ -54,17 +53,6 @@ fun AppButton(
         with(currentDensity) { BUTTON_BLUR_SIZE_DP.dp.toPx() }
     }
 
-    val buttonColors = AppButtonColors(
-        idleColor = AppTheme.colors.secondary,
-        idleContentColor = AppTheme.colors.onSecondary,
-        loadingColor = AppTheme.colors.progressBackground,
-        loadingContentColor = AppTheme.colors.primaryContainer,
-        successColor = AppTheme.colors.successColor,
-        successContentColor = AppTheme.colors.onSuccessColor,
-        errorColor = AppTheme.colors.error,
-        errorContentColor = AppTheme.colors.onError,
-    )
-
     val blurPaint = remember {
         Paint().apply {
             val frameworkPaint = asFrameworkPaint()
@@ -85,6 +73,42 @@ fun AppButton(
         buttonShape.topEnd.toPx(Size.Unspecified, currentDensity)
     }
 
+    AppButtonBlurPathEffect(
+        blurPath = blurPath,
+        buttonWidth = buttonWidth,
+        buttonBlurSize = buttonBlurSize,
+        buttonTopStartRadius = buttonTopStartRadius,
+        buttonTopEndRadius = buttonTopEndRadius,
+    )
+
+    FadeInAnimatedContent(
+        targetState = buttonState,
+        label = "AppButtonAnimation"
+    ) { state ->
+        AppButton(
+            text = text,
+            buttonState = state,
+            onClick = onClick,
+            buttonShape = buttonShape,
+            buttonColors = AppButtonDefaults.colors(),
+            blurPath = blurPath,
+            blurPaint = blurPaint,
+            modifier = modifier
+                .onGloballyPositioned { coordinates ->
+                    buttonWidth = coordinates.size.width.toFloat()
+                }
+        )
+    }
+}
+
+@Composable
+private fun AppButtonBlurPathEffect(
+    blurPath: Path,
+    buttonWidth: Float,
+    buttonBlurSize: Float,
+    buttonTopStartRadius: Float,
+    buttonTopEndRadius: Float,
+) {
     LaunchedEffect(
         blurPath, buttonWidth, buttonBlurSize,
         buttonTopStartRadius, buttonTopEndRadius
@@ -106,25 +130,6 @@ fun AppButton(
                 x3 = buttonWidth, y3 = buttonBlurSize + buttonTopEndRadius,
             )
         }
-    }
-
-    FadeInAnimatedContent(
-        targetState = buttonState,
-        label = "AppButtonAnimation"
-    ) { state ->
-        AppButton(
-            text = text,
-            buttonState = state,
-            onClick = onClick,
-            buttonShape = buttonShape,
-            buttonColors = buttonColors,
-            blurPath = blurPath,
-            blurPaint = blurPaint,
-            modifier = modifier
-                .onGloballyPositioned { coordinates ->
-                    buttonWidth = coordinates.size.width.toFloat()
-                }
-        )
     }
 }
 
@@ -195,35 +200,6 @@ private fun AppButton(
             }
         }
     }
-}
-
-enum class AppButtonState {
-    Idle, Loading, Success, Error
-}
-
-private data class AppButtonColors(
-    val idleColor: Color,
-    val idleContentColor: Color,
-    val loadingColor: Color,
-    val loadingContentColor: Color,
-    val successColor: Color,
-    val successContentColor: Color,
-    val errorColor: Color,
-    val errorContentColor: Color,
-)
-
-private fun AppButtonColors.containerColor(buttonState: AppButtonState) = when (buttonState) {
-    AppButtonState.Idle -> idleColor
-    AppButtonState.Loading -> loadingColor
-    AppButtonState.Success -> successColor
-    AppButtonState.Error -> errorColor
-}
-
-private fun AppButtonColors.contentColor(buttonState: AppButtonState) = when (buttonState) {
-    AppButtonState.Idle -> idleContentColor
-    AppButtonState.Loading -> loadingContentColor
-    AppButtonState.Success -> successContentColor
-    AppButtonState.Error -> errorContentColor
 }
 
 private const val BUTTON_BLUR_ALPHA = 0.2f

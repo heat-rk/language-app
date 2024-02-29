@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -26,9 +28,14 @@ fun AppTextField(
     label: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    singleLine: Boolean = false,
+    maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
+    minLines: Int = 1,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: @Composable (() -> Unit)? = null,
-    isError: Boolean = false,
+    errorMessage: String? = null,
 ) {
     Column(
         modifier = modifier,
@@ -43,13 +50,25 @@ fun AppTextField(
         TextField(
             value = value,
             onValueChange = onValueChange,
-            isError = isError,
+            isError = errorMessage != null,
+            supportingText = {
+                Text(
+                    text = errorMessage ?: "",
+                    color = AppTheme.colors.error
+                )
+            },
             shape = AppTheme.shapes.medium,
             visualTransformation = visualTransformation,
+            singleLine = singleLine,
+            maxLines = maxLines,
+            minLines = minLines,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
             trailingIcon = trailingIcon,
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = AppTheme.colors.inputFieldBackground,
                 focusedContainerColor = AppTheme.colors.inputFieldBackground,
+                errorContainerColor = AppTheme.colors.inputFieldBackground,
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
@@ -79,6 +98,7 @@ private fun AppTextFieldPreview() {
             AppTextField(
                 value = "",
                 placeholder = "Надо что-то ввести",
+                errorMessage = "Ошибка",
                 label = "Здесь ты пишешь что-то",
                 onValueChange = { /* ... */ },
                 modifier = Modifier

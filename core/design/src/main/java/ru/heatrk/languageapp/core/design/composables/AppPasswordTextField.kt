@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -29,12 +31,17 @@ fun AppPasswordTextField(
     onValueChange: (String) -> Unit,
     onPasswordVisibilityToggleClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isError: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    errorMessage: String? = null,
 ) {
     AppTextField(
         value = value,
         onValueChange = onValueChange,
-        isError = isError,
+        errorMessage = errorMessage,
+        singleLine = true,
+        keyboardActions = keyboardActions,
+        keyboardOptions = keyboardOptions,
         visualTransformation = if (isPasswordVisible) {
             VisualTransformation.None
         } else {
@@ -78,6 +85,7 @@ private fun AppPasswordTextFieldPreview(
                 value = "",
                 isPasswordVisible = isPasswordVisible,
                 label = "Здесь ты пишешь что-то",
+                errorMessage = "Ошибка!",
                 onValueChange = {},
                 onPasswordVisibilityToggleClick = {},
                 modifier = Modifier

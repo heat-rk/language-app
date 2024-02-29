@@ -17,12 +17,13 @@ fun AppLinkedText(
     textSpanStyle: SpanStyle,
     linkSpanStyle: SpanStyle,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
 ) {
     val annotatedString = buildAnnotatedString {
-        withStyle(textSpanStyle) {
+        withStyle(textSpanStyle.withEnabled(isEnabled)) {
             units.forEachIndexed { index, unit ->
                 if (unit.linkTag != null) {
-                    withStyle(linkSpanStyle) {
+                    withStyle(linkSpanStyle.withEnabled(isEnabled)) {
                         pushStringAnnotation(unit.linkTag, unit.linkTag)
                         append(unit.text)
                     }
@@ -40,15 +41,17 @@ fun AppLinkedText(
     ClickableText(
         text = annotatedString,
         onClick = { offset ->
-            val annotation = annotatedString
-                .getStringAnnotations(offset, offset)
-                .firstOrNull()
+            if (isEnabled) {
+                val annotation = annotatedString
+                    .getStringAnnotations(offset, offset)
+                    .firstOrNull()
 
-            val unit = units
-                .firstOrNull { it.linkTag == annotation?.tag }
+                val unit = units
+                    .firstOrNull { it.linkTag == annotation?.tag }
 
-            if (unit != null) {
-                onClick(unit)
+                if (unit != null) {
+                    onClick(unit)
+                }
             }
         },
         modifier = modifier,
@@ -59,6 +62,16 @@ data class AppLinkedTextUnit(
     val text: String,
     val linkTag: String? = null
 )
+
+private fun SpanStyle.withEnabled(isEnabled: Boolean) =
+    copy(
+        color = color.copy(
+            alpha = if (isEnabled) ENABLED_ALPHA else DISABLED_ALPHA
+        )
+    )
+
+private const val ENABLED_ALPHA = 1f
+private const val DISABLED_ALPHA = 0.3f
 
 @Composable
 @Preview(showBackground = true)
