@@ -28,6 +28,7 @@ fun AppTextField(
     label: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
@@ -50,6 +51,7 @@ fun AppTextField(
         TextField(
             value = value,
             onValueChange = onValueChange,
+            enabled = isEnabled,
             isError = errorMessage != null,
             supportingText = {
                 Text(
@@ -69,6 +71,7 @@ fun AppTextField(
                 unfocusedContainerColor = AppTheme.colors.inputFieldBackground,
                 focusedContainerColor = AppTheme.colors.inputFieldBackground,
                 errorContainerColor = AppTheme.colors.inputFieldBackground,
+                disabledContainerColor = AppTheme.colors.inputFieldBackground,
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,

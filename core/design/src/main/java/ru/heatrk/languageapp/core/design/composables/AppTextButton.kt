@@ -20,11 +20,13 @@ fun AppTextButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
     textColor: Color = Color.Unspecified,
     contentPadding: PaddingValues = ButtonDefaults.TextButtonContentPadding,
 ) {
     TextButton(
         onClick = onClick,
+        enabled = isEnabled,
         shape = AppTheme.shapes.medium,
         colors = ButtonDefaults.textButtonColors(
             contentColor = AppTheme.colors.onBackground

@@ -122,6 +122,7 @@ private fun LoginScreen(
             LoginEmailPasswordBlock(
                 email = state.email,
                 password = state.password,
+                isInputEnabled = state.authorizingState == State.Authorizing.None,
                 emailErrorMessage = state.emailErrorMessage?.extract(),
                 passwordErrorMessage = state.passwordErrorMessage?.extract(),
                 isPasswordVisible = state.isPasswordVisible,
@@ -144,12 +145,14 @@ private fun LoginEmailPasswordBlock(
     email: String,
     password: String,
     isPasswordVisible: Boolean,
+    isInputEnabled: Boolean,
     emailErrorMessage: String? = null,
     passwordErrorMessage: String? = null,
     onIntent: (Intent) -> Unit,
 ) {
     AppTextField(
         value = email,
+        isEnabled = isInputEnabled,
         placeholder = stringResource(R.string.login_email_hint),
         label = stringResource(R.string.login_email),
         singleLine = true,
@@ -166,6 +169,7 @@ private fun LoginEmailPasswordBlock(
 
     AppPasswordTextField(
         value = password,
+        isEnabled = isInputEnabled,
         isPasswordVisible = isPasswordVisible,
         label = stringResource(R.string.login_password),
         keyboardOptions = KeyboardOptions(
@@ -183,6 +187,7 @@ private fun LoginEmailPasswordBlock(
 
     AppTextButton(
         text = stringResource(R.string.login_forgot_password),
+        isEnabled = isInputEnabled,
         textColor = AppTheme.colors.error,
         contentPadding = PaddingValues(0.dp),
         onClick = { onIntent(Intent.OnForgotPasswordButtonClick) },

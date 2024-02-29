@@ -31,6 +31,7 @@ fun AppPasswordTextField(
     onValueChange: (String) -> Unit,
     onPasswordVisibilityToggleClick: () -> Unit,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     errorMessage: String? = null,
@@ -40,6 +41,7 @@ fun AppPasswordTextField(
         onValueChange = onValueChange,
         errorMessage = errorMessage,
         singleLine = true,
+        isEnabled = isEnabled,
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
         visualTransformation = if (isPasswordVisible) {
