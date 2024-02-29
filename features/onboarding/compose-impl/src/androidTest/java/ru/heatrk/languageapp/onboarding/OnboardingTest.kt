@@ -18,12 +18,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.testing.TestNavHostController
 import org.junit.Rule
 import org.junit.Test
+import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 import ru.heatrk.languageapp.common.utils.testTag
 import ru.heatrk.languageapp.common.utils.vectorRes
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.navigation.compose_test.TestComposeRouter
 import ru.heatrk.languageapp.auth.api.ui.navigation.LOGIN_SCREEN_TEST_TAG
 import ru.heatrk.languageapp.auth.api.ui.navigation.LoginScreenRoute
+import ru.heatrk.languageapp.auth.impl.domain.SignInUseCase
 import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreen
 import ru.heatrk.languageapp.auth.impl.ui.login.LoginViewModel
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
@@ -44,7 +46,7 @@ class OnboardingTest {
         get() = composeTestRule.activity
 
     private val composeRouter = TestComposeRouter(
-        onNavigate = { route ->
+        onNavigate = { route, _ ->
             when (route) {
                 is LoginScreenRoute -> navController.navigate(LOGIN_SCREEN_DESTINATION)
                 else -> Unit
@@ -78,7 +80,12 @@ class OnboardingTest {
 
                         composable(LOGIN_SCREEN_DESTINATION) {
                             LoginScreen(
-                                viewModel = LoginViewModel()
+                                viewModel = LoginViewModel(
+                                    signIn = SignInUseCase(
+                                        repository = createAuthRepository()
+                                    ),
+                                    router = composeRouter
+                                )
                             )
                         }
                     }
@@ -227,6 +234,10 @@ class OnboardingTest {
     ) = object : OnboardingRepository {
         override suspend fun getUnwatchedUnits() = queue
         override suspend fun saveWatchedUnit(unit: OnboardingUnit) = Unit
+    }
+
+    private fun createAuthRepository() = object : AuthRepository {
+        override suspend fun signIn(email: String, password: String) = Unit
     }
 
     companion object {

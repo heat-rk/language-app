@@ -10,8 +10,8 @@ class ComposeRouter : Router {
     private val _actions = Channel<RoutingAction>(Channel.BUFFERED)
     override val actions = _actions.receiveAsFlow()
 
-    override suspend fun navigate(route: Route) {
-        action(RoutingAction.NavigateTo(route))
+    override suspend fun navigate(route: Route, popUpTo: Route?) {
+        action(RoutingAction.NavigateTo(route, popUpTo))
     }
 
     override suspend fun navigateBack() {

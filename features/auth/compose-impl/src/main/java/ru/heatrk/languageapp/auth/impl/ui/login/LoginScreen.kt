@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -37,6 +38,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import ru.heatrk.languageapp.auth.api.ui.navigation.LOGIN_SCREEN_TEST_TAG
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.di.AuthComponent
 import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreenContract.Intent
@@ -89,7 +91,9 @@ private fun LoginScreen(
             title = stringResource(R.string.login),
             titleGravity = AppBarTitleGravity.CENTER,
         ),
-        contentPadding = PaddingValues(24.dp)
+        contentPadding = PaddingValues(24.dp),
+        modifier = Modifier
+            .testTag(LOGIN_SCREEN_TEST_TAG)
     ) {
         Column(
             modifier = Modifier.fillMaxSize()

@@ -9,14 +9,14 @@ import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingAction
 
 class TestComposeRouter(
-    private val onNavigate: (route: Route) -> Unit,
+    private val onNavigate: (route: Route, popUpTo: Route?) -> Unit,
     private val onNavigateBack: () -> Unit
 ) : Router {
     override val actions: Flow<RoutingAction> = emptyFlow()
 
-    override suspend fun navigate(route: Route) {
+    override suspend fun navigate(route: Route, popUpTo: Route?) {
         withContext(Dispatchers.Main) {
-            onNavigate(route)
+            onNavigate(route, popUpTo)
         }
     }
 

@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 interface Router {
     val actions: Flow<RoutingAction>
 
-    suspend fun navigate(route: Route)
+    suspend fun navigate(route: Route, popUpTo: Route? = null)
 
     suspend fun navigateBack()
 }

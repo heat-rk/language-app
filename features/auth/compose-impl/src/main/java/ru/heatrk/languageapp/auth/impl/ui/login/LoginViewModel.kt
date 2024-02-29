@@ -10,6 +10,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import ru.heatrk.languageapp.auth.api.ui.navigation.LoginScreenRoute
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.domain.InvalidSignInFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.SignInUseCase
@@ -97,7 +98,10 @@ class LoginViewModel(
 
                 delay(AUTHORIZING_STATE_DELAY_MILLIS)
 
-                router.navigate(MainScreenRoute)
+                router.navigate(
+                    route = MainScreenRoute,
+                    popUpTo = LoginScreenRoute
+                )
             },
             onError = { throwable ->
                 reduce { state.copy(authorizingState = State.Authorizing.Error) }
