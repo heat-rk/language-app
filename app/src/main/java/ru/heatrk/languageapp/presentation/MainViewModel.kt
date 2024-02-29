@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import ru.heatrk.languageapp.core.navigation.api.Route
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.auth.api.ui.navigation.LoginScreenRoute
-import ru.heatrk.languageapp.features.splash.di.SplashScreenRoute
+import ru.heatrk.languageapp.core.navigation.api.RoutingOptions
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
 import ru.heatrk.languageapp.onboarding.api.ui.navigation.OnboardingScreenRoute
 
@@ -42,7 +42,9 @@ class MainViewModel(
             nextScreenRoute?.let { route ->
                 router.navigate(
                     route = route,
-                    popUpTo = SplashScreenRoute
+                    options = RoutingOptions(
+                        shouldBePopUp = true
+                    )
                 )
             }
 

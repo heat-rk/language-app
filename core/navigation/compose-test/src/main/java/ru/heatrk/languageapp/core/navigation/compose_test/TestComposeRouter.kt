@@ -7,16 +7,17 @@ import kotlinx.coroutines.withContext
 import ru.heatrk.languageapp.core.navigation.api.Route
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingAction
+import ru.heatrk.languageapp.core.navigation.api.RoutingOptions
 
 class TestComposeRouter(
-    private val onNavigate: (route: Route, popUpTo: Route?) -> Unit,
+    private val onNavigate: (route: Route, options: RoutingOptions) -> Unit,
     private val onNavigateBack: () -> Unit
 ) : Router {
     override val actions: Flow<RoutingAction> = emptyFlow()
 
-    override suspend fun navigate(route: Route, popUpTo: Route?) {
+    override suspend fun navigate(route: Route, options: RoutingOptions) {
         withContext(Dispatchers.Main) {
-            onNavigate(route, popUpTo)
+            onNavigate(route, options)
         }
     }
 

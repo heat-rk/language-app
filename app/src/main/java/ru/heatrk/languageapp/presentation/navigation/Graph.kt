@@ -15,7 +15,7 @@ import ru.heatrk.languageapp.main.impl.ui.MainScreen
 import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingScreen
 
 object ComposeSplashScreen {
-    object Route : ComposeRoute() {
+    object Route : ComposeRoute("splash") {
         @Composable
         override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
             SplashScreen()
@@ -24,7 +24,7 @@ object ComposeSplashScreen {
 }
 
 object ComposeOnboardingScreen {
-    object Route : ComposeRoute() {
+    object Route : ComposeRoute("onboarding") {
         @Composable
         override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
             OnboardingScreen()
@@ -33,7 +33,7 @@ object ComposeOnboardingScreen {
 }
 
 object ComposeLoginScreen {
-    object Route : ComposeRoute() {
+    object Route : ComposeRoute("login") {
         @Composable
         override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
             LoginScreen()
@@ -42,7 +42,7 @@ object ComposeLoginScreen {
 }
 
 object ComposeMainScreen {
-    object Route : ComposeRoute() {
+    object Route : ComposeRoute("main") {
         @Composable
         override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
             MainScreen()

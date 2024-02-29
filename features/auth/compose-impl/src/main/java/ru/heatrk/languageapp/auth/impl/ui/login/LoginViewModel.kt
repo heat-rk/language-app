@@ -10,7 +10,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import ru.heatrk.languageapp.auth.api.ui.navigation.LoginScreenRoute
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.domain.InvalidSignInFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.SignInUseCase
@@ -20,6 +19,7 @@ import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreenContract.State
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.navigation.api.Router
+import ru.heatrk.languageapp.core.navigation.api.RoutingOptions
 import ru.heatrk.languageapp.main.api.MainScreenRoute
 
 typealias IntentBody = SimpleSyntax<State, SideEffect>
@@ -100,7 +100,9 @@ class LoginViewModel(
 
                 router.navigate(
                     route = MainScreenRoute,
-                    popUpTo = LoginScreenRoute
+                    options = RoutingOptions(
+                        shouldBePopUp = true
+                    )
                 )
             },
             onError = { throwable ->

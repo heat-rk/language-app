@@ -14,6 +14,7 @@ import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.common.utils.vectorRes
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.auth.api.ui.navigation.LoginScreenRoute
+import ru.heatrk.languageapp.core.navigation.api.RoutingOptions
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
 import ru.heatrk.languageapp.onboarding.api.domain.models.OnboardingUnit
 import ru.heatrk.languageapp.onboarding.impl.R
@@ -50,13 +51,22 @@ class OnboardingViewModel(
                 if (progressFlow.value < allUnitsFlow.value.size - 1) {
                     progressFlow.value += 1
                 } else {
-                    router.navigate(LoginScreenRoute)
+                    navigateToLoginScreen()
                 }
             }
             Intent.Skip -> {
-                router.navigate(LoginScreenRoute)
+                navigateToLoginScreen()
             }
         }
+    }
+
+    private suspend fun navigateToLoginScreen() {
+        router.navigate(
+            route = LoginScreenRoute,
+            options = RoutingOptions(
+                shouldBePopUp = true
+            )
+        )
     }
 
     private suspend fun SimpleSyntax<State, Unit>.reduceUnitState(

@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 abstract class ComposeRoute(
+    val notation: String,
     val namedNavArguments: List<NamedNavArgument> = emptyList(),
 ) {
     /*
@@ -23,12 +24,11 @@ abstract class ComposeRoute(
 
     private val params = namedNavArguments.map(NamedNavArgument::name)
 
-    private val definitionBase = this::class.java.name
-    val definition = "$definitionBase?${params.toQueryParams()}"
+    val notationWithParams = "$notation?${params.toQueryParams()}"
 
     fun withArgs(args: Map<String, String> = emptyMap()) =
         buildString {
-            append(definitionBase)
+            append(notation)
 
             if (args.isNotEmpty()) {
                 append('?')
@@ -47,7 +47,7 @@ fun NavGraphBuilder.composable(
     route: ComposeRoute
 ) {
     composable(
-        route = route.definition,
+        route = route.notationWithParams,
         arguments = route.namedNavArguments,
         content = { navBackStackEntry ->
             with(route) {
@@ -66,7 +66,7 @@ fun NavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination.definition,
+        startDestination = startDestination.notationWithParams,
         modifier = modifier,
         builder = builder,
     )

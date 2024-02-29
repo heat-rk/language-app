@@ -28,4 +28,4 @@ fun composeRoute(route: Route, withArgs: Boolean = true): String = when (route) 
 private fun ComposeRoute.withArgsIfNeeded(
     withArgs: Boolean,
     args: Map<String, String> = emptyMap(),
-) = if (withArgs) withArgs(args) else definition
+) = if (withArgs) withArgs(args) else notation
