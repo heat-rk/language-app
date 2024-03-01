@@ -14,6 +14,7 @@ object AppConfig {
 
         val supaBaseAnonKey = properties.getProperty("supabase.anon.key")
         val supaBaseUrl = properties.getProperty("supabase.url")
+        val googleServerClientId = properties.getProperty("google.server.client_id")
 
         return arrayOf(
             BuildConfigField(
@@ -27,7 +28,13 @@ object AppConfig {
                 name = "SUPABASE_URL",
                 releaseValue = supaBaseUrl,
                 debugValue = supaBaseUrl,
-            )
+            ),
+            BuildConfigField(
+                type = "String",
+                name = "GOOGLE_SERVER_CLIENT_ID",
+                releaseValue = googleServerClientId,
+                debugValue = googleServerClientId,
+            ),
         )
     }
 

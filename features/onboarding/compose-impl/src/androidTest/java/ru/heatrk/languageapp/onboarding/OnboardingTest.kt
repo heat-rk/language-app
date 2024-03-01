@@ -16,6 +16,7 @@ import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.testing.TestNavHostController
+import kotlinx.coroutines.test.StandardTestDispatcher
 import org.junit.Rule
 import org.junit.Test
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
@@ -25,7 +26,11 @@ import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.navigation.compose_test.TestComposeRouter
 import ru.heatrk.languageapp.auth.api.ui.navigation.LOGIN_SCREEN_TEST_TAG
 import ru.heatrk.languageapp.auth.api.ui.navigation.LoginScreenRoute
-import ru.heatrk.languageapp.auth.impl.domain.SignInUseCase
+import ru.heatrk.languageapp.auth.impl.data.google.AuthGoogleCredentialsManager
+import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
+import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
+import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
+import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInWithGoogleUseCase
 import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreen
 import ru.heatrk.languageapp.auth.impl.ui.login.LoginViewModel
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
@@ -84,6 +89,14 @@ class OnboardingTest {
                                     signIn = SignInUseCase(
                                         repository = createAuthRepository()
                                     ),
+                                    signInWithGoogle = SignInWithGoogleUseCase(
+                                        repository = createAuthRepository()
+                                    ),
+                                    credentialManager = AuthGoogleCredentialsManager(
+                                        dispatcher = StandardTestDispatcher(),
+                                        applicationContext = activity
+                                    ),
+                                    authGoogleNonceProvider = createAuthGoogleNonceProvider(),
                                     router = composeRouter
                                 )
                             )
@@ -238,6 +251,11 @@ class OnboardingTest {
 
     private fun createAuthRepository() = object : AuthRepository {
         override suspend fun signIn(email: String, password: String) = Unit
+        override suspend fun signInWithGoogle(idToken: String, rawNonce: String) = Unit
+    }
+
+    private fun createAuthGoogleNonceProvider() = object : AuthGoogleNonceProvider {
+        override suspend fun provideNonce() = AuthGoogleNonce("", "")
     }
 
     companion object {

@@ -33,28 +33,36 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.heatrk.languageapp.auth.api.ui.navigation.LOGIN_SCREEN_TEST_TAG
+import ru.heatrk.languageapp.auth.impl.BuildConfig
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.di.AuthComponent
+import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
 import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreenContract.Intent
-import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreenContract.State
 import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreenContract.SideEffect
+import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreenContract.State
+import ru.heatrk.languageapp.auth.impl.ui.utils.isFatal
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.core.design.composables.AppBarState
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
-import ru.heatrk.languageapp.core.design.composables.button.AppButton
-import ru.heatrk.languageapp.core.design.composables.button.AppButtonState
 import ru.heatrk.languageapp.core.design.composables.AppLinkedText
 import ru.heatrk.languageapp.core.design.composables.AppLinkedTextUnit
 import ru.heatrk.languageapp.core.design.composables.AppPasswordTextField
 import ru.heatrk.languageapp.core.design.composables.AppScaffold
 import ru.heatrk.languageapp.core.design.composables.AppTextButton
 import ru.heatrk.languageapp.core.design.composables.AppTextField
+import ru.heatrk.languageapp.core.design.composables.button.AppButton
+import ru.heatrk.languageapp.core.design.composables.button.AppButtonState
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 
 @Composable
@@ -69,7 +77,8 @@ fun LoginScreen(
 
     LoginScreenSideEffects(
         sideEffects = sideEffects,
-        snackbarHostState = snackbarHostState
+        snackbarHostState = snackbarHostState,
+        onIntent = viewModel::processIntent
     )
 
     LoginScreen(
@@ -277,6 +286,7 @@ private fun LoginLinkedText(
 private fun LoginScreenSideEffects(
     sideEffects: Flow<SideEffect>,
     snackbarHostState: SnackbarHostState,
+    onIntent: (Intent) -> Unit,
 ) {
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -296,6 +306,15 @@ private fun LoginScreenSideEffects(
                     is SideEffect.CloseKeyboard -> {
                         keyboardController?.hide()
                     }
+
+                    is SideEffect.RequestGoogleCredentials -> {
+                        requestGoogleCredentials(
+                            context = context,
+                            credentialManager = sideEffect.credentialManager,
+                            nonce = sideEffect.nonce,
+                            onIntent = onIntent,
+                        )
+                    }
                 }
             }
             .launchIn(this)
@@ -311,6 +330,44 @@ private suspend fun handleMessageSideEffect(
         ?: return
 
     snackbarHostState.showSnackbar(message)
+}
+
+private suspend fun requestGoogleCredentials(
+    context: Context,
+    nonce: AuthGoogleNonce,
+    credentialManager: CredentialManager,
+    onIntent: (Intent) -> Unit,
+) {
+    try {
+        val googleIdOption = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(false)
+            .setServerClientId(BuildConfig.GOOGLE_SERVER_CLIENT_ID)
+            .setNonce(nonce.encoded)
+            .build()
+
+        val credentialRequest = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
+
+        val credentialRequestResponse = credentialManager.getCredential(
+            context = context,
+            request = credentialRequest
+        )
+
+        val googleIdTokenCredential = GoogleIdTokenCredential
+            .createFrom(credentialRequestResponse.credential.data)
+
+        val googleIdToken = googleIdTokenCredential.idToken
+
+        onIntent(Intent.OnGoogleCredentialsReceived(
+            rawNonce = nonce.raw,
+            idToken = googleIdToken
+        ))
+    } catch (e: GetCredentialException) {
+        if (e.isFatal()) {
+            onIntent(Intent.OnGoogleCredentialsReceiveFailed)
+        }
+    }
 }
 
 private fun State.Authorizing.toButtonState() = when (this) {

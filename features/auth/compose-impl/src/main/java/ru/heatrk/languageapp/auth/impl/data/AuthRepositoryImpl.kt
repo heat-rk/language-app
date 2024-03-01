@@ -2,7 +2,9 @@ package ru.heatrk.languageapp.auth.impl.data
 
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.gotrue.auth
+import io.github.jan.supabase.gotrue.providers.Google
 import io.github.jan.supabase.gotrue.providers.builtin.Email
+import io.github.jan.supabase.gotrue.providers.builtin.IDToken
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
@@ -20,4 +22,37 @@ class AuthRepositoryImpl(
             this.password = password
         }
     }
+
+    override suspend fun signInWithGoogle(
+        idToken: String,
+        rawNonce: String,
+    ) = withContext(supabaseDispatcher) {
+        supabaseClient.auth.signInWith(IDToken) {
+            this.provider = Google
+            this.idToken = idToken
+            this.nonce = rawNonce
+        }
+    }
+
+    /*
+    val googleIdOption = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(false)
+            .setServerClientId(BuildConfig.GOOGLE_SERVER_CLIENT_ID)
+            .setNonce(nonce.encoded)
+            .build()
+
+        val credentialRequest = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
+
+        val credentialRequestResponse = credentialManager.getCredential(
+            context = applicationContext,
+            request = credentialRequest
+        )
+
+        val googleIdTokenCredential = GoogleIdTokenCredential
+            .createFrom(credentialRequestResponse.credential.data)
+
+        val googleIdToken = googleIdTokenCredential.idToken
+     */
 }

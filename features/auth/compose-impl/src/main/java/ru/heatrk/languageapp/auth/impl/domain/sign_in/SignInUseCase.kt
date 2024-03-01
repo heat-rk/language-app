@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.domain
+package ru.heatrk.languageapp.auth.impl.domain.sign_in
 
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 

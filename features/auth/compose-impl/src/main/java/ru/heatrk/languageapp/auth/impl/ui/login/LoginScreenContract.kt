@@ -1,5 +1,7 @@
 package ru.heatrk.languageapp.auth.impl.ui.login
 
+import androidx.credentials.CredentialManager
+import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
 import ru.heatrk.languageapp.common.utils.StringResource
 
 object LoginScreenContract {
@@ -19,16 +21,27 @@ object LoginScreenContract {
     sealed interface Intent {
         data class OnEmailTextChanged(val text: String) : Intent
         data class OnPasswordTextChanged(val text: String) : Intent
+        data class OnGoogleCredentialsReceived(
+            val rawNonce: String,
+            val idToken: String,
+        ) : Intent
 
         data object OnPasswordVisibilityToggleClick : Intent
         data object OnForgotPasswordButtonClick : Intent
         data object OnLoginButtonClick : Intent
         data object OnSignUpButtonClick : Intent
         data object OnGoogleSignInButtonClick : Intent
+        data object OnGoogleCredentialsReceiveFailed : Intent
     }
 
     sealed interface SideEffect {
         data class Message(val text: StringResource) : SideEffect
+
+        data class RequestGoogleCredentials(
+            val nonce: AuthGoogleNonce,
+            val credentialManager: CredentialManager,
+        ) : SideEffect
+
         data object CloseKeyboard : SideEffect
     }
 }

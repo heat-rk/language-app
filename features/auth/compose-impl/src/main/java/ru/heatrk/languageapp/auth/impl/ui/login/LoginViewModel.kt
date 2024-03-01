@@ -11,8 +11,11 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import ru.heatrk.languageapp.auth.impl.R
-import ru.heatrk.languageapp.auth.impl.domain.InvalidSignInFieldsValuesException
-import ru.heatrk.languageapp.auth.impl.domain.SignInUseCase
+import ru.heatrk.languageapp.auth.impl.data.google.AuthGoogleCredentialsManager
+import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
+import ru.heatrk.languageapp.auth.impl.domain.sign_in.InvalidSignInFieldsValuesException
+import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
+import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInWithGoogleUseCase
 import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreenContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreenContract.SideEffect
 import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreenContract.State
@@ -26,6 +29,9 @@ typealias IntentBody = SimpleSyntax<State, SideEffect>
 
 class LoginViewModel(
     private val signIn: SignInUseCase,
+    private val signInWithGoogle: SignInWithGoogleUseCase,
+    private val authGoogleNonceProvider: AuthGoogleNonceProvider,
+    private val credentialManager: AuthGoogleCredentialsManager,
     private val router: Router,
 ) : ViewModel(), ContainerHost<State, SideEffect> {
     override val container = container<State, SideEffect>(
@@ -34,13 +40,36 @@ class LoginViewModel(
 
     fun processIntent(intent: Intent) = intent {
         when (intent) {
-            is Intent.OnEmailTextChanged -> onEmailTextChanged(intent.text)
-            is Intent.OnPasswordTextChanged -> onPasswordTextChanged(intent.text)
-            Intent.OnForgotPasswordButtonClick -> onForgotPasswordButtonClick()
-            Intent.OnGoogleSignInButtonClick -> onGoogleSignInButtonClick()
-            Intent.OnLoginButtonClick -> onLoginButtonClick()
-            Intent.OnPasswordVisibilityToggleClick -> onPasswordVisibilityToggleClick()
-            Intent.OnSignUpButtonClick -> onSignUpButtonClick()
+            is Intent.OnEmailTextChanged -> {
+                onEmailTextChanged(intent.text)
+            }
+            is Intent.OnPasswordTextChanged -> {
+                onPasswordTextChanged(intent.text)
+            }
+            is Intent.OnGoogleCredentialsReceived -> {
+                onGoogleCredentialsReceived(
+                    rawNonce = intent.rawNonce,
+                    idToken = intent.idToken
+                )
+            }
+            Intent.OnForgotPasswordButtonClick -> {
+                onForgotPasswordButtonClick()
+            }
+            Intent.OnGoogleSignInButtonClick -> {
+                onGoogleSignInButtonClick()
+            }
+            Intent.OnLoginButtonClick -> {
+                onLoginButtonClick()
+            }
+            Intent.OnPasswordVisibilityToggleClick -> {
+                onPasswordVisibilityToggleClick()
+            }
+            Intent.OnSignUpButtonClick -> {
+                onSignUpButtonClick()
+            }
+            Intent.OnGoogleCredentialsReceiveFailed -> {
+                onGoogleCredentialsReceiveFailed()
+            }
         }
 
         processKeyboardClose(intent)
@@ -81,7 +110,48 @@ class LoginViewModel(
     }
 
     private suspend fun IntentBody.onGoogleSignInButtonClick() {
-        // TODO
+        if (credentialManager.credentialManager != null) {
+            postSideEffect(SideEffect.RequestGoogleCredentials(
+                credentialManager = credentialManager.credentialManager,
+                nonce = authGoogleNonceProvider.provideNonce()
+            ))
+        } else {
+            postSideEffect(SideEffect.Message(strRes(R.string.error_smth_went_wrong)))
+        }
+    }
+
+    private suspend fun IntentBody.onGoogleCredentialsReceived(
+        rawNonce: String,
+        idToken: String,
+    ) {
+        viewModelScope.launchSafe(
+            block = {
+                reduce { state.copy(authorizingState = State.Authorizing.InProgress) }
+
+                signInWithGoogle(
+                    rawNonce = rawNonce,
+                    idToken = idToken,
+                )
+
+                reduce { state.copy(authorizingState = State.Authorizing.Success) }
+
+                delay(AUTHORIZING_STATE_DELAY_MILLIS)
+
+                router.navigate(
+                    route = MainScreenRoute,
+                    options = RoutingOptions(
+                        shouldBePopUp = true
+                    )
+                )
+            },
+            onError = {
+                postSideEffect(SideEffect.Message(strRes(R.string.error_smth_went_wrong)))
+            }
+        )
+    }
+
+    private suspend fun IntentBody.onGoogleCredentialsReceiveFailed() {
+        postSideEffect(SideEffect.Message(strRes(R.string.error_smth_went_wrong)))
     }
 
     private suspend fun IntentBody.onLoginButtonClick() {
