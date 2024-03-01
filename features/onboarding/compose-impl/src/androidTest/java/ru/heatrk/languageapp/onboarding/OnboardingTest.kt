@@ -24,15 +24,15 @@ import ru.heatrk.languageapp.common.utils.testTag
 import ru.heatrk.languageapp.common.utils.vectorRes
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.navigation.compose_test.TestComposeRouter
-import ru.heatrk.languageapp.auth.api.ui.navigation.LOGIN_SCREEN_TEST_TAG
-import ru.heatrk.languageapp.auth.api.ui.navigation.LoginScreenRoute
+import ru.heatrk.languageapp.auth.api.ui.navigation.SIGN_IN_SCREEN_TEST_TAG
+import ru.heatrk.languageapp.auth.api.ui.navigation.SignInScreenRoute
 import ru.heatrk.languageapp.auth.impl.data.google.AuthGoogleCredentialsManager
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInWithGoogleUseCase
-import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreen
-import ru.heatrk.languageapp.auth.impl.ui.login.LoginViewModel
+import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreen
+import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInViewModel
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
 import ru.heatrk.languageapp.onboarding.api.domain.models.OnboardingUnit
 import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_TEST_TAG
@@ -53,7 +53,7 @@ class OnboardingTest {
     private val composeRouter = TestComposeRouter(
         onNavigate = { route, _ ->
             when (route) {
-                is LoginScreenRoute -> navController.navigate(LOGIN_SCREEN_DESTINATION)
+                is SignInScreenRoute -> navController.navigate(SIGN_IN_SCREEN_DESTINATION)
                 else -> Unit
             }
         },
@@ -83,9 +83,9 @@ class OnboardingTest {
                             )
                         }
 
-                        composable(LOGIN_SCREEN_DESTINATION) {
-                            LoginScreen(
-                                viewModel = LoginViewModel(
+                        composable(SIGN_IN_SCREEN_DESTINATION) {
+                            SignInScreen(
+                                viewModel = SignInViewModel(
                                     signIn = SignInUseCase(
                                         repository = createAuthRepository()
                                     ),
@@ -195,7 +195,7 @@ class OnboardingTest {
     }
 
     @Test
-    fun `onboarding navigation to login test`() {
+    fun `onboarding navigation to sign in test`() {
         setup(
             onboardingRepository = createOnboardingRepository(
                 queue = listOf(
@@ -212,7 +212,7 @@ class OnboardingTest {
             .performClick()
 
         composeTestRule
-            .onNodeWithTag(LOGIN_SCREEN_TEST_TAG)
+            .onNodeWithTag(SIGN_IN_SCREEN_TEST_TAG)
             .assertIsDisplayed()
     }
 
@@ -238,7 +238,7 @@ class OnboardingTest {
         composeTestRule.waitUntilDoesNotExist(hasTestTag(ONBOARDING_SCREEN_TEST_TAG))
 
         composeTestRule
-            .onNodeWithTag(LOGIN_SCREEN_TEST_TAG)
+            .onNodeWithTag(SIGN_IN_SCREEN_TEST_TAG)
             .assertIsDisplayed()
     }
 
@@ -260,6 +260,6 @@ class OnboardingTest {
 
     companion object {
         private const val ONBOARDING_SCREEN_DESTINATION = "onboarding"
-        private const val LOGIN_SCREEN_DESTINATION = "login"
+        private const val SIGN_IN_SCREEN_DESTINATION = "sign_in"
     }
 }

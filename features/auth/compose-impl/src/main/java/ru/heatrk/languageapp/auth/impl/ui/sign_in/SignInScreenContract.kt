@@ -1,10 +1,10 @@
-package ru.heatrk.languageapp.auth.impl.ui.login
+package ru.heatrk.languageapp.auth.impl.ui.sign_in
 
 import androidx.credentials.CredentialManager
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
 import ru.heatrk.languageapp.common.utils.StringResource
 
-object LoginScreenContract {
+object SignInScreenContract {
     data class State(
         val email: String = "",
         val emailErrorMessage: StringResource? = null,

@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.ui.login
+package ru.heatrk.languageapp.auth.impl.ui.sign_in
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,9 +16,9 @@ import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.InvalidSignInFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInWithGoogleUseCase
-import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreenContract.Intent
-import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreenContract.SideEffect
-import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreenContract.State
+import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.Intent
+import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.SideEffect
+import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.State
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.navigation.api.Router
@@ -27,7 +27,7 @@ import ru.heatrk.languageapp.main.api.MainScreenRoute
 
 typealias IntentBody = SimpleSyntax<State, SideEffect>
 
-class LoginViewModel(
+class SignInViewModel(
     private val signIn: SignInUseCase,
     private val signInWithGoogle: SignInWithGoogleUseCase,
     private val authGoogleNonceProvider: AuthGoogleNonceProvider,

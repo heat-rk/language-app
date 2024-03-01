@@ -2,6 +2,6 @@ package ru.heatrk.languageapp.auth.api.ui.navigation
 
 import ru.heatrk.languageapp.core.navigation.api.Route
 
-object LoginScreenRoute : Route
+object SignInScreenRoute : Route
 
-const val LOGIN_SCREEN_TEST_TAG = "Login"
+const val SIGN_IN_SCREEN_TEST_TAG = "sign_in"

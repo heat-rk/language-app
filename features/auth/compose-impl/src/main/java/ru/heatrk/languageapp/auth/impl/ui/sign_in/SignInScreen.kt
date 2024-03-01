@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.ui.login
+package ru.heatrk.languageapp.auth.impl.ui.sign_in
 
 import android.content.Context
 import androidx.compose.foundation.Image
@@ -43,14 +43,14 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import ru.heatrk.languageapp.auth.api.ui.navigation.LOGIN_SCREEN_TEST_TAG
+import ru.heatrk.languageapp.auth.api.ui.navigation.SIGN_IN_SCREEN_TEST_TAG
 import ru.heatrk.languageapp.auth.impl.BuildConfig
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.di.AuthComponent
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
-import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreenContract.Intent
-import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreenContract.SideEffect
-import ru.heatrk.languageapp.auth.impl.ui.login.LoginScreenContract.State
+import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.Intent
+import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.SideEffect
+import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.State
 import ru.heatrk.languageapp.auth.impl.ui.utils.isFatal
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.core.design.composables.AppBarState
@@ -66,22 +66,22 @@ import ru.heatrk.languageapp.core.design.composables.button.AppButtonState
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 
 @Composable
-fun LoginScreen(
-    viewModel: LoginViewModel = viewModel(
-        factory = AuthComponent.loginViewModelFactory
+fun SignInScreen(
+    viewModel: SignInViewModel = viewModel(
+        factory = AuthComponent.signInViewModelFactory
     ),
 ) {
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
     val sideEffects = viewModel.container.sideEffectFlow
     val snackbarHostState = remember { SnackbarHostState() }
 
-    LoginScreenSideEffects(
+    SignInScreenSideEffects(
         sideEffects = sideEffects,
         snackbarHostState = snackbarHostState,
         onIntent = viewModel::processIntent
     )
 
-    LoginScreen(
+    SignInScreen(
         state = state,
         snackbarHostState = snackbarHostState,
         onIntent = viewModel::processIntent
@@ -89,7 +89,7 @@ fun LoginScreen(
 }
 
 @Composable
-private fun LoginScreen(
+private fun SignInScreen(
     state: State,
     snackbarHostState: SnackbarHostState,
     onIntent: (Intent) -> Unit,
@@ -102,13 +102,13 @@ private fun LoginScreen(
         ),
         contentPadding = PaddingValues(24.dp),
         modifier = Modifier
-            .testTag(LOGIN_SCREEN_TEST_TAG)
+            .testTag(SIGN_IN_SCREEN_TEST_TAG)
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
             Image(
-                painter = painterResource(R.drawable.login_learn_at_home_logo),
+                painter = painterResource(R.drawable.sign_in_learn_at_home_logo),
                 contentDescription = null,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally),
@@ -117,7 +117,7 @@ private fun LoginScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = stringResource(R.string.login_logo_title),
+                text = stringResource(R.string.sign_in_logo_title),
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Medium,
                 style = AppTheme.typography.titleLarge,
@@ -128,7 +128,7 @@ private fun LoginScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            LoginEmailPasswordBlock(
+            SignInEmailPasswordBlock(
                 email = state.email,
                 password = state.password,
                 isInputEnabled = state.authorizingState == State.Authorizing.None,
@@ -140,7 +140,7 @@ private fun LoginScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            LoginButtonsBlock(
+            SignInButtonsBlock(
                 loginButtonState = state.authorizingState.toButtonState(),
                 isLinkedTextEnabled = state.authorizingState == State.Authorizing.None,
                 onIntent = onIntent,
@@ -150,7 +150,7 @@ private fun LoginScreen(
 }
 
 @Composable
-private fun LoginEmailPasswordBlock(
+private fun SignInEmailPasswordBlock(
     email: String,
     password: String,
     isPasswordVisible: Boolean,
@@ -162,8 +162,8 @@ private fun LoginEmailPasswordBlock(
     AppTextField(
         value = email,
         isEnabled = isInputEnabled,
-        placeholder = stringResource(R.string.login_email_hint),
-        label = stringResource(R.string.login_email),
+        placeholder = stringResource(R.string.sign_in_email_hint),
+        label = stringResource(R.string.sign_in_email),
         singleLine = true,
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Next
@@ -180,7 +180,7 @@ private fun LoginEmailPasswordBlock(
         value = password,
         isEnabled = isInputEnabled,
         isPasswordVisible = isPasswordVisible,
-        label = stringResource(R.string.login_password),
+        label = stringResource(R.string.sign_in_password),
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Done
         ),
@@ -195,7 +195,7 @@ private fun LoginEmailPasswordBlock(
     )
 
     AppTextButton(
-        text = stringResource(R.string.login_forgot_password),
+        text = stringResource(R.string.sign_in_forgot_password),
         isEnabled = isInputEnabled,
         textColor = AppTheme.colors.error,
         contentPadding = PaddingValues(0.dp),
@@ -206,7 +206,7 @@ private fun LoginEmailPasswordBlock(
 }
 
 @Composable
-private fun ColumnScope.LoginButtonsBlock(
+private fun ColumnScope.SignInButtonsBlock(
     loginButtonState: AppButtonState,
     isLinkedTextEnabled: Boolean,
     onIntent: (Intent) -> Unit,
@@ -225,10 +225,10 @@ private fun ColumnScope.LoginButtonsBlock(
         onClick = { onIntent(Intent.OnSignUpButtonClick) },
         units = listOf(
             AppLinkedTextUnit(
-                text = stringResource(R.string.login_not_you_member_before_annotation),
+                text = stringResource(R.string.sign_in_not_you_member_before_annotation),
             ),
             AppLinkedTextUnit(
-                text = stringResource(R.string.login_not_you_member_annotation),
+                text = stringResource(R.string.sign_in_not_you_member_annotation),
                 linkTag = "Signup"
             )
         ),
@@ -243,14 +243,14 @@ private fun ColumnScope.LoginButtonsBlock(
         onClick = { onIntent(Intent.OnGoogleSignInButtonClick) },
         units = listOf(
             AppLinkedTextUnit(
-                text = stringResource(R.string.login_use_google_before_annotation),
+                text = stringResource(R.string.sign_in_use_google_before_annotation),
             ),
             AppLinkedTextUnit(
-                text = stringResource(R.string.login_use_google_annotation),
+                text = stringResource(R.string.sign_in_use_google_annotation),
                 linkTag = "Signup"
             ),
             AppLinkedTextUnit(
-                text = stringResource(R.string.login_use_google_after_annotation),
+                text = stringResource(R.string.sign_in_use_google_after_annotation),
             )
         ),
         isEnabled = isLinkedTextEnabled,
@@ -283,7 +283,7 @@ private fun LoginLinkedText(
 }
 
 @Composable
-private fun LoginScreenSideEffects(
+private fun SignInScreenSideEffects(
     sideEffects: Flow<SideEffect>,
     snackbarHostState: SnackbarHostState,
     onIntent: (Intent) -> Unit,
@@ -381,7 +381,7 @@ private fun State.Authorizing.toButtonState() = when (this) {
 @Preview(showBackground = true)
 private fun LoginScreenPreview() {
     AppTheme {
-        LoginScreen(
+        SignInScreen(
             state = State(),
             snackbarHostState = SnackbarHostState(),
             onIntent = {}

@@ -55,7 +55,7 @@ fun AppPasswordTextField(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_password_visibility),
-                    contentDescription = stringResource(R.string.login_toggle_password_visibility)
+                    contentDescription = stringResource(R.string.toggle_password_visibility)
                 )
             }
         },

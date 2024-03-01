@@ -3,17 +3,17 @@
     <string name="google">Google</string>
 
     <string name="login">Login</string>
-    <string name="login_success">Successfully authorized!</string>
-    <string name="login_logo_title">For free, join now and start learning</string>
-    <string name="login_email">Email Address</string>
-    <string name="login_email_hint">Email</string>
-    <string name="login_password">Password</string>
-    <string name="login_forgot_password">Forgot Password</string>
-    <string name="login_not_you_member_before_annotation">Not you member?</string>
-    <string name="login_not_you_member_annotation">Signup</string>
-    <string name="login_use_google_before_annotation">You can use</string>
-    <string name="login_use_google_annotation">Google</string>
-    <string name="login_use_google_after_annotation">for sign in</string>
+    <string name="sign_in_success">Successfully authorized!</string>
+    <string name="sign_in_logo_title">For free, join now and start learning</string>
+    <string name="sign_in_email">Email Address</string>
+    <string name="sign_in_email_hint">Email</string>
+    <string name="sign_in_password">Password</string>
+    <string name="sign_in_forgot_password">Forgot Password</string>
+    <string name="sign_in_not_you_member_before_annotation">Not you member?</string>
+    <string name="sign_in_not_you_member_annotation">Signup</string>
+    <string name="sign_in_use_google_before_annotation">You can use</string>
+    <string name="sign_in_use_google_annotation">Google</string>
+    <string name="sign_in_use_google_after_annotation">for sign in</string>
 
     <string name="signup">Signup</string>
 
