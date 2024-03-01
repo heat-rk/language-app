@@ -73,13 +73,18 @@ fun AppButton(
         buttonShape.topEnd.toPx(Size.Unspecified, currentDensity)
     }
 
-    AppButtonBlurPathEffect(
-        blurPath = blurPath,
-        buttonWidth = buttonWidth,
-        buttonBlurSize = buttonBlurSize,
-        buttonTopStartRadius = buttonTopStartRadius,
-        buttonTopEndRadius = buttonTopEndRadius,
-    )
+    LaunchedEffect(
+        blurPath, buttonWidth, buttonBlurSize,
+        buttonTopStartRadius, buttonTopEndRadius
+    ) {
+        calculateBlurPath(
+            blurPath = blurPath,
+            buttonWidth = buttonWidth,
+            buttonBlurSize = buttonBlurSize,
+            buttonTopStartRadius = buttonTopStartRadius,
+            buttonTopEndRadius = buttonTopEndRadius,
+        )
+    }
 
     FadeInAnimatedContent(
         targetState = buttonState,
@@ -101,35 +106,31 @@ fun AppButton(
     }
 }
 
-@Composable
-private fun AppButtonBlurPathEffect(
+private fun calculateBlurPath(
     blurPath: Path,
     buttonWidth: Float,
     buttonBlurSize: Float,
     buttonTopStartRadius: Float,
     buttonTopEndRadius: Float,
 ) {
-    LaunchedEffect(
-        blurPath, buttonWidth, buttonBlurSize,
-        buttonTopStartRadius, buttonTopEndRadius
-    ) {
-        with(blurPath) {
-            moveTo(x = 0f, y = buttonTopStartRadius)
+    with(blurPath) {
+        reset()
 
-            cubicTo(
-                x1 = buttonTopStartRadius * 0.1f, y1 = buttonBlurSize + buttonTopStartRadius * 0.3f,
-                x2 = buttonTopStartRadius * 0.3f, y2 = buttonBlurSize + buttonTopStartRadius * 0.1f,
-                x3 = buttonTopStartRadius, y3 = buttonBlurSize,
-            )
+        moveTo(x = 0f, y = buttonTopStartRadius)
 
-            lineTo(x = buttonWidth - buttonTopEndRadius, y = buttonBlurSize)
+        cubicTo(
+            x1 = buttonTopStartRadius * 0.1f, y1 = buttonBlurSize + buttonTopStartRadius * 0.3f,
+            x2 = buttonTopStartRadius * 0.3f, y2 = buttonBlurSize + buttonTopStartRadius * 0.1f,
+            x3 = buttonTopStartRadius, y3 = buttonBlurSize,
+        )
 
-            cubicTo(
-                x1 = buttonWidth - buttonTopEndRadius * 0.3f, y1 = buttonBlurSize + buttonTopEndRadius * 0.1f,
-                x2 = buttonWidth - buttonTopEndRadius * 0.1f, y2 = buttonBlurSize + buttonTopEndRadius * 0.3f,
-                x3 = buttonWidth, y3 = buttonBlurSize + buttonTopEndRadius,
-            )
-        }
+        lineTo(x = buttonWidth - buttonTopEndRadius, y = buttonBlurSize)
+
+        cubicTo(
+            x1 = buttonWidth - buttonTopEndRadius * 0.3f, y1 = buttonBlurSize + buttonTopEndRadius * 0.1f,
+            x2 = buttonWidth - buttonTopEndRadius * 0.1f, y2 = buttonBlurSize + buttonTopEndRadius * 0.3f,
+            x3 = buttonWidth, y3 = buttonBlurSize + buttonTopEndRadius,
+        )
     }
 }
 

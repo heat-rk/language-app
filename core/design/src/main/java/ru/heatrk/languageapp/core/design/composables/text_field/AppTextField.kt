@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.core.design.composables
+package ru.heatrk.languageapp.core.design.composables.text_field
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,11 +12,15 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.heatrk.languageapp.core.design.styles.AppTheme
@@ -42,7 +46,20 @@ fun AppTextField(
         modifier = modifier,
     ) {
         Text(
-            text = label,
+            text = buildAnnotatedString {
+                append(label)
+
+                withStyle(
+                    SpanStyle(
+                        color = AppTheme.colors.error
+                    )
+                ) {
+                    if (!errorMessage.isNullOrBlank()) {
+                        append(" ")
+                        append(errorMessage)
+                    }
+                }
+            },
             style = AppTheme.typography.bodyMedium
         )
 
@@ -52,13 +69,7 @@ fun AppTextField(
             value = value,
             onValueChange = onValueChange,
             enabled = isEnabled,
-            isError = errorMessage != null,
-            supportingText = {
-                Text(
-                    text = errorMessage ?: "",
-                    color = AppTheme.colors.error
-                )
-            },
+            isError = !errorMessage.isNullOrBlank(),
             shape = AppTheme.shapes.medium,
             visualTransformation = visualTransformation,
             singleLine = singleLine,
@@ -67,15 +78,9 @@ fun AppTextField(
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
             trailingIcon = trailingIcon,
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = AppTheme.colors.inputFieldBackground,
-                focusedContainerColor = AppTheme.colors.inputFieldBackground,
-                errorContainerColor = AppTheme.colors.inputFieldBackground,
-                disabledContainerColor = AppTheme.colors.inputFieldBackground,
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent,
-                errorIndicatorColor = Color.Transparent,
+            colors = textFieldColors(
+                isError = !errorMessage.isNullOrBlank(),
+                isEnabled = isEnabled
             ),
             placeholder = {
                 Text(
@@ -91,6 +96,48 @@ fun AppTextField(
 }
 
 @Composable
+private fun textFieldColors(
+    isError: Boolean,
+    isEnabled: Boolean,
+): TextFieldColors {
+    val backgroundColor = when {
+        isError -> {
+            AppTheme.colors.inputFieldErrorBackground
+        }
+        else -> {
+            AppTheme.colors.inputFieldBackground
+        }
+    }
+
+    val textColor = when {
+        !isEnabled -> {
+            AppTheme.colors.onBackground
+                .copy(alpha = DISABLED_ALPHA)
+        }
+        else -> {
+            AppTheme.colors.onBackground
+        }
+    }
+    
+    return TextFieldDefaults.colors(
+        focusedTextColor = textColor,
+        unfocusedTextColor = textColor,
+        disabledTextColor = textColor,
+        errorTextColor = textColor,
+        unfocusedContainerColor = backgroundColor,
+        focusedContainerColor = backgroundColor,
+        errorContainerColor = backgroundColor,
+        disabledContainerColor = backgroundColor,
+        unfocusedIndicatorColor = Color.Transparent,
+        focusedIndicatorColor = Color.Transparent,
+        disabledIndicatorColor = Color.Transparent,
+        errorIndicatorColor = Color.Transparent,
+    )
+}
+
+private const val DISABLED_ALPHA = 0.2f
+
+@Composable
 @Preview(showBackground = true)
 private fun AppTextFieldPreview() {
     AppTheme {
@@ -99,6 +146,7 @@ private fun AppTextFieldPreview() {
                 .wrapContentSize()
         ) {
             AppTextField(
+                isEnabled = false,
                 value = "",
                 placeholder = "Надо что-то ввести",
                 errorMessage = "Ошибка",

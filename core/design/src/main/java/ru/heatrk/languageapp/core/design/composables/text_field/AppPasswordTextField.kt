@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.core.design.composables
+package ru.heatrk.languageapp.core.design.composables.text_field
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -55,6 +55,7 @@ fun AppPasswordTextField(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_password_visibility),
+                    tint = AppTheme.colors.inputFieldHint,
                     contentDescription = stringResource(R.string.toggle_password_visibility)
                 )
             }

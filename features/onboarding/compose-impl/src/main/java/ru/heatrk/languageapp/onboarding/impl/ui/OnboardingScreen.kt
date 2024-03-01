@@ -38,7 +38,7 @@ import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.common.utils.testTag
 import ru.heatrk.languageapp.common.utils.vectorRes
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
-import ru.heatrk.languageapp.core.design.composables.AppTextButton
+import ru.heatrk.languageapp.core.design.composables.button.AppTextButton
 import ru.heatrk.languageapp.core.design.composables.DotsProgressIndicator
 import ru.heatrk.languageapp.core.design.composables.animation.FadeInAnimatedContent
 import ru.heatrk.languageapp.core.design.composables.animation.RightToLeftAnimatedContent
@@ -255,6 +255,7 @@ private fun OnboardingPrimaryButton(
 ) {
     FadeInAnimatedContent(
         targetState = progress,
+        fadeOutTargetAlpha = 1f,
         label = "Onboarding:Button",
     ) { progress ->
         AppButton(

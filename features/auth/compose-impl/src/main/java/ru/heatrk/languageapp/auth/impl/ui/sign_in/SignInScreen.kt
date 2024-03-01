@@ -1,6 +1,7 @@
 package ru.heatrk.languageapp.auth.impl.ui.sign_in
 
 import android.content.Context
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -57,10 +58,10 @@ import ru.heatrk.languageapp.core.design.composables.AppBarState
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.AppLinkedText
 import ru.heatrk.languageapp.core.design.composables.AppLinkedTextUnit
-import ru.heatrk.languageapp.core.design.composables.AppPasswordTextField
+import ru.heatrk.languageapp.core.design.composables.text_field.AppPasswordTextField
 import ru.heatrk.languageapp.core.design.composables.AppScaffold
-import ru.heatrk.languageapp.core.design.composables.AppTextButton
-import ru.heatrk.languageapp.core.design.composables.AppTextField
+import ru.heatrk.languageapp.core.design.composables.button.AppTextButton
+import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.AppButtonState
 import ru.heatrk.languageapp.core.design.styles.AppTheme
@@ -174,7 +175,7 @@ private fun SignInEmailPasswordBlock(
             .fillMaxWidth()
     )
 
-    Spacer(modifier = Modifier.height(8.dp))
+    Spacer(modifier = Modifier.height(24.dp))
 
     AppPasswordTextField(
         value = password,
@@ -193,6 +194,8 @@ private fun SignInEmailPasswordBlock(
         modifier = Modifier
             .fillMaxWidth()
     )
+
+    Spacer(modifier = Modifier.height(4.dp))
 
     AppTextButton(
         text = stringResource(R.string.sign_in_forgot_password),
@@ -378,7 +381,6 @@ private fun State.Authorizing.toButtonState() = when (this) {
 }
 
 @Composable
-@Preview(showBackground = true)
 private fun LoginScreenPreview() {
     AppTheme {
         SignInScreen(
@@ -387,4 +389,21 @@ private fun LoginScreenPreview() {
             onIntent = {}
         )
     }
+}
+
+@Composable
+@Preview(
+    showBackground = true
+)
+private fun LoginScreenPreviewLight() {
+    LoginScreenPreview()
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+private fun LoginScreenPreviewNight() {
+    LoginScreenPreview()
 }
