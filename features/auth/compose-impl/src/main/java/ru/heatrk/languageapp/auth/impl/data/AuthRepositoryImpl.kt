@@ -33,26 +33,4 @@ class AuthRepositoryImpl(
             this.nonce = rawNonce
         }
     }
-
-    /*
-    val googleIdOption = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(false)
-            .setServerClientId(BuildConfig.GOOGLE_SERVER_CLIENT_ID)
-            .setNonce(nonce.encoded)
-            .build()
-
-        val credentialRequest = GetCredentialRequest.Builder()
-            .addCredentialOption(googleIdOption)
-            .build()
-
-        val credentialRequestResponse = credentialManager.getCredential(
-            context = applicationContext,
-            request = credentialRequest
-        )
-
-        val googleIdTokenCredential = GoogleIdTokenCredential
-            .createFrom(credentialRequestResponse.credential.data)
-
-        val googleIdToken = googleIdTokenCredential.idToken
-     */
 }
