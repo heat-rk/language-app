@@ -4,7 +4,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 import ru.heatrk.languageapp.auth.impl.data.AuthRepositoryImpl
-import ru.heatrk.languageapp.auth.impl.data.google.AuthGoogleCredentialsManager
+import ru.heatrk.languageapp.auth.impl.data.google.AuthGoogleNonceProviderImpl
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInWithGoogleUseCase
@@ -21,15 +21,10 @@ fun Scope.includeAuthScope() {
     _authScope = scope("auth_scope") {
         dependsOn(this@includeAuthScope)
 
-        singleton<AuthGoogleCredentialsManager> {
-            AuthGoogleCredentialsManager(
-                dispatcher = get<DefaultCoroutineDispatcher>().instance,
-                applicationContext = get()
-            )
-        }
-
         reusable<AuthGoogleNonceProvider> {
-            get<AuthGoogleCredentialsManager>()
+            AuthGoogleNonceProviderImpl(
+                dispatcher = get<DefaultCoroutineDispatcher>().instance,
+            )
         }
 
         reusable<AuthRepository> {
@@ -58,7 +53,6 @@ fun Scope.includeAuthScope() {
                         SignInViewModel(
                             signIn = get(),
                             signInWithGoogle = get(),
-                            credentialManager = get(),
                             authGoogleNonceProvider = get(),
                             router = get(),
                         )

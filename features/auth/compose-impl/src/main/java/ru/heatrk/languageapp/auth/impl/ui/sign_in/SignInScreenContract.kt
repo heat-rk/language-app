@@ -1,6 +1,5 @@
 package ru.heatrk.languageapp.auth.impl.ui.sign_in
 
-import androidx.credentials.CredentialManager
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
 import ru.heatrk.languageapp.common.utils.StringResource
 
@@ -37,10 +36,7 @@ object SignInScreenContract {
     sealed interface SideEffect {
         data class Message(val text: StringResource) : SideEffect
 
-        data class RequestGoogleCredentials(
-            val nonce: AuthGoogleNonce,
-            val credentialManager: CredentialManager,
-        ) : SideEffect
+        data class RequestGoogleCredentials(val nonce: AuthGoogleNonce) : SideEffect
 
         data object CloseKeyboard : SideEffect
     }

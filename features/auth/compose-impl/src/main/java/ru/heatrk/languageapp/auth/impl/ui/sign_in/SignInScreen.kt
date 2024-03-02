@@ -58,12 +58,12 @@ import ru.heatrk.languageapp.core.design.composables.AppBarState
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.AppLinkedText
 import ru.heatrk.languageapp.core.design.composables.AppLinkedTextUnit
-import ru.heatrk.languageapp.core.design.composables.text_field.AppPasswordTextField
 import ru.heatrk.languageapp.core.design.composables.AppScaffold
-import ru.heatrk.languageapp.core.design.composables.button.AppTextButton
-import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.AppButtonState
+import ru.heatrk.languageapp.core.design.composables.button.AppTextButton
+import ru.heatrk.languageapp.core.design.composables.text_field.AppPasswordTextField
+import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 
 @Composable
@@ -294,6 +294,10 @@ private fun SignInScreenSideEffects(
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
+    val credentialManager = remember(context.applicationContext) {
+        CredentialManager.create(context.applicationContext)
+    }
+
     LaunchedEffect(sideEffects, context) {
         sideEffects
             .onEach { sideEffect ->
@@ -313,7 +317,7 @@ private fun SignInScreenSideEffects(
                     is SideEffect.RequestGoogleCredentials -> {
                         requestGoogleCredentials(
                             context = context,
-                            credentialManager = sideEffect.credentialManager,
+                            credentialManager = credentialManager,
                             nonce = sideEffect.nonce,
                             onIntent = onIntent,
                         )

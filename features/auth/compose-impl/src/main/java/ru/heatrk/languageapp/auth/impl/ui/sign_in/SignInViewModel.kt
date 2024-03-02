@@ -11,7 +11,6 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import ru.heatrk.languageapp.auth.impl.R
-import ru.heatrk.languageapp.auth.impl.data.google.AuthGoogleCredentialsManager
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.InvalidSignInFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
@@ -31,7 +30,6 @@ class SignInViewModel(
     private val signIn: SignInUseCase,
     private val signInWithGoogle: SignInWithGoogleUseCase,
     private val authGoogleNonceProvider: AuthGoogleNonceProvider,
-    private val credentialManager: AuthGoogleCredentialsManager,
     private val router: Router,
 ) : ViewModel(), ContainerHost<State, SideEffect> {
     override val container = container<State, SideEffect>(
@@ -110,14 +108,9 @@ class SignInViewModel(
     }
 
     private suspend fun IntentBody.onGoogleSignInButtonClick() {
-        if (credentialManager.credentialManager != null) {
-            postSideEffect(SideEffect.RequestGoogleCredentials(
-                credentialManager = credentialManager.credentialManager,
-                nonce = authGoogleNonceProvider.provideNonce()
-            ))
-        } else {
-            postSideEffect(SideEffect.Message(strRes(R.string.error_smth_went_wrong)))
-        }
+        postSideEffect(SideEffect.RequestGoogleCredentials(
+            nonce = authGoogleNonceProvider.provideNonce()
+        ))
     }
 
     private suspend fun IntentBody.onGoogleCredentialsReceived(

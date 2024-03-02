@@ -16,23 +16,21 @@ import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.testing.TestNavHostController
-import kotlinx.coroutines.test.StandardTestDispatcher
 import org.junit.Rule
 import org.junit.Test
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
-import ru.heatrk.languageapp.common.utils.testTag
-import ru.heatrk.languageapp.common.utils.vectorRes
-import ru.heatrk.languageapp.core.design.styles.AppTheme
-import ru.heatrk.languageapp.core.navigation.compose_test.TestComposeRouter
 import ru.heatrk.languageapp.auth.api.ui.navigation.SIGN_IN_SCREEN_TEST_TAG
 import ru.heatrk.languageapp.auth.api.ui.navigation.SignInScreenRoute
-import ru.heatrk.languageapp.auth.impl.data.google.AuthGoogleCredentialsManager
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInWithGoogleUseCase
 import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreen
 import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInViewModel
+import ru.heatrk.languageapp.common.utils.testTag
+import ru.heatrk.languageapp.common.utils.vectorRes
+import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.navigation.compose_test.TestComposeRouter
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
 import ru.heatrk.languageapp.onboarding.api.domain.models.OnboardingUnit
 import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_TEST_TAG
@@ -91,10 +89,6 @@ class OnboardingTest {
                                     ),
                                     signInWithGoogle = SignInWithGoogleUseCase(
                                         repository = createAuthRepository()
-                                    ),
-                                    credentialManager = AuthGoogleCredentialsManager(
-                                        dispatcher = StandardTestDispatcher(),
-                                        applicationContext = activity
                                     ),
                                     authGoogleNonceProvider = createAuthGoogleNonceProvider(),
                                     router = composeRouter

@@ -1,7 +1,5 @@
 package ru.heatrk.languageapp.auth.impl.data.google
 
-import android.content.Context
-import androidx.credentials.CredentialManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
@@ -9,12 +7,9 @@ import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import java.security.MessageDigest
 import java.util.UUID
 
-class AuthGoogleCredentialsManager(
+class AuthGoogleNonceProviderImpl(
     private val dispatcher: CoroutineDispatcher,
-    applicationContext: Context,
 ) : AuthGoogleNonceProvider {
-
-    val credentialManager = CredentialManager.create(applicationContext)
 
     override suspend fun provideNonce() = withContext(dispatcher) {
         val rawNonce = UUID.randomUUID().toString()
