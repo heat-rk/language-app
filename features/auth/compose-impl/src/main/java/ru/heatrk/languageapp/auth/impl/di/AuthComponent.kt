@@ -6,4 +6,7 @@ import scout.Component
 object AuthComponent : Component(authScope) {
     val signInViewModelFactory: ViewModelProvider.Factory
         get() = get<SignInViewModelFactory>().instance
+
+    val signUpViewModelFactory: ViewModelProvider.Factory
+        get() = get<SignUpViewModelFactory>().instance
 }

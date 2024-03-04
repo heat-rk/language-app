@@ -20,6 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.di.AppComponent
@@ -37,13 +38,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            AppTheme { isDarkTheme ->
+            AppRootContainer { isDarkTheme ->
                 val viewModel: MainViewModel = viewModel(
                     factory = AppComponent.mainViewModelFactory
                 )
 
                 val isInitializationFinished by viewModel.isInitializationFinished.collectAsStateWithLifecycle()
+
                 val navController = rememberNavController()
+
                 val routingActionHandler = remember(navController) {
                     RoutingActionHandler(navController)
                 }

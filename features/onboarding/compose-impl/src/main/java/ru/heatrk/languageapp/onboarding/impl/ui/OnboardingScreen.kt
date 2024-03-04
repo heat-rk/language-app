@@ -37,18 +37,20 @@ import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.common.utils.testTag
 import ru.heatrk.languageapp.common.utils.vectorRes
-import ru.heatrk.languageapp.core.design.composables.button.AppButton
-import ru.heatrk.languageapp.core.design.composables.button.AppTextButton
+import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.DotsProgressIndicator
 import ru.heatrk.languageapp.core.design.composables.animation.FadeInAnimatedContent
 import ru.heatrk.languageapp.core.design.composables.animation.RightToLeftAnimatedContent
+import ru.heatrk.languageapp.core.design.composables.button.AppButton
+import ru.heatrk.languageapp.core.design.composables.button.AppTextButton
+import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_TEST_TAG
 import ru.heatrk.languageapp.onboarding.impl.R
 import ru.heatrk.languageapp.onboarding.impl.di.OnboardingComponent
-import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingContract.State
 import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingContract.Intent
+import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingContract.State
 
 @Composable
 fun OnboardingScreen(
@@ -72,6 +74,8 @@ private fun OnboardingScreen(
     onIntent: (Intent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    AppScaffoldControllerEffect()
+
     when (state) {
         is State.Loading -> {
             OnboardingScreenLoading(
@@ -343,7 +347,7 @@ internal const val ONBOARDING_SHIMMER_TEST_TAG = "Onboarding:Shimmer"
 private fun OnboardingScreenPreview(
     @PreviewParameter(OnboardingScreenPreviewStateProvider::class) state: State
 ) {
-    AppTheme {
+    AppRootContainer {
         OnboardingScreen(
             state = state,
             onIntent = {}

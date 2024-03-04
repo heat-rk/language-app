@@ -19,11 +19,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.heatrk.languageapp.core.design.R
+import ru.heatrk.languageapp.core.design.composables.AppRootContainer
+import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.design.styles.Sizes
 
 @Composable
 fun SplashScreen() {
+    AppScaffoldControllerEffect()
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -56,7 +60,7 @@ fun SplashScreen() {
 @Composable
 @Preview
 private fun SplashScreenPreview() {
-    AppTheme {
+    AppRootContainer {
         SplashScreen()
     }
 }

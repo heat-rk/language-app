@@ -54,14 +54,16 @@ import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.SideEffec
 import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.State
 import ru.heatrk.languageapp.auth.impl.ui.utils.isFatal
 import ru.heatrk.languageapp.common.utils.extract
-import ru.heatrk.languageapp.core.design.composables.AppBarState
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.AppLinkedText
 import ru.heatrk.languageapp.core.design.composables.AppLinkedTextUnit
-import ru.heatrk.languageapp.core.design.composables.AppScaffold
+import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.AppButtonState
 import ru.heatrk.languageapp.core.design.composables.button.AppTextButton
+import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
+import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
+import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
 import ru.heatrk.languageapp.core.design.composables.text_field.AppPasswordTextField
 import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 import ru.heatrk.languageapp.core.design.styles.AppTheme
@@ -74,17 +76,14 @@ fun SignInScreen(
 ) {
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
     val sideEffects = viewModel.container.sideEffectFlow
-    val snackbarHostState = remember { SnackbarHostState() }
 
     SignInScreenSideEffects(
         sideEffects = sideEffects,
-        snackbarHostState = snackbarHostState,
         onIntent = viewModel::processIntent
     )
 
     SignInScreen(
         state = state,
-        snackbarHostState = snackbarHostState,
         onIntent = viewModel::processIntent
     )
 }
@@ -92,61 +91,61 @@ fun SignInScreen(
 @Composable
 private fun SignInScreen(
     state: State,
-    snackbarHostState: SnackbarHostState,
     onIntent: (Intent) -> Unit,
 ) {
-    AppScaffold(
-        snackbarHostState = snackbarHostState,
+    val appBarTitle = stringResource(R.string.login)
+
+    AppScaffoldControllerEffect(
         appBarState = AppBarState.Shown(
-            title = stringResource(R.string.login),
+            title = appBarTitle,
             titleGravity = AppBarTitleGravity.CENTER,
-        ),
-        contentPadding = PaddingValues(24.dp),
+        )
+    )
+
+    Column(
         modifier = Modifier
+            .fillMaxSize()
             .testTag(SIGN_IN_SCREEN_TEST_TAG)
+            .padding(24.dp)
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Image(
-                painter = painterResource(R.drawable.sign_in_learn_at_home_logo),
-                contentDescription = null,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
-            )
+        Image(
+            painter = painterResource(R.drawable.sign_in_learn_at_home_logo),
+            contentDescription = null,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally),
+        )
 
-            Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
-            Text(
-                text = stringResource(R.string.sign_in_logo_title),
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Medium,
-                style = AppTheme.typography.titleLarge,
-                modifier = Modifier
-                    .padding(horizontal = 56.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
+        Text(
+            text = stringResource(R.string.sign_in_logo_title),
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Medium,
+            style = AppTheme.typography.titleLarge,
+            modifier = Modifier
+                .padding(horizontal = 56.dp)
+                .align(Alignment.CenterHorizontally)
+        )
 
-            Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
-            SignInEmailPasswordBlock(
-                email = state.email,
-                password = state.password,
-                isInputEnabled = state.authorizingState == State.Authorizing.None,
-                emailErrorMessage = state.emailErrorMessage?.extract(),
-                passwordErrorMessage = state.passwordErrorMessage?.extract(),
-                isPasswordVisible = state.isPasswordVisible,
-                onIntent = onIntent,
-            )
+        SignInEmailPasswordBlock(
+            email = state.email,
+            password = state.password,
+            isInputEnabled = state.authorizingState == State.Authorizing.None,
+            emailErrorMessage = state.emailErrorMessage?.extract(),
+            passwordErrorMessage = state.passwordErrorMessage?.extract(),
+            isPasswordVisible = state.isPasswordVisible,
+            onIntent = onIntent,
+        )
 
-            Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
-            SignInButtonsBlock(
-                loginButtonState = state.authorizingState.toButtonState(),
-                isLinkedTextEnabled = state.authorizingState == State.Authorizing.None,
-                onIntent = onIntent,
-            )
-        }
+        SignInButtonsBlock(
+            loginButtonState = state.authorizingState.toButtonState(),
+            isLinkedTextEnabled = state.authorizingState == State.Authorizing.None,
+            onIntent = onIntent,
+        )
     }
 }
 
@@ -163,8 +162,8 @@ private fun SignInEmailPasswordBlock(
     AppTextField(
         value = email,
         isEnabled = isInputEnabled,
-        placeholder = stringResource(R.string.sign_in_email_hint),
-        label = stringResource(R.string.sign_in_email),
+        placeholder = stringResource(R.string.email),
+        label = stringResource(R.string.email_address),
         singleLine = true,
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Next
@@ -181,7 +180,7 @@ private fun SignInEmailPasswordBlock(
         value = password,
         isEnabled = isInputEnabled,
         isPasswordVisible = isPasswordVisible,
-        label = stringResource(R.string.sign_in_password),
+        label = stringResource(R.string.password),
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Done
         ),
@@ -288,11 +287,11 @@ private fun LoginLinkedText(
 @Composable
 private fun SignInScreenSideEffects(
     sideEffects: Flow<SideEffect>,
-    snackbarHostState: SnackbarHostState,
     onIntent: (Intent) -> Unit,
 ) {
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
+    val snackbarHostState = LocalAppScaffoldController.current.snackbarHostState
 
     val credentialManager = remember(context.applicationContext) {
         CredentialManager.create(context.applicationContext)
@@ -386,10 +385,9 @@ private fun State.Authorizing.toButtonState() = when (this) {
 
 @Composable
 private fun LoginScreenPreview() {
-    AppTheme {
+    AppRootContainer {
         SignInScreen(
             state = State(),
-            snackbarHostState = SnackbarHostState(),
             onIntent = {}
         )
     }

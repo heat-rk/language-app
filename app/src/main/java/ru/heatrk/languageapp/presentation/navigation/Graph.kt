@@ -11,6 +11,7 @@ import ru.heatrk.languageapp.core.navigation.compose_impl.NavHost
 import ru.heatrk.languageapp.core.navigation.compose_impl.composable
 import ru.heatrk.languageapp.features.splash.ui.SplashScreen
 import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreen
+import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreen
 import ru.heatrk.languageapp.main.impl.ui.MainScreen
 import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingScreen
 
@@ -41,6 +42,15 @@ object ComposeSignInScreen {
     }
 }
 
+object ComposeSignUpScreen {
+    object Route : ComposeRoute("sign_up") {
+        @Composable
+        override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
+            SignUpScreen()
+        }
+    }
+}
+
 object ComposeMainScreen {
     object Route : ComposeRoute("main") {
         @Composable
@@ -54,6 +64,7 @@ private fun NavGraphBuilder.buildGraph() {
     composable(ComposeSplashScreen.Route)
     composable(ComposeOnboardingScreen.Route)
     composable(ComposeSignInScreen.Route)
+    composable(ComposeSignUpScreen.Route)
     composable(ComposeMainScreen.Route)
 }
 

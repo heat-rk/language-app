@@ -9,6 +9,7 @@ import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInWithGoogleUseCase
 import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInViewModel
+import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpViewModel
 import ru.heatrk.languageapp.core.coroutines.dispatchers.DefaultCoroutineDispatcher
 import ru.heatrk.languageapp.core.coroutines.dispatchers.IoCoroutineDispatcher
 import scout.Scope
@@ -56,6 +57,16 @@ fun Scope.includeAuthScope() {
                             authGoogleNonceProvider = get(),
                             router = get(),
                         )
+                    }
+                }
+            )
+        }
+
+        singleton<SignUpViewModelFactory> {
+            SignUpViewModelFactory(
+                viewModelFactory {
+                    initializer {
+                        SignUpViewModel()
                     }
                 }
             )
