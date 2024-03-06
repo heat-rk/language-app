@@ -1,5 +1,6 @@
 package ru.heatrk.languageapp.onboarding.impl.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -342,11 +343,8 @@ class OnboardingScreenPreviewStateProvider : PreviewParameterProvider<State> {
 internal const val ONBOARDING_SHIMMER_TEST_TAG = "Onboarding:Shimmer"
 
 @Composable
-@Preview(
-    showBackground = true,
-)
 private fun OnboardingScreenPreview(
-    @PreviewParameter(OnboardingScreenPreviewStateProvider::class) state: State
+    state: State
 ) {
     AppRootContainer {
         OnboardingScreen(
@@ -355,3 +353,25 @@ private fun OnboardingScreenPreview(
         )
     }
 }
+
+@Composable
+@Preview(
+    showBackground = true,
+)
+private fun OnboardingScreenPreviewLight(
+    @PreviewParameter(OnboardingScreenPreviewStateProvider::class) state: State
+) {
+    OnboardingScreenPreview(state)
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+private fun OnboardingScreenPreviewDark(
+    @PreviewParameter(OnboardingScreenPreviewStateProvider::class) state: State
+) {
+    OnboardingScreenPreview(state)
+}
+
