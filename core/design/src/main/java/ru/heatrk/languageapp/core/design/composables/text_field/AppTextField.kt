@@ -15,6 +15,10 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
@@ -42,6 +46,8 @@ fun AppTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     errorMessage: String? = null,
 ) {
+    var bufferedValue by remember { mutableStateOf(value) }
+
     Column(
         modifier = modifier,
     ) {
@@ -66,8 +72,11 @@ fun AppTextField(
         Spacer(modifier = Modifier.height(8.dp))
 
         TextField(
-            value = value,
-            onValueChange = onValueChange,
+            value = bufferedValue,
+            onValueChange = { newValue ->
+                bufferedValue = newValue
+                onValueChange(newValue)
+            },
             enabled = isEnabled,
             isError = !errorMessage.isNullOrBlank(),
             shape = AppTheme.shapes.medium,
