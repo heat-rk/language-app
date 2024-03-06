@@ -8,6 +8,9 @@ interface AuthRepository {
 
     suspend fun signInWithGoogle(
         idToken: String,
+        email: String,
+        firstName: String,
+        lastName: String,
         rawNonce: String
     )
 

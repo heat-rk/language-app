@@ -23,6 +23,9 @@ object SignInScreenContract {
         data class OnGoogleCredentialsReceived(
             val rawNonce: String,
             val idToken: String,
+            val email: String,
+            val firstName: String,
+            val lastName: String,
         ) : Intent
 
         data object OnPasswordVisibilityToggleClick : Intent

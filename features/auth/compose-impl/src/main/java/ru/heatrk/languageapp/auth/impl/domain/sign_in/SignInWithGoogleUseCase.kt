@@ -8,10 +8,16 @@ class SignInWithGoogleUseCase(
     suspend operator fun invoke(
         rawNonce: String,
         idToken: String,
+        email: String,
+        firstName: String,
+        lastName: String,
     ) {
         repository.signInWithGoogle(
             rawNonce = rawNonce,
             idToken = idToken,
+            email = email,
+            firstName = firstName,
+            lastName = lastName,
         )
     }
 }

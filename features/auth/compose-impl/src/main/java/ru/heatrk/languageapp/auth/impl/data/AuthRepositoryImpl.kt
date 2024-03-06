@@ -27,12 +27,19 @@ class AuthRepositoryImpl(
 
     override suspend fun signInWithGoogle(
         idToken: String,
+        email: String,
+        firstName: String,
+        lastName: String,
         rawNonce: String,
-    ) = withContext(supabaseDispatcher) {
+    ): Unit = withContext(supabaseDispatcher) {
         supabaseClient.auth.signInWith(IDToken) {
             this.provider = Google
             this.idToken = idToken
             this.nonce = rawNonce
+        }
+
+        supabaseClient.auth.modifyUser {
+            this.data = jsonOf(firstName, lastName)
         }
     }
 
@@ -45,13 +52,15 @@ class AuthRepositoryImpl(
         supabaseClient.auth.signUpWith(Email) {
             this.email = email
             this.password = password
-
-            this.data = JsonObject(
-                mapOf(
-                    "first_name" to JsonPrimitive(firstName),
-                    "last_name" to JsonPrimitive(lastName),
-                )
-            )
+            this.data = jsonOf(firstName, lastName)
         }
     }
+
+    private fun jsonOf(firstName: String, lastName: String) =
+        JsonObject(
+            mapOf(
+                "first_name" to JsonPrimitive(firstName),
+                "last_name" to JsonPrimitive(lastName),
+            )
+        )
 }

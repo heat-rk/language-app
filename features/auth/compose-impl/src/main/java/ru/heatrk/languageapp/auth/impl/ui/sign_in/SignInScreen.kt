@@ -363,11 +363,12 @@ private suspend fun requestGoogleCredentials(
         val googleIdTokenCredential = GoogleIdTokenCredential
             .createFrom(credentialRequestResponse.credential.data)
 
-        val googleIdToken = googleIdTokenCredential.idToken
-
         onIntent(Intent.OnGoogleCredentialsReceived(
             rawNonce = nonce.raw,
-            idToken = googleIdToken
+            idToken = googleIdTokenCredential.idToken,
+            email = googleIdTokenCredential.id,
+            firstName = googleIdTokenCredential.givenName ?: "",
+            lastName = googleIdTokenCredential.familyName ?: "",
         ))
     } catch (e: GetCredentialException) {
         if (e.isFatal()) {

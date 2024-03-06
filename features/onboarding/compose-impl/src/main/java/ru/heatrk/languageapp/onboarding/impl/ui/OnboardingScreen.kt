@@ -231,6 +231,8 @@ private fun OnboardingTitle(
             fontWeight = FontWeight.Medium,
             color = AppTheme.colors.onBackground,
             textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
         )
     }
 }
@@ -249,6 +251,8 @@ private fun OnboardingDescription(
             fontWeight = FontWeight.Normal,
             color = AppTheme.colors.textBody,
             textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
         )
     }
 }

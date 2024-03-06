@@ -39,36 +39,30 @@ class SignInViewModel(
 
     fun processIntent(intent: Intent) = intent {
         when (intent) {
-            is Intent.OnEmailTextChanged -> {
+            is Intent.OnEmailTextChanged ->
                 onEmailTextChanged(intent.text)
-            }
-            is Intent.OnPasswordTextChanged -> {
+            is Intent.OnPasswordTextChanged ->
                 onPasswordTextChanged(intent.text)
-            }
-            is Intent.OnGoogleCredentialsReceived -> {
+            is Intent.OnGoogleCredentialsReceived ->
                 onGoogleCredentialsReceived(
                     rawNonce = intent.rawNonce,
-                    idToken = intent.idToken
+                    idToken = intent.idToken,
+                    email = intent.email,
+                    firstName = intent.firstName,
+                    lastName = intent.lastName
                 )
-            }
-            Intent.OnForgotPasswordButtonClick -> {
+            Intent.OnForgotPasswordButtonClick ->
                 onForgotPasswordButtonClick()
-            }
-            Intent.OnGoogleSignInButtonClick -> {
+            Intent.OnGoogleSignInButtonClick ->
                 onGoogleSignInButtonClick()
-            }
-            Intent.OnLoginButtonClick -> {
+            Intent.OnLoginButtonClick ->
                 onLoginButtonClick()
-            }
-            Intent.OnPasswordVisibilityToggleClick -> {
+            Intent.OnPasswordVisibilityToggleClick ->
                 onPasswordVisibilityToggleClick()
-            }
-            Intent.OnSignUpButtonClick -> {
+            Intent.OnSignUpButtonClick ->
                 onSignUpButtonClick()
-            }
-            Intent.OnGoogleCredentialsReceiveFailed -> {
+            Intent.OnGoogleCredentialsReceiveFailed ->
                 onGoogleCredentialsReceiveFailed()
-            }
         }
 
         processKeyboardClose(intent)
@@ -117,6 +111,9 @@ class SignInViewModel(
     private suspend fun IntentBody.onGoogleCredentialsReceived(
         rawNonce: String,
         idToken: String,
+        email: String,
+        firstName: String,
+        lastName: String,
     ) {
         viewModelScope.launchSafe(
             block = {
@@ -125,6 +122,9 @@ class SignInViewModel(
                 signInWithGoogle(
                     rawNonce = rawNonce,
                     idToken = idToken,
+                    email = email,
+                    firstName = firstName,
+                    lastName = lastName,
                 )
 
                 reduce { state.copy(authorizingState = State.Authorizing.Success) }
