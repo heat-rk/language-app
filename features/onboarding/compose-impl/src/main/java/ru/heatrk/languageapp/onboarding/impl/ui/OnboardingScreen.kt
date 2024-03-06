@@ -189,6 +189,7 @@ private fun OnboardingScreenLoaded(
                 onClick = { onIntent(Intent.Skip) },
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
             )
         },
         modifier = modifier

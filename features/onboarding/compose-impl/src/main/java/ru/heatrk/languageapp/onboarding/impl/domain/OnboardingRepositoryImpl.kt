@@ -21,4 +21,8 @@ class OnboardingRepositoryImpl(
                 OnboardingUnit.valueOf(name)
             }.toSet()
     }
+
+    override suspend fun saveWatchedUnits(units: List<OnboardingUnit>) {
+        onboardingStorage.saveWatchedUnits(units.map { it.name })
+    }
 }

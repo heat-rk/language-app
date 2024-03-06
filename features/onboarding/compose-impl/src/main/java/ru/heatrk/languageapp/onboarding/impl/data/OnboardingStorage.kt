@@ -27,8 +27,20 @@ class OnboardingStorage(
         }
     }
 
+    suspend fun saveWatchedUnits(units: List<String>) = withContext(dispatcher) {
+        preferences.edit {
+            putStringSet(
+                PREFS_WATCHED_UNITS_KEY,
+                preferences.getStringSet(PREFS_WATCHED_UNITS_KEY, emptySet()).with(units)
+            )
+        }
+    }
+
     private fun Set<String>?.with(value: String) =
         (this ?: emptySet()) + setOf(value)
+
+    private fun Set<String>?.with(values: List<String>) =
+        (this ?: emptySet()) + values
 
     companion object {
         private const val PREFS_NAME = "onboarding_prefs"

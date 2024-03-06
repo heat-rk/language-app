@@ -241,6 +241,7 @@ class OnboardingTest {
     ) = object : OnboardingRepository {
         override suspend fun getUnwatchedUnits() = queue
         override suspend fun saveWatchedUnit(unit: OnboardingUnit) = Unit
+        override suspend fun saveWatchedUnits(units: List<OnboardingUnit>) = Unit
     }
 
     private fun createAuthRepository() = object : AuthRepository {
