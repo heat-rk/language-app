@@ -7,6 +7,8 @@ import io.github.jan.supabase.gotrue.providers.builtin.Email
 import io.github.jan.supabase.gotrue.providers.builtin.IDToken
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 
 class AuthRepositoryImpl(
@@ -31,6 +33,25 @@ class AuthRepositoryImpl(
             this.provider = Google
             this.idToken = idToken
             this.nonce = rawNonce
+        }
+    }
+
+    override suspend fun signUp(
+        firstName: String,
+        lastName: String,
+        email: String,
+        password: String
+    ): Unit = withContext(supabaseDispatcher) {
+        supabaseClient.auth.signUpWith(Email) {
+            this.email = email
+            this.password = password
+
+            this.data = JsonObject(
+                mapOf(
+                    "first_name" to JsonPrimitive(firstName),
+                    "last_name" to JsonPrimitive(lastName),
+                )
+            )
         }
     }
 }

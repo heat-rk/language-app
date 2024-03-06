@@ -10,4 +10,11 @@ interface AuthRepository {
         idToken: String,
         rawNonce: String
     )
+
+    suspend fun signUp(
+        firstName: String,
+        lastName: String,
+        email: String,
+        password: String,
+    )
 }

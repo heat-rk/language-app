@@ -58,5 +58,6 @@ dependencies {
         AppDependencies.Compose.navigation,
         AppDependencies.Ktx.core,
         AppDependencies.Coil.compose,
+        AppDependencies.Orbit.viewModel,
     )
 }

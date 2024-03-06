@@ -26,8 +26,13 @@
     <string name="signup_already_you_member_before_annotation">Already you member?</string>
     <string name="signup_already_you_member_after_annotation">Login</string>
     <string name="signup_choose_password">Choose a Password</string>
+    <string name="signup_waiting_for_email_confirm">Waiting for Email Confirmation</string>
+    <string name="signup_email_confirm_description">We just need one small favor from you - please confirm your email address to continue using Language App and start learning!</string>
 
     <string name="error_smth_went_wrong">Something went wrong :(</string>
     <string name="error_check_your_creds">Error. Check your credentials!</string>
     <string name="error_empty_field">This field is required</string>
+    <string name="error_invalid_email">Invalid email format</string>
+    <string name="error_password_to_short">Password to short (min length is 6)</string>
+    <string name="error_password_mismatch">Passwords mismatch</string>
 </resources>

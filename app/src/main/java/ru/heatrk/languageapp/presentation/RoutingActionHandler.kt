@@ -24,6 +24,14 @@ class RoutingActionHandler(
                             }
                         }
                     }
+
+                    if (action.options.singleTop) {
+                        launchSingleTop = true
+
+                        popUpTo(composeRoute(action.route)) {
+                            inclusive = false
+                        }
+                    }
                 }
             }
         }

@@ -40,3 +40,11 @@ fun Size.roundToIntSize() = IntSize(width.roundToInt(), height.roundToInt())
 fun Offset.roundToIntOffset() = IntOffset(x.roundToInt(), y.roundToInt())
 
 operator fun Offset.plus(size: Size) = Offset(x + size.width, y + size.height)
+
+inline fun <reified ParentType, reified ChildType: ParentType> ParentType.letIfInheritor(
+    block: (ChildType) -> ParentType
+) = if (this is ChildType) {
+    block(this)
+} else {
+    this
+}

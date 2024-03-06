@@ -245,7 +245,15 @@ class OnboardingTest {
 
     private fun createAuthRepository() = object : AuthRepository {
         override suspend fun signIn(email: String, password: String) = Unit
+
         override suspend fun signInWithGoogle(idToken: String, rawNonce: String) = Unit
+
+        override suspend fun signUp(
+            firstName: String,
+            lastName: String,
+            email: String,
+            password: String
+        ) = Unit
     }
 
     private fun createAuthGoogleNonceProvider() = object : AuthGoogleNonceProvider {
