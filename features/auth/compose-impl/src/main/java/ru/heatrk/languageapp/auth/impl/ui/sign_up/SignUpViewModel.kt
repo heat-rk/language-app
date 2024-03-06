@@ -191,7 +191,9 @@ class SignUpViewModel(
 
         viewModelScope.launchSafe(
             block = {
-                reduce { state.copy(registrationState = State.InputData.Registration.InProgress) }
+                reduceIfState<State.InputData> { state ->
+                    state.copy(registrationState = State.InputData.Registration.InProgress)
+                }
 
                 signUp(
                     firstName = state.firstName,
@@ -201,14 +203,18 @@ class SignUpViewModel(
                     confirmedPassword = state.confirmedPassword,
                 )
 
-                reduce { state.copy(registrationState = State.InputData.Registration.Success) }
+                reduceIfState<State.InputData> { state ->
+                    state.copy(registrationState = State.InputData.Registration.Success)
+                }
 
                 delay(REGISTRATION_STATE_DELAY_MILLIS)
 
-                reduce { State.EmailConfirmation }
+                reduceIfState<State.InputData> { State.EmailConfirmation }
             },
             onError = { throwable ->
-                reduce { state.copy(registrationState = State.InputData.Registration.Error) }
+                reduceIfState<State.InputData> { state ->
+                    state.copy(registrationState = State.InputData.Registration.Error)
+                }
 
                 when (throwable) {
                     is InvalidSignUpFieldsValuesException -> {
@@ -226,7 +232,9 @@ class SignUpViewModel(
 
                 delay(REGISTRATION_STATE_DELAY_MILLIS)
 
-                reduce { state.copy(registrationState = State.InputData.Registration.None) }
+                reduceIfState<State.InputData> { state ->
+                    state.copy(registrationState = State.InputData.Registration.None)
+                }
             }
         )
     }

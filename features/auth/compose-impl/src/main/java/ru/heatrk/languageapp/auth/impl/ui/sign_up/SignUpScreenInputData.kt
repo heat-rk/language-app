@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.heatrk.languageapp.auth.api.ui.navigation.SIGN_UP_SCREEN_TEST_TAG
 import ru.heatrk.languageapp.auth.impl.R
+import ru.heatrk.languageapp.auth.impl.ui.choose_password.ChoosePassword
+import ru.heatrk.languageapp.auth.impl.ui.choose_password.ChoosePasswordContract
 import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreenContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreenContract.State
 import ru.heatrk.languageapp.common.utils.extract
@@ -40,7 +42,6 @@ import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.animation.RightToLeftAnimatedContent
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.AppButtonState
-import ru.heatrk.languageapp.core.design.composables.text_field.AppPasswordTextField
 import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 
@@ -163,50 +164,31 @@ private fun SignUpPasswordInputData(
     state: State.InputData,
     onIntent: (Intent) -> Unit,
 ) {
-    Column {
-        SignUpTitle(
-            titleRes = R.string.signup_choose_password
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        AppPasswordTextField(
-            value = state.password,
+    ChoosePassword(
+        state = ChoosePasswordContract.State(
+            password = state.password,
+            confirmedPassword = state.confirmedPassword,
+            passwordErrorMessage = state.passwordErrorMessage,
+            confirmedPasswordErrorMessage = state.confirmedPasswordErrorMessage,
             isPasswordVisible = state.isPasswordVisible,
+            isConfirmedPasswordVisible = state.isConfirmedPasswordVisible,
             isEnabled = state.registrationState == State.InputData.Registration.None,
-            label = stringResource(R.string.password),
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next
-            ),
-            errorMessage = state.passwordErrorMessage?.extract(),
-            onValueChange = { onIntent(Intent.OnPasswordChanged(it)) },
-            onPasswordVisibilityToggleClick = { onIntent(Intent.OnPasswordVisibilityToggleClick) },
-            modifier = Modifier
-                .fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        AppPasswordTextField(
-            value = state.confirmedPassword,
-            isPasswordVisible = state.isConfirmedPasswordVisible,
-            isEnabled = state.registrationState == State.InputData.Registration.None,
-            label = stringResource(R.string.confirm_password),
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
+        ),
+        onIntent = { intent ->
+            when (intent) {
+                is ChoosePasswordContract.Intent.OnPasswordChanged ->
+                    onIntent(Intent.OnPasswordChanged(intent.text))
+                is ChoosePasswordContract.Intent.OnConfirmedPasswordChanged ->
+                    onIntent(Intent.OnConfirmedPasswordChanged(intent.text))
+                ChoosePasswordContract.Intent.OnPasswordVisibilityToggleClick ->
+                    onIntent(Intent.OnPasswordVisibilityToggleClick)
+                ChoosePasswordContract.Intent.OnConfirmedPasswordVisibilityToggleClick ->
+                    onIntent(Intent.OnConfirmedPasswordVisibilityToggleClick)
+                ChoosePasswordContract.Intent.OnKeyboardDoneAction ->
                     onIntent(Intent.OnSignUpButtonClick)
-                }
-            ),
-            errorMessage = state.confirmedPasswordErrorMessage?.extract(),
-            onValueChange = { onIntent(Intent.OnConfirmedPasswordChanged(it)) },
-            onPasswordVisibilityToggleClick = { onIntent(Intent.OnConfirmedPasswordVisibilityToggleClick) },
-            modifier = Modifier
-                .fillMaxWidth()
-        )
-    }
+            }
+        }
+    )
 }
 
 @Composable
