@@ -19,21 +19,21 @@ import androidx.navigation.testing.TestNavHostController
 import org.junit.Rule
 import org.junit.Test
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
-import ru.heatrk.languageapp.auth.api.ui.navigation.SIGN_IN_SCREEN_TEST_TAG
-import ru.heatrk.languageapp.auth.api.ui.navigation.SignInScreenRoute
+import ru.heatrk.languageapp.auth.api.ui.navigation.SIGN_IN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInWithGoogleUseCase
 import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreen
 import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInViewModel
+import ru.heatrk.languageapp.common.utils.currentRoute
 import ru.heatrk.languageapp.common.utils.testTag
 import ru.heatrk.languageapp.common.utils.vectorRes
 import ru.heatrk.languageapp.core.design.styles.AppTheme
-import ru.heatrk.languageapp.core.navigation.compose_test.TestComposeRouter
+import ru.heatrk.languageapp.core.navigation.compose_test.rememberTestComposeRouter
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
 import ru.heatrk.languageapp.onboarding.api.domain.models.OnboardingUnit
-import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_TEST_TAG
+import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.onboarding.impl.R
 import ru.heatrk.languageapp.onboarding.impl.ui.ONBOARDING_SHIMMER_TEST_TAG
 import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingScreen
@@ -48,18 +48,6 @@ class OnboardingTest {
     private val activity: Activity
         get() = composeTestRule.activity
 
-    private val composeRouter = TestComposeRouter(
-        onNavigate = { route, _ ->
-            when (route) {
-                is SignInScreenRoute -> navController.navigate(SIGN_IN_SCREEN_DESTINATION)
-                else -> Unit
-            }
-        },
-        onNavigateBack = {
-            navController.popBackStack()
-        }
-    )
-
     private fun setup(
         onboardingRepository: OnboardingRepository
     ) {
@@ -68,11 +56,13 @@ class OnboardingTest {
                 navController = TestNavHostController(LocalContext.current)
                 navController.navigatorProvider.addNavigator(ComposeNavigator())
 
+                val composeRouter = rememberTestComposeRouter(navController)
+
                 NavHost(
                     navController = navController,
-                    startDestination = ONBOARDING_SCREEN_DESTINATION,
+                    startDestination = ONBOARDING_SCREEN_ROUTE_PATH,
                     builder = {
-                        composable(ONBOARDING_SCREEN_DESTINATION) {
+                        composable(ONBOARDING_SCREEN_ROUTE_PATH) {
                             OnboardingScreen(
                                 viewModel = OnboardingViewModel(
                                     onboardingRepository = onboardingRepository,
@@ -81,7 +71,7 @@ class OnboardingTest {
                             )
                         }
 
-                        composable(SIGN_IN_SCREEN_DESTINATION) {
+                        composable(SIGN_IN_SCREEN_ROUTE_PATH) {
                             SignInScreen(
                                 viewModel = SignInViewModel(
                                     signIn = SignInUseCase(
@@ -205,9 +195,7 @@ class OnboardingTest {
             .assertIsDisplayed()
             .performClick()
 
-        composeTestRule
-            .onNodeWithTag(SIGN_IN_SCREEN_TEST_TAG)
-            .assertIsDisplayed()
+        composeTestRule.waitUntil { SIGN_IN_SCREEN_ROUTE_PATH == navController.currentRoute }
     }
 
     @Test
@@ -229,11 +217,7 @@ class OnboardingTest {
             .assertIsDisplayed()
             .performClick()
 
-        composeTestRule.waitUntilDoesNotExist(hasTestTag(ONBOARDING_SCREEN_TEST_TAG))
-
-        composeTestRule
-            .onNodeWithTag(SIGN_IN_SCREEN_TEST_TAG)
-            .assertIsDisplayed()
+        composeTestRule.waitUntil { SIGN_IN_SCREEN_ROUTE_PATH == navController.currentRoute }
     }
 
     private fun createOnboardingRepository(
@@ -265,10 +249,5 @@ class OnboardingTest {
 
     private fun createAuthGoogleNonceProvider() = object : AuthGoogleNonceProvider {
         override suspend fun provideNonce() = AuthGoogleNonce("", "")
-    }
-
-    companion object {
-        private const val ONBOARDING_SCREEN_DESTINATION = "onboarding"
-        private const val SIGN_IN_SCREEN_DESTINATION = "sign_in"
     }
 }

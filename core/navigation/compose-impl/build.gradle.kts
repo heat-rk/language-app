@@ -56,11 +56,11 @@ android {
 
 dependencies {
     modules(
+        ":common:utils",
         ":core:navigation:api",
     )
 
     dependencies(
         AppDependencies.Compose.navigation,
-        AppDependencies.Scout.core,
     )
 }

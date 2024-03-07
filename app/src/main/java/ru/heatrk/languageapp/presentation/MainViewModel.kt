@@ -6,12 +6,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ru.heatrk.languageapp.core.navigation.api.Route
+import ru.heatrk.languageapp.auth.api.ui.navigation.SIGN_IN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.core.navigation.api.Router
-import ru.heatrk.languageapp.auth.api.ui.navigation.SignInScreenRoute
 import ru.heatrk.languageapp.core.navigation.api.RoutingOptions
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
-import ru.heatrk.languageapp.onboarding.api.ui.navigation.OnboardingScreenRoute
+import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_ROUTE_PATH
 
 class MainViewModel(
     private val onboardingRepository: OnboardingRepository,
@@ -22,26 +21,26 @@ class MainViewModel(
 
     init {
         viewModelScope.launch {
-            var nextScreenRoute: Route? = null
+            var nextScreenRoutePath: String? = null
 
             val delayJob = launch {
                 delay(INITIALIZATION_DELAY_MILLIS)
             }
 
             val splashInitializationJob = launch {
-                nextScreenRoute = if (onboardingRepository.getUnwatchedUnits().isEmpty()) {
-                    SignInScreenRoute
+                nextScreenRoutePath = if (onboardingRepository.getUnwatchedUnits().isEmpty()) {
+                    SIGN_IN_SCREEN_ROUTE_PATH
                 } else {
-                    OnboardingScreenRoute
+                    ONBOARDING_SCREEN_ROUTE_PATH
                 }
             }
 
             delayJob.join()
             splashInitializationJob.join()
 
-            nextScreenRoute?.let { route ->
+            nextScreenRoutePath?.let { route ->
                 router.navigate(
-                    route = route,
+                    routePath = route,
                     options = RoutingOptions(
                         shouldBePopUp = true
                     )

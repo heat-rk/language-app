@@ -72,6 +72,7 @@ dependencies {
         AppDependencies.Compose.bom,
         AppDependencies.Compose.material,
         AppDependencies.Compose.viewModel,
+        AppDependencies.Compose.navigation,
         AppDependencies.Compose.lifeCycleRuntime,
         AppDependencies.Compose.preview,
     )

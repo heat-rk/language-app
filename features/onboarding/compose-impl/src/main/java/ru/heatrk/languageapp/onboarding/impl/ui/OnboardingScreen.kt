@@ -47,7 +47,6 @@ import ru.heatrk.languageapp.core.design.composables.button.AppTextButton
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
-import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_TEST_TAG
 import ru.heatrk.languageapp.onboarding.impl.R
 import ru.heatrk.languageapp.onboarding.impl.di.OnboardingComponent
 import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingContract.Intent
@@ -64,8 +63,6 @@ fun OnboardingScreen(
     OnboardingScreen(
         state = state,
         onIntent = viewModel::processIntent,
-        modifier = Modifier
-            .testTag(ONBOARDING_SCREEN_TEST_TAG)
     )
 }
 
@@ -73,34 +70,28 @@ fun OnboardingScreen(
 private fun OnboardingScreen(
     state: State,
     onIntent: (Intent) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     AppScaffoldControllerEffect()
 
     when (state) {
         is State.Loading -> {
-            OnboardingScreenLoading(
-                modifier = modifier,
-            )
+            OnboardingScreenLoading()
         }
         is State.Loaded -> {
             OnboardingScreenLoaded(
                 state = state,
                 onIntent = onIntent,
-                modifier = modifier,
             )
         }
     }
 }
 
 @Composable
-private fun OnboardingScreenLoading(
-    modifier: Modifier = Modifier,
-) {
+private fun OnboardingScreenLoading() {
     OnboardingScreenLayout(
         imageContent = {
             Box(
-                modifier = modifier
+                modifier = Modifier
                     .size(220.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .shimmerEffect()

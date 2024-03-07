@@ -10,7 +10,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import ru.heatrk.languageapp.auth.api.ui.navigation.SignInScreenRoute
+import ru.heatrk.languageapp.auth.api.ui.navigation.SIGN_IN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.domain.sign_up.InvalidSignUpFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.sign_up.SignUpUseCase
@@ -269,7 +269,7 @@ class SignUpViewModel(
 
     private suspend fun navigateToSignIn() {
         router.navigate(
-            route = SignInScreenRoute,
+            routePath = SIGN_IN_SCREEN_ROUTE_PATH,
             options = RoutingOptions(
                 singleTop = true
             )

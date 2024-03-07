@@ -16,14 +16,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.heatrk.languageapp.auth.api.ui.navigation.SIGN_UP_SCREEN_TEST_TAG
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreenContract.Intent
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
@@ -40,7 +38,6 @@ fun SignUpScreenEmailConfirmation(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .testTag(SIGN_UP_SCREEN_TEST_TAG)
             .padding(24.dp)
     ) {
         Spacer(modifier = Modifier.weight(1f))

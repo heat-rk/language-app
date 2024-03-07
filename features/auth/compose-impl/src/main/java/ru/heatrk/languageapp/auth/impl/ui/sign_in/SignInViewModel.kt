@@ -10,7 +10,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import ru.heatrk.languageapp.auth.api.ui.navigation.SignUpScreenRoute
+import ru.heatrk.languageapp.auth.api.ui.navigation.SIGN_UP_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.InvalidSignInFieldsValuesException
@@ -23,7 +23,7 @@ import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingOptions
-import ru.heatrk.languageapp.main.api.MainScreenRoute
+import ru.heatrk.languageapp.main.api.MAIN_SCREEN_ROUTE_PATH
 
 typealias IntentBody = SimpleSyntax<State, SideEffect>
 
@@ -132,7 +132,7 @@ class SignInViewModel(
                 delay(AUTHORIZING_STATE_DELAY_MILLIS)
 
                 router.navigate(
-                    route = MainScreenRoute,
+                    routePath = MAIN_SCREEN_ROUTE_PATH,
                     options = RoutingOptions(
                         shouldBePopUp = true
                     )
@@ -163,7 +163,7 @@ class SignInViewModel(
                 delay(AUTHORIZING_STATE_DELAY_MILLIS)
 
                 router.navigate(
-                    route = MainScreenRoute,
+                    routePath = MAIN_SCREEN_ROUTE_PATH,
                     options = RoutingOptions(
                         shouldBePopUp = true
                     )
@@ -199,7 +199,7 @@ class SignInViewModel(
     }
 
     private suspend fun IntentBody.onSignUpButtonClick() {
-        router.navigate(SignUpScreenRoute)
+        router.navigate(SIGN_UP_SCREEN_ROUTE_PATH)
     }
 
     private suspend fun IntentBody.onPasswordVisibilityToggleClick() {

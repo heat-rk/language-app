@@ -1,29 +1,25 @@
 package ru.heatrk.languageapp.core.navigation.compose_test
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.withContext
-import ru.heatrk.languageapp.core.navigation.api.Route
-import ru.heatrk.languageapp.core.navigation.api.Router
-import ru.heatrk.languageapp.core.navigation.api.RoutingAction
-import ru.heatrk.languageapp.core.navigation.api.RoutingOptions
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.navigation.NavController
+import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
 
-class TestComposeRouter(
-    private val onNavigate: (route: Route, options: RoutingOptions) -> Unit,
-    private val onNavigateBack: () -> Unit
-) : Router {
-    override val actions: Flow<RoutingAction> = emptyFlow()
+@Composable
+fun rememberTestComposeRouter(
+    navController: NavController
+): ComposeRouter {
+    val router = remember { ComposeRouter() }
+    val coroutineScope = rememberCoroutineScope()
 
-    override suspend fun navigate(route: Route, options: RoutingOptions) {
-        withContext(Dispatchers.Main) {
-            onNavigate(route, options)
-        }
+    LaunchedEffect(navController, router) {
+        router.observeNavigation(
+            navController = navController,
+            coroutineScope = coroutineScope,
+        )
     }
 
-    override suspend fun navigateBack() {
-        withContext(Dispatchers.Main) {
-            onNavigateBack()
-        }
-    }
+    return router
 }

@@ -76,6 +76,7 @@ dependencies {
         AppDependencies.Coroutines.android,
         AppDependencies.Compose.bom,
         AppDependencies.Compose.viewModel,
+        AppDependencies.Compose.navigation,
         AppDependencies.Compose.lifeCycleRuntime,
         AppDependencies.Compose.material,
         AppDependencies.Compose.preview,

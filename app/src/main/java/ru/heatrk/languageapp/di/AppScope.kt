@@ -8,9 +8,10 @@ import ru.heatrk.languageapp.core.coroutines.dispatchers.di.useDispatchersBeans
 import ru.heatrk.languageapp.core.coroutines.scopes.di.useCoroutineScopesBeans
 import ru.heatrk.languageapp.core.data.db.di.useDatabaseBeans
 import ru.heatrk.languageapp.core.data.http_client.di.useHttpClientBeans
-import ru.heatrk.languageapp.core.navigation.compose_impl.di.useComposeNavigationBeans
 import ru.heatrk.languageapp.auth.impl.di.includeAuthScope
 import ru.heatrk.languageapp.core.data.supabase.di.useSupaBaseBeans
+import ru.heatrk.languageapp.core.navigation.api.Router
+import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
 import ru.heatrk.languageapp.main.impl.di.includeMainScope
 import ru.heatrk.languageapp.onboarding.impl.di.includeOnboardingScope
 import ru.heatrk.languageapp.onboarding.impl.di.useOnboardingApiBeans
@@ -45,6 +46,11 @@ val appScope = scope("app_scope") {
     includeOnboardingScope()
     includeAuthScope()
     includeMainScope()
+}
+
+private fun Registry.useComposeNavigationBeans() {
+    singleton<ComposeRouter> { ComposeRouter() }
+    singleton<Router> { get<ComposeRouter>() }
 }
 
 private fun Registry.useApplicationBeans() {

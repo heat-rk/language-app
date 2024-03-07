@@ -1,71 +1,23 @@
 package ru.heatrk.languageapp.presentation.navigation
 
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRoute
-import ru.heatrk.languageapp.core.navigation.compose_impl.NavHost
-import ru.heatrk.languageapp.core.navigation.compose_impl.composable
-import ru.heatrk.languageapp.features.splash.ui.SplashScreen
-import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreen
-import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreen
-import ru.heatrk.languageapp.main.impl.ui.MainScreen
-import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingScreen
-
-object ComposeSplashScreen {
-    object Route : ComposeRoute("splash") {
-        @Composable
-        override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
-            SplashScreen()
-        }
-    }
-}
-
-object ComposeOnboardingScreen {
-    object Route : ComposeRoute("onboarding") {
-        @Composable
-        override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
-            OnboardingScreen()
-        }
-    }
-}
-
-object ComposeSignInScreen {
-    object Route : ComposeRoute("sign_in") {
-        @Composable
-        override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
-            SignInScreen()
-        }
-    }
-}
-
-object ComposeSignUpScreen {
-    object Route : ComposeRoute("sign_up") {
-        @Composable
-        override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
-            SignUpScreen()
-        }
-    }
-}
-
-object ComposeMainScreen {
-    object Route : ComposeRoute("main") {
-        @Composable
-        override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
-            MainScreen()
-        }
-    }
-}
+import ru.heatrk.languageapp.auth.impl.ui.navigation.SignInScreenRoute
+import ru.heatrk.languageapp.auth.impl.ui.navigation.SignUpScreenRoute
+import ru.heatrk.languageapp.core.navigation.api.NavHost
+import ru.heatrk.languageapp.core.navigation.api.composable
+import ru.heatrk.languageapp.features.splash.impl.ui.navigation.SplashScreenRoute
+import ru.heatrk.languageapp.main.impl.ui.navigation.MainScreenRoute
+import ru.heatrk.languageapp.onboarding.impl.ui.navigation.OnboardingScreenRoute
 
 private fun NavGraphBuilder.buildGraph() {
-    composable(ComposeSplashScreen.Route)
-    composable(ComposeOnboardingScreen.Route)
-    composable(ComposeSignInScreen.Route)
-    composable(ComposeSignUpScreen.Route)
-    composable(ComposeMainScreen.Route)
+    composable(SplashScreenRoute)
+    composable(OnboardingScreenRoute)
+    composable(SignInScreenRoute)
+    composable(SignUpScreenRoute)
+    composable(MainScreenRoute)
 }
 
 @Composable
@@ -75,7 +27,7 @@ fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = ComposeSplashScreen.Route,
+        startDestination = SplashScreenRoute,
         builder = NavGraphBuilder::buildGraph,
         modifier = modifier,
     )
