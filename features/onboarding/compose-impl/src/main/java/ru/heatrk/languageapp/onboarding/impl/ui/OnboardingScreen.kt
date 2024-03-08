@@ -31,7 +31,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.heatrk.languageapp.common.utils.StringResource
 import ru.heatrk.languageapp.common.utils.VectorResource
 import ru.heatrk.languageapp.common.utils.extract
@@ -48,16 +47,11 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControl
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.onboarding.impl.R
-import ru.heatrk.languageapp.onboarding.impl.di.OnboardingComponent
 import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingContract.Intent
 import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingContract.State
 
 @Composable
-fun OnboardingScreen(
-    viewModel: OnboardingViewModel = viewModel(
-        factory = OnboardingComponent.onboardingViewModelFactory
-    ),
-) {
+fun OnboardingScreen(viewModel: OnboardingViewModel) {
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
 
     OnboardingScreen(

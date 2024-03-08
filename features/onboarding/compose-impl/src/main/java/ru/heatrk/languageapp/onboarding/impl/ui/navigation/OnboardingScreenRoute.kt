@@ -2,9 +2,11 @@ package ru.heatrk.languageapp.onboarding.impl.ui.navigation
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import ru.heatrk.languageapp.core.navigation.api.Route
 import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.onboarding.impl.di.OnboardingComponent
 import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingScreen
 
 object OnboardingScreenRoute : Route.Screen(
@@ -12,6 +14,10 @@ object OnboardingScreenRoute : Route.Screen(
 ) {
     @Composable
     override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
-        OnboardingScreen()
+        OnboardingScreen(
+            viewModel = viewModel(
+                factory = OnboardingComponent.onboardingViewModelFactory
+            )
+        )
     }
 }

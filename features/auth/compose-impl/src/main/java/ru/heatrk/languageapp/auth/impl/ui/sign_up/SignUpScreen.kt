@@ -13,12 +13,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.heatrk.languageapp.auth.impl.R
-import ru.heatrk.languageapp.auth.impl.di.AuthComponent
 import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreenContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreenContract.SideEffect
 import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreenContract.State
@@ -31,11 +29,7 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControl
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
 
 @Composable
-fun SignUpScreen(
-    viewModel: SignUpViewModel = viewModel(
-        factory = AuthComponent.signUpViewModelFactory
-    )
-) {
+fun SignUpScreen(viewModel: SignUpViewModel) {
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
 
     SignUpScreenSideEffects(

@@ -34,7 +34,7 @@ sealed class Route(
     abstract class Graph(
         path: String,
         namedNavArguments: List<NamedNavArgument> = emptyList(),
-        val startDestination: Screen,
+        val startDestination: String,
         val builder: NavGraphBuilder.() -> Unit,
     ) : Route(path, namedNavArguments)
 }

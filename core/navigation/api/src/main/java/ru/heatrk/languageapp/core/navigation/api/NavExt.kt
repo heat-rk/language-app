@@ -13,7 +13,7 @@ fun NavGraphBuilder.route(
     when (route) {
         is Route.Graph -> {
             navigation(
-                startDestination = route.startDestination.path,
+                startDestination = route.startDestination,
                 route = route.path,
                 builder = route.builder,
             )

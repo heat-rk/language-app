@@ -37,7 +37,6 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.flow.Flow
@@ -45,7 +44,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.heatrk.languageapp.auth.impl.BuildConfig
 import ru.heatrk.languageapp.auth.impl.R
-import ru.heatrk.languageapp.auth.impl.di.AuthComponent
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
 import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.SideEffect
@@ -67,11 +65,7 @@ import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 
 @Composable
-fun SignInScreen(
-    viewModel: SignInViewModel = viewModel(
-        factory = AuthComponent.signInViewModelFactory
-    ),
-) {
+fun SignInScreen(viewModel: SignInViewModel) {
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
     val sideEffects = viewModel.container.sideEffectFlow
 
