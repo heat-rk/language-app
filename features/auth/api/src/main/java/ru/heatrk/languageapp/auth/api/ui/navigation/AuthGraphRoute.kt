@@ -1,3 +1,3 @@
 package ru.heatrk.languageapp.auth.api.ui.navigation
 
-const val SIGN_IN_SCREEN_ROUTE_PATH = "sign_in"
+const val AUTH_GRAPH_ROUTE_PATH = "auth"

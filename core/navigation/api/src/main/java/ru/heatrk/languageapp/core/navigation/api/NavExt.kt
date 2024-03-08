@@ -5,19 +5,31 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 
-fun NavGraphBuilder.composable(
+fun NavGraphBuilder.route(
     route: Route
 ) {
-    composable(
-        route = route.path,
-        arguments = route.namedNavArguments,
-        content = { navBackStackEntry ->
-            with(route) {
-                Screen(navBackStackEntry)
-            }
-        },
-    )
+    when (route) {
+        is Route.Graph -> {
+            navigation(
+                startDestination = route.startDestination.path,
+                route = route.path,
+                builder = route.builder,
+            )
+        }
+        is Route.Screen -> {
+            composable(
+                route = route.path,
+                arguments = route.namedNavArguments,
+                content = { navBackStackEntry ->
+                    with(route) {
+                        Content(navBackStackEntry)
+                    }
+                },
+            )
+        }
+    }
 }
 
 @Composable

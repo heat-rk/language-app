@@ -10,7 +10,7 @@ import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import ru.heatrk.languageapp.auth.api.ui.navigation.SIGN_IN_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.api.ui.navigation.AUTH_GRAPH_ROUTE_PATH
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.common.utils.vectorRes
 import ru.heatrk.languageapp.core.navigation.api.Router
@@ -63,7 +63,7 @@ class OnboardingViewModel(
 
     private suspend fun navigateToLoginScreen() {
         router.navigate(
-            routePath = SIGN_IN_SCREEN_ROUTE_PATH,
+            routePath = AUTH_GRAPH_ROUTE_PATH,
             options = RoutingOptions(
                 shouldBePopUp = true
             )

@@ -6,7 +6,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ru.heatrk.languageapp.auth.api.ui.navigation.SIGN_IN_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.api.ui.navigation.AUTH_GRAPH_ROUTE_PATH
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingOptions
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
@@ -29,7 +29,7 @@ class MainViewModel(
 
             val splashInitializationJob = launch {
                 nextScreenRoutePath = if (onboardingRepository.getUnwatchedUnits().isEmpty()) {
-                    SIGN_IN_SCREEN_ROUTE_PATH
+                    AUTH_GRAPH_ROUTE_PATH
                 } else {
                     ONBOARDING_SCREEN_ROUTE_PATH
                 }

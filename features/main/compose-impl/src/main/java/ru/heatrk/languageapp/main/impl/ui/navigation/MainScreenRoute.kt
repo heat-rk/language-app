@@ -7,11 +7,11 @@ import ru.heatrk.languageapp.core.navigation.api.Route
 import ru.heatrk.languageapp.main.api.MAIN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.main.impl.ui.MainScreen
 
-object MainScreenRoute : Route() {
-    override val path = MAIN_SCREEN_ROUTE_PATH
-
+object MainScreenRoute : Route.Screen(
+    path = MAIN_SCREEN_ROUTE_PATH
+) {
     @Composable
-    override fun AnimatedContentScope.Screen(navBackStackEntry: NavBackStackEntry) {
+    override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
         MainScreen()
     }
 }

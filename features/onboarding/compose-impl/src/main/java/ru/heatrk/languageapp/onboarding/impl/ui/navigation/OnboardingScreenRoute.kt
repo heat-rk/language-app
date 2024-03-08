@@ -7,11 +7,11 @@ import ru.heatrk.languageapp.core.navigation.api.Route
 import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingScreen
 
-object OnboardingScreenRoute : Route() {
-    override val path = ONBOARDING_SCREEN_ROUTE_PATH
-
+object OnboardingScreenRoute : Route.Screen(
+    path = ONBOARDING_SCREEN_ROUTE_PATH
+) {
     @Composable
-    override fun AnimatedContentScope.Screen(navBackStackEntry: NavBackStackEntry) {
+    override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
         OnboardingScreen()
     }
 }

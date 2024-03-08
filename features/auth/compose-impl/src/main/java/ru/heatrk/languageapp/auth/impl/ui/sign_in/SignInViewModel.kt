@@ -10,12 +10,12 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import ru.heatrk.languageapp.auth.api.ui.navigation.SIGN_UP_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.InvalidSignInFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInWithGoogleUseCase
+import ru.heatrk.languageapp.auth.impl.ui.navigation.SIGN_UP_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.SideEffect
 import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.State

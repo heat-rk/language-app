@@ -7,11 +7,11 @@ import ru.heatrk.languageapp.core.navigation.api.Route
 import ru.heatrk.languageapp.features.splash.api.navigation.SPLASH_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.features.splash.impl.ui.SplashScreen
 
-object SplashScreenRoute : Route() {
-    override val path = SPLASH_SCREEN_ROUTE_PATH
-
+object SplashScreenRoute : Route.Screen(
+    path = SPLASH_SCREEN_ROUTE_PATH
+) {
     @Composable
-    override fun AnimatedContentScope.Screen(navBackStackEntry: NavBackStackEntry) {
+    override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
         SplashScreen()
     }
 }
