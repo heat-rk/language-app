@@ -17,6 +17,14 @@ class ComposeRouter : Router {
     private val _actions = Channel<RoutingAction>(Channel.BUFFERED)
     private val actions = _actions.receiveAsFlow()
 
+    private var navController: NavController? = null
+
+    override val isFirstDestination
+        get() = navController?.previousBackStackEntry == null
+
+    override val currentRoute: String?
+        get() = navController?.currentRoute
+
     override suspend fun navigate(routePath: String, options: RoutingOptions) {
         action(RoutingAction.NavigateTo(routePath, options))
     }
@@ -25,14 +33,20 @@ class ComposeRouter : Router {
         action(RoutingAction.NavigateBack)
     }
 
-    fun observeNavigation(
+    fun attachNavController(
         navController: NavController,
         coroutineScope: CoroutineScope,
     ) {
+        this.navController = navController
+
         actions
             .onEach { action -> handleRoutingAction(navController, action) }
             .flowOn(Dispatchers.Main)
             .launchIn(coroutineScope)
+    }
+
+    fun detachNavController() {
+        this.navController = null
     }
 
     private fun handleRoutingAction(

@@ -1,7 +1,7 @@
 package ru.heatrk.languageapp.core.navigation.compose_test
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavController
@@ -14,11 +14,13 @@ fun rememberTestComposeRouter(
     val router = remember { ComposeRouter() }
     val coroutineScope = rememberCoroutineScope()
 
-    LaunchedEffect(navController, router) {
-        router.observeNavigation(
+    DisposableEffect(navController, router) {
+        router.attachNavController(
             navController = navController,
             coroutineScope = coroutineScope,
         )
+
+        onDispose { router.detachNavController() }
     }
 
     return router

@@ -9,8 +9,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -67,11 +69,15 @@ class MainActivity : ComponentActivity() {
         navController: NavController,
         router: ComposeRouter = AppComponent.router,
     ) {
-        LaunchedEffect(navController, router) {
-            router.observeNavigation(
+        val coroutineScope = rememberCoroutineScope()
+
+        DisposableEffect(navController, router) {
+            router.attachNavController(
                 navController = navController,
-                coroutineScope = this
+                coroutineScope = coroutineScope
             )
+
+            onDispose { router.detachNavController() }
         }
     }
 

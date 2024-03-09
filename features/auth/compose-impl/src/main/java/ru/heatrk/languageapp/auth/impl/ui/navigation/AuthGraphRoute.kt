@@ -13,6 +13,6 @@ object AuthGraphRoute : Route.Graph(
         val signUpViewModelFactory = AuthComponent.signUpViewModelFactory
 
         route(SignInScreenRoute(signInViewModelFactory = signInViewModelFactory))
-        route(SignUpScreenRoute(signUpViewModelFactory = signUpViewModelFactory))
+        route(SignUpFlowRoute(signUpViewModelFactory = signUpViewModelFactory))
     }
 )

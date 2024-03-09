@@ -57,6 +57,7 @@ dependencies {
         ":features:auth:api",
         ":features:main:api",
         ":core:navigation:api",
+        ":core:navigation:compose-impl",
         ":core:design",
         ":core:data:supabase",
         ":core:coroutines:dispatchers",

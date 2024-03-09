@@ -13,6 +13,7 @@ import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInViewModel
 import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpViewModel
 import ru.heatrk.languageapp.core.coroutines.dispatchers.DefaultCoroutineDispatcher
 import ru.heatrk.languageapp.core.coroutines.dispatchers.IoCoroutineDispatcher
+import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
 import scout.Scope
 import scout.scope
 import scout.scope.builder.ScopeBuilder
@@ -27,7 +28,13 @@ fun Scope.includeAuthScope() {
         useUseCasesBeans()
         useViewModelFactoriesBeans()
         useAuthBeans()
+        useNavigationBeans()
     }
+}
+
+private fun ScopeBuilder.useNavigationBeans() {
+    singleton<SignUpComposeRouter> { SignUpComposeRouter(ComposeRouter()) }
+    singleton<SignUpRouter> { SignUpRouter(instance = get<SignUpComposeRouter>().instance) }
 }
 
 private fun ScopeBuilder.useAuthBeans() {
@@ -67,6 +74,7 @@ private fun ScopeBuilder.useViewModelFactoriesBeans() {
                 initializer {
                     SignUpViewModel(
                         router = get(),
+                        signUpRouter = get<SignUpRouter>().instance,
                         signUp = get()
                     )
                 }

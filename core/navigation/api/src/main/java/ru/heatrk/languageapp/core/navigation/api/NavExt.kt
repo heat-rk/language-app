@@ -46,3 +46,20 @@ fun NavHost(
         builder = builder,
     )
 }
+
+@Composable
+fun NavHost(
+    navController: NavHostController,
+    graph: Route.Graph,
+    modifier: Modifier = Modifier,
+) {
+    androidx.navigation.compose.NavHost(
+        navController = navController,
+        graph = NavGraphBuilder(
+            provider = navController.navigatorProvider,
+            route = graph.path,
+            startDestination = graph.startDestination,
+        ).apply(graph.builder).build(),
+        modifier = modifier,
+    )
+}

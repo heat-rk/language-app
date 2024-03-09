@@ -14,11 +14,12 @@ import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.domain.sign_up.InvalidSignUpFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.sign_up.SignUpUseCase
 import ru.heatrk.languageapp.auth.impl.ui.navigation.SIGN_IN_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.SIGN_UP_EMAIL_CONFIRM_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.SIGN_UP_PASSWORD_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreenContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreenContract.SideEffect
 import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreenContract.State
 import ru.heatrk.languageapp.common.utils.launchSafe
-import ru.heatrk.languageapp.common.utils.letIfInheritor
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingOptions
@@ -27,10 +28,11 @@ private typealias IntentBody = SimpleSyntax<State, SideEffect>
 
 class SignUpViewModel(
     private val router: Router,
+    private val signUpRouter: Router,
     private val signUp: SignUpUseCase,
 ) : ViewModel(), ContainerHost<State, SideEffect> {
     override val container = container<State, SideEffect>(
-        initialState = State.InputData()
+        initialState = State()
     )
 
     fun processIntent(intent: Intent) = intent {
@@ -63,18 +65,16 @@ class SignUpViewModel(
     }
 
     private suspend fun IntentBody.onFirstNameChanged(text: String) {
-        reduceIfState<State.InputData> { state ->
-            state.letIfInheritor<State, State.InputData> { state ->
-                state.copy(
-                    firstName = text,
-                    firstNameErrorMessage = null,
-                )
-            }
+        reduce {
+            state.copy(
+                firstName = text,
+                firstNameErrorMessage = null,
+            )
         }
     }
 
     private suspend fun IntentBody.onLastNameChanged(text: String) {
-        reduceIfState<State.InputData> { state ->
+        reduce {
             state.copy(
                 lastName = text,
                 lastNameErrorMessage = null,
@@ -83,7 +83,7 @@ class SignUpViewModel(
     }
 
     private suspend fun IntentBody.onEmailChanged(text: String) {
-        reduceIfState<State.InputData> { state ->
+        reduce {
             state.copy(
                 email = text,
                 emailErrorMessage = null,
@@ -92,7 +92,7 @@ class SignUpViewModel(
     }
 
     private suspend fun IntentBody.onPasswordChanged(text: String) {
-        reduceIfState<State.InputData> { state ->
+        reduce {
             state.copy(
                 password = text,
                 passwordErrorMessage = null,
@@ -101,7 +101,7 @@ class SignUpViewModel(
     }
 
     private suspend fun IntentBody.onConfirmedPasswordChanged(text: String) {
-        reduceIfState<State.InputData> { state ->
+        reduce {
             state.copy(
                 confirmedPassword = text,
                 confirmedPasswordErrorMessage = null,
@@ -110,11 +110,18 @@ class SignUpViewModel(
     }
 
     private suspend fun onGoBackClick() {
-        router.navigateBack()
+        when {
+            signUpRouter.currentRoute == SIGN_UP_EMAIL_CONFIRM_SCREEN_ROUTE_PATH ->
+                router.navigateBack()
+            signUpRouter.isFirstDestination ->
+                router.navigateBack()
+            else ->
+                signUpRouter.navigateBack()
+        }
     }
 
     private suspend fun IntentBody.onPasswordVisibilityToggleClick() {
-        reduceIfState<State.InputData> { state ->
+        reduce {
             state.copy(
                 isPasswordVisible = !state.isPasswordVisible
             )
@@ -122,7 +129,7 @@ class SignUpViewModel(
     }
 
     private suspend fun IntentBody.onConfirmedPasswordVisibilityToggleClick() {
-        reduceIfState<State.InputData> { state ->
+        reduce {
             state.copy(
                 isConfirmedPasswordVisible = !state.isConfirmedPasswordVisible
             )
@@ -134,12 +141,6 @@ class SignUpViewModel(
     }
 
     private suspend fun IntentBody.onContinueButtonClick() {
-        val state = state
-
-        if (state !is State.InputData) {
-            return
-        }
-
         viewModelScope.launchSafe(
             block = {
                 signUp.validate(
@@ -153,16 +154,10 @@ class SignUpViewModel(
                     ),
                 )
 
-                reduceIfState<State.InputData> { state ->
-                    state.copy(
-                        inputDataState = State.InputData.State.PASSWORD
-                    )
-                }
+                signUpRouter.navigate(routePath = SIGN_UP_PASSWORD_SCREEN_ROUTE_PATH)
             },
             onError = { throwable ->
-                reduceIfState<State.InputData> { state ->
-                    state.copy(registrationState = State.InputData.Registration.Error)
-                }
+                reduce { state.copy(registrationState = State.Registration.Error) }
 
                 when (throwable) {
                     is InvalidSignUpFieldsValuesException -> {
@@ -175,24 +170,16 @@ class SignUpViewModel(
 
                 delay(REGISTRATION_STATE_DELAY_MILLIS)
 
-                reduceIfState<State.InputData> { state ->
-                    state.copy(registrationState = State.InputData.Registration.None)
-                }
+                reduce { state.copy(registrationState = State.Registration.None) }
             }
         )
     }
 
     private suspend fun IntentBody.onSignUpButtonClick() {
-        val state = state
-
-        if (state !is State.InputData) {
-            return
-        }
-
         viewModelScope.launchSafe(
             block = {
-                reduceIfState<State.InputData> { state ->
-                    state.copy(registrationState = State.InputData.Registration.InProgress)
+                reduce {
+                    state.copy(registrationState = State.Registration.InProgress)
                 }
 
                 signUp(
@@ -203,18 +190,16 @@ class SignUpViewModel(
                     confirmedPassword = state.confirmedPassword,
                 )
 
-                reduceIfState<State.InputData> { state ->
-                    state.copy(registrationState = State.InputData.Registration.Success)
-                }
+                reduce { state.copy(registrationState = State.Registration.Success) }
 
                 delay(REGISTRATION_STATE_DELAY_MILLIS)
 
-                reduceIfState<State.InputData> { State.EmailConfirmation }
+                reduce { state.copy(registrationState = State.Registration.None) }
+
+                signUpRouter.navigate(routePath = SIGN_UP_EMAIL_CONFIRM_SCREEN_ROUTE_PATH)
             },
             onError = { throwable ->
-                reduceIfState<State.InputData> { state ->
-                    state.copy(registrationState = State.InputData.Registration.Error)
-                }
+                reduce { state.copy(registrationState = State.Registration.Error) }
 
                 when (throwable) {
                     is InvalidSignUpFieldsValuesException -> {
@@ -232,9 +217,7 @@ class SignUpViewModel(
 
                 delay(REGISTRATION_STATE_DELAY_MILLIS)
 
-                reduceIfState<State.InputData> { state ->
-                    state.copy(registrationState = State.InputData.Registration.None)
-                }
+                reduce { state.copy(registrationState = State.Registration.None) }
             }
         )
     }
@@ -246,7 +229,7 @@ class SignUpViewModel(
     private suspend fun IntentBody.reduceErrors(
         throwable: InvalidSignUpFieldsValuesException
     ) {
-        reduceIfState<State.InputData> { state ->
+        reduce {
             state.copy(
                 firstNameErrorMessage = throwable.firstNameError.toStringResource(),
                 lastNameErrorMessage = throwable.lastNameError.toStringResource(),
@@ -254,16 +237,6 @@ class SignUpViewModel(
                 passwordErrorMessage = throwable.passwordError.toStringResource(),
                 confirmedPasswordErrorMessage = throwable.confirmedPasswordError.toStringResource(),
             )
-        }
-    }
-
-    private suspend inline fun <reified T: State> IntentBody.reduceIfState(
-        crossinline reducer: (state: T) -> State
-    ) {
-        reduce {
-            state.letIfInheritor<State, T> { state ->
-                reducer(state)
-            }
         }
     }
 

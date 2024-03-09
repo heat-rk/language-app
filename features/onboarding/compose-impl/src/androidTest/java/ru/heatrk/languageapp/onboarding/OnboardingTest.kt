@@ -19,7 +19,7 @@ import androidx.navigation.testing.TestNavHostController
 import org.junit.Rule
 import org.junit.Test
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
-import ru.heatrk.languageapp.auth.api.ui.navigation.SIGN_IN_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.api.ui.navigation.AUTH_GRAPH_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
@@ -71,7 +71,7 @@ class OnboardingTest {
                             )
                         }
 
-                        composable(SIGN_IN_SCREEN_ROUTE_PATH) {
+                        composable(AUTH_GRAPH_ROUTE_PATH) {
                             SignInScreen(
                                 viewModel = SignInViewModel(
                                     signIn = SignInUseCase(
@@ -195,7 +195,7 @@ class OnboardingTest {
             .assertIsDisplayed()
             .performClick()
 
-        composeTestRule.waitUntil { SIGN_IN_SCREEN_ROUTE_PATH == navController.currentRoute }
+        composeTestRule.waitUntil { AUTH_GRAPH_ROUTE_PATH == navController.currentRoute }
     }
 
     @Test
@@ -217,7 +217,7 @@ class OnboardingTest {
             .assertIsDisplayed()
             .performClick()
 
-        composeTestRule.waitUntil { SIGN_IN_SCREEN_ROUTE_PATH == navController.currentRoute }
+        composeTestRule.waitUntil { AUTH_GRAPH_ROUTE_PATH == navController.currentRoute }
     }
 
     private fun createOnboardingRepository(
