@@ -9,8 +9,8 @@ import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInWithGoogleUseCase
 import ru.heatrk.languageapp.auth.impl.domain.sign_up.SignUpUseCase
-import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInViewModel
-import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpViewModel
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInViewModel
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpViewModel
 import ru.heatrk.languageapp.core.coroutines.dispatchers.DefaultCoroutineDispatcher
 import ru.heatrk.languageapp.core.coroutines.dispatchers.IoCoroutineDispatcher
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter

@@ -24,8 +24,8 @@ import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInWithGoogleUseCase
-import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreen
-import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInViewModel
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreen
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInViewModel
 import ru.heatrk.languageapp.common.utils.currentRoute
 import ru.heatrk.languageapp.common.utils.testTag
 import ru.heatrk.languageapp.common.utils.vectorRes
@@ -35,9 +35,9 @@ import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
 import ru.heatrk.languageapp.onboarding.api.domain.models.OnboardingUnit
 import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.onboarding.impl.R
-import ru.heatrk.languageapp.onboarding.impl.ui.ONBOARDING_SHIMMER_TEST_TAG
-import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingScreen
-import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingViewModel
+import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.ONBOARDING_SHIMMER_TEST_TAG
+import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingScreen
+import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingViewModel
 
 class OnboardingTest {
     @get:Rule

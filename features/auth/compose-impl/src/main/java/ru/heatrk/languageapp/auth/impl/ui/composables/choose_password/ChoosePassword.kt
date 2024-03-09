@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.ui.choose_password
+package ru.heatrk.languageapp.auth.impl.ui.composables.choose_password
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
@@ -19,8 +19,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.heatrk.languageapp.auth.impl.R
-import ru.heatrk.languageapp.auth.impl.ui.choose_password.ChoosePasswordContract.Intent
-import ru.heatrk.languageapp.auth.impl.ui.choose_password.ChoosePasswordContract.State
+import ru.heatrk.languageapp.auth.impl.ui.composables.choose_password.ChoosePasswordContract.Intent
+import ru.heatrk.languageapp.auth.impl.ui.composables.choose_password.ChoosePasswordContract.State
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.text_field.AppPasswordTextField

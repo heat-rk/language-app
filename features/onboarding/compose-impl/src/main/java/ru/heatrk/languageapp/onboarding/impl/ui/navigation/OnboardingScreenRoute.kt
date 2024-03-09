@@ -7,7 +7,7 @@ import androidx.navigation.NavBackStackEntry
 import ru.heatrk.languageapp.core.navigation.api.Route
 import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.onboarding.impl.di.OnboardingComponent
-import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingScreen
+import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingScreen
 
 object OnboardingScreenRoute : Route.Screen(
     path = ONBOARDING_SCREEN_ROUTE_PATH

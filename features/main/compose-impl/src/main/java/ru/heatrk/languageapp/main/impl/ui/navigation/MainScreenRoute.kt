@@ -7,7 +7,7 @@ import androidx.navigation.NavBackStackEntry
 import ru.heatrk.languageapp.core.navigation.api.Route
 import ru.heatrk.languageapp.main.api.MAIN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.main.impl.di.MainComponent
-import ru.heatrk.languageapp.main.impl.ui.MainScreen
+import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreen
 
 object MainScreenRoute : Route.Screen(
     path = MAIN_SCREEN_ROUTE_PATH

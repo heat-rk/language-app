@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.ui.sign_in
+package ru.heatrk.languageapp.auth.impl.ui.screens.sign_in
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,9 +16,9 @@ import ru.heatrk.languageapp.auth.impl.domain.sign_in.InvalidSignInFieldsValuesE
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInWithGoogleUseCase
 import ru.heatrk.languageapp.auth.impl.ui.navigation.SIGN_UP_SCREEN_ROUTE_PATH
-import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.Intent
-import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.SideEffect
-import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.State
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.Intent
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.SideEffect
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.State
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.navigation.api.Router

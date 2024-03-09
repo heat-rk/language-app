@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.onboarding.impl.ui
+package ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding
 
 import ru.heatrk.languageapp.common.utils.StringResource
 import ru.heatrk.languageapp.common.utils.VectorResource

@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.ui.sign_up.general_info
+package ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.general_info
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
@@ -19,10 +19,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ru.heatrk.languageapp.auth.impl.R
-import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpButtonsControllerEffect
-import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreenContract
-import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpTitle
-import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpViewModel
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpButtonsControllerEffect
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpTitle
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpViewModel
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField

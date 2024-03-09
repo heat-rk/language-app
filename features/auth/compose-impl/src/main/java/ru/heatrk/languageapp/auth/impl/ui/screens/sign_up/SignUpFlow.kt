@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.ui.sign_up
+package ru.heatrk.languageapp.auth.impl.ui.screens.sign_up
 
 import android.content.Context
 import androidx.annotation.StringRes
@@ -39,9 +39,9 @@ import kotlinx.coroutines.flow.onEach
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.di.AuthComponent
 import ru.heatrk.languageapp.auth.impl.ui.navigation.SignUpGraphRoute
-import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreenContract.Intent
-import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreenContract.SideEffect
-import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreenContract.State
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.Intent
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.SideEffect
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.State
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.AppLinkedText

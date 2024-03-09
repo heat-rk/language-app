@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.ui.sign_in
+package ru.heatrk.languageapp.auth.impl.ui.screens.sign_in
 
 import android.content.Context
 import android.content.res.Configuration
@@ -45,9 +45,9 @@ import kotlinx.coroutines.flow.onEach
 import ru.heatrk.languageapp.auth.impl.BuildConfig
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
-import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.Intent
-import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.SideEffect
-import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreenContract.State
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.Intent
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.SideEffect
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.State
 import ru.heatrk.languageapp.auth.impl.ui.utils.isFatal
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity

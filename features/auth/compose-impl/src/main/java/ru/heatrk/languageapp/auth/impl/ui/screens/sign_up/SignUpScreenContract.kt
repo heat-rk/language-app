@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.ui.sign_up
+package ru.heatrk.languageapp.auth.impl.ui.screens.sign_up
 
 import ru.heatrk.languageapp.common.utils.StringResource
 

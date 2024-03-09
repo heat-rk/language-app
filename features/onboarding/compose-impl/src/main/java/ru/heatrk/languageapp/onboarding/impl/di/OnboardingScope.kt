@@ -6,7 +6,7 @@ import ru.heatrk.languageapp.core.coroutines.dispatchers.IoCoroutineDispatcher
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
 import ru.heatrk.languageapp.onboarding.impl.data.OnboardingStorage
 import ru.heatrk.languageapp.onboarding.impl.domain.OnboardingRepositoryImpl
-import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingViewModel
+import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingViewModel
 import scout.Scope
 import scout.definition.Registry
 import scout.scope

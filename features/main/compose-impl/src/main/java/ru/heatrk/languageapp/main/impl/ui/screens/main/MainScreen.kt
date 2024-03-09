@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.main.impl.ui
+package ru.heatrk.languageapp.main.impl.ui.screens.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview

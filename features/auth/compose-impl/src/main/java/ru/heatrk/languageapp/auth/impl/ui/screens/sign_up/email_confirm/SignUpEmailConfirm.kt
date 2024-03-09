@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.ui.sign_up.email_confirm
+package ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.email_confirm
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -22,9 +22,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpButtonsControllerEffect
-import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpScreenContract
-import ru.heatrk.languageapp.auth.impl.ui.sign_up.SignUpViewModel
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpButtonsControllerEffect
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpViewModel
 import ru.heatrk.languageapp.core.design.R
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.styles.AppTheme

@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.main.impl.ui
+package ru.heatrk.languageapp.main.impl.ui.screens.main
 
 import androidx.lifecycle.ViewModel
 import org.orbitmvi.orbit.ContainerHost

@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.onboarding.impl.ui
+package ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -47,8 +47,8 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControl
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.onboarding.impl.R
-import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingContract.Intent
-import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingContract.State
+import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingContract.Intent
+import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingContract.State
 
 @Composable
 fun OnboardingScreen(viewModel: OnboardingViewModel) {

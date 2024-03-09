@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.ui.choose_password
+package ru.heatrk.languageapp.auth.impl.ui.composables.choose_password
 
 import ru.heatrk.languageapp.common.utils.StringResource
 

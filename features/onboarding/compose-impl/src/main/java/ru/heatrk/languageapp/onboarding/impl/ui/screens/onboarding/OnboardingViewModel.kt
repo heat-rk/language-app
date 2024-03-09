@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.onboarding.impl.ui
+package ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,8 +18,8 @@ import ru.heatrk.languageapp.core.navigation.api.RoutingOptions
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
 import ru.heatrk.languageapp.onboarding.api.domain.models.OnboardingUnit
 import ru.heatrk.languageapp.onboarding.impl.R
-import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingContract.Intent
-import ru.heatrk.languageapp.onboarding.impl.ui.OnboardingContract.State
+import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingContract.Intent
+import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingContract.State
 
 class OnboardingViewModel(
     private val onboardingRepository: OnboardingRepository,

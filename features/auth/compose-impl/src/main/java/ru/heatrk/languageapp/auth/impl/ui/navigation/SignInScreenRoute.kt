@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
-import ru.heatrk.languageapp.auth.impl.ui.sign_in.SignInScreen
+import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreen
 import ru.heatrk.languageapp.core.navigation.api.Route
 
 internal class SignInScreenRoute(

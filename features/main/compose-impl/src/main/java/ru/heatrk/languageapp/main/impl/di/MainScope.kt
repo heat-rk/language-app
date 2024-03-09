@@ -2,7 +2,7 @@ package ru.heatrk.languageapp.main.impl.di
 
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import ru.heatrk.languageapp.main.impl.ui.MainViewModel
+import ru.heatrk.languageapp.main.impl.ui.screens.main.MainViewModel
 import scout.Scope
 import scout.scope
 
