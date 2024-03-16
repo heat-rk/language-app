@@ -14,9 +14,10 @@ import ru.heatrk.languageapp.auth.api.ui.navigation.AUTH_GRAPH_ROUTE_PATH
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.common.utils.vectorRes
 import ru.heatrk.languageapp.core.navigation.api.Router
-import ru.heatrk.languageapp.core.navigation.api.RoutingOptions
+import ru.heatrk.languageapp.core.navigation.api.RoutingOption
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
 import ru.heatrk.languageapp.onboarding.api.domain.models.OnboardingUnit
+import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.onboarding.impl.R
 import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingContract.Intent
 import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingContract.State
@@ -64,8 +65,11 @@ class OnboardingViewModel(
     private suspend fun navigateToLoginScreen() {
         router.navigate(
             routePath = AUTH_GRAPH_ROUTE_PATH,
-            options = RoutingOptions(
-                shouldBePopUp = true
+            options = listOf(
+                RoutingOption.PopUpTo(
+                    routePath = ONBOARDING_SCREEN_ROUTE_PATH,
+                    inclusive = true,
+                )
             )
         )
     }

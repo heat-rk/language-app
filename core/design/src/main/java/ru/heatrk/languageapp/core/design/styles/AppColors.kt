@@ -20,8 +20,8 @@ data class AppColors(
     val inputFieldHint: Color,
     val inputFieldText: Color,
     val textBody: Color,
-    val successColor: Color,
-    val onSuccessColor: Color,
+    val success: Color,
+    val onSuccess: Color,
 ) {
     val primary = materialColors.primary
     val onPrimary = materialColors.onPrimary
@@ -50,8 +50,8 @@ val darkAppColors = AppColors(
     inputFieldErrorBackground = Color(0x1AFF0000),
     inputFieldHint = Color(0x809699A3),
     inputFieldText = Color(0xFF363B44),
-    successColor = Color(0xFF5BA890),
-    onSuccessColor = Color(0xFFFFFFFF),
+    success = Color(0xFF5BA890),
+    onSuccess = Color(0xFFFFFFFF),
     materialColors = darkColorScheme(
         primary = Color(0xFF410FA3),
         onPrimary = Color(0xFFFFFFFF),
@@ -84,8 +84,8 @@ val lightAppColors = AppColors(
     inputFieldErrorBackground = Color(0x1AFF0000),
     inputFieldHint = Color(0x80656872),
     inputFieldText = Color(0xFF363B44),
-    successColor = Color(0xFF5BA890),
-    onSuccessColor = Color(0xFFFFFFFF),
+    success = Color(0xFF5BA890),
+    onSuccess = Color(0xFFFFFFFF),
     materialColors = lightColorScheme(
         primary = Color(0xFF410FA3),
         onPrimary = Color(0xFFFFFFFF),

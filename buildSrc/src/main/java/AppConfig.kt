@@ -14,6 +14,8 @@ object AppConfig {
 
         val supaBaseAnonKey = properties.getProperty("supabase.anon.key")
         val supaBaseUrl = properties.getProperty("supabase.url")
+        val supaBaseRedirectScheme = properties.getProperty("supabase.redirect.scheme")
+        val supaBaseRedirectHost = properties.getProperty("supabase.redirect.host")
         val googleServerClientId = properties.getProperty("google.server.client_id")
 
         return arrayOf(
@@ -34,6 +36,20 @@ object AppConfig {
                 name = "GOOGLE_SERVER_CLIENT_ID",
                 releaseValue = googleServerClientId,
                 debugValue = googleServerClientId,
+            ),
+            BuildConfigField(
+                type = "String",
+                name = "SUPABASE_REDIRECT_SCHEME",
+                releaseValue = supaBaseRedirectScheme,
+                debugValue = supaBaseRedirectScheme,
+                includeManifestPlaceholder = true,
+            ),
+            BuildConfigField(
+                type = "String",
+                name = "SUPABASE_REDIRECT_HOST",
+                releaseValue = supaBaseRedirectHost,
+                debugValue = supaBaseRedirectHost,
+                includeManifestPlaceholder = true,
             ),
         )
     }

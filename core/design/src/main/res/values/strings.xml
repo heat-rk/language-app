@@ -3,5 +3,7 @@
     <string name="app_name">Language App</string>
     <string name="go_back_icon_content_description">Go back</string>
     <string name="toggle_password_visibility">Toggle password visibility</string>
+    <string name="finish">Finish</string>
     <string name="finish_positive">Finish!</string>
+    <string name="ok_positive">OK!</string>
 </resources>

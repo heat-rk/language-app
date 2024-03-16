@@ -1,11 +1,11 @@
 package ru.heatrk.languageapp.core.navigation.api
 
 interface Router {
-    val isFirstDestination: Boolean
+    val previousRoute: String?
 
     val currentRoute: String?
 
-    suspend fun navigate(routePath: String, options: RoutingOptions = RoutingOptions())
+    suspend fun navigate(routePath: String, options: List<RoutingOption> = emptyList())
 
     suspend fun navigateBack()
 }

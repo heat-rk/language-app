@@ -20,4 +20,10 @@ interface AuthRepository {
         email: String,
         password: String,
     )
+
+    suspend fun resetPassword(email: String)
+
+    suspend fun applyRecoveryCode(code: String)
+
+    suspend fun changePassword(password: String)
 }

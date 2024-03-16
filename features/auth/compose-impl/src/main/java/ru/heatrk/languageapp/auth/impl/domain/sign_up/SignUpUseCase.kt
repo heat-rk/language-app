@@ -1,9 +1,12 @@
 package ru.heatrk.languageapp.auth.impl.domain.sign_up
 
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
+import ru.heatrk.languageapp.auth.impl.domain.password_validator.InvalidPasswordValuesException
+import ru.heatrk.languageapp.auth.impl.domain.password_validator.PasswordValidator
 
 class SignUpUseCase(
-    private val repository: AuthRepository
+    private val repository: AuthRepository,
+    private val validatePassword: PasswordValidator,
 ) {
     suspend operator fun invoke(
         firstName: String,
@@ -56,15 +59,17 @@ class SignUpUseCase(
             }
         }
 
-        if (Field.PASSWORD in fieldsToValidate && password.trim().length < MIN_PASSWORD_LENGTH) {
+        try {
+            validatePassword(
+                password = password,
+                confirmedPassword = confirmedPassword
+            )
+        } catch (e: InvalidPasswordValuesException) {
             errorBuilder.transform { error ->
-                error.copy(passwordError = InvalidSignUpFieldsValuesException.Password.MIN_LENGTH)
-            }
-        }
-
-        if (Field.CONFIRMED_PASSWORD in fieldsToValidate && confirmedPassword.trim() != password.trim()) {
-            errorBuilder.transform { error ->
-                error.copy(confirmedPasswordError = InvalidSignUpFieldsValuesException.ConfirmedPassword.MISMATCH)
+                error.copy(
+                    passwordError = e.passwordError?.toSignUpError(),
+                    confirmedPasswordError = e.confirmedPasswordError?.toSignUpError(),
+                )
             }
         }
 
@@ -84,12 +89,21 @@ class SignUpUseCase(
         }
     }
 
+    private fun InvalidPasswordValuesException.Password.toSignUpError() = when (this) {
+        InvalidPasswordValuesException.Password.MIN_LENGTH ->
+            InvalidSignUpFieldsValuesException.Password.MIN_LENGTH
+    }
+
+    private fun InvalidPasswordValuesException.ConfirmedPassword.toSignUpError() = when (this) {
+        InvalidPasswordValuesException.ConfirmedPassword.MISMATCH ->
+            InvalidSignUpFieldsValuesException.ConfirmedPassword.MISMATCH
+    }
+
     enum class Field {
         FIRST_NAME,
         LAST_NAME,
         EMAIL,
         PASSWORD,
-        CONFIRMED_PASSWORD;
     }
 
     companion object {
@@ -99,7 +113,5 @@ class SignUpUseCase(
                 + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
                 + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
                 + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$")
-
-        private const val MIN_PASSWORD_LENGTH = 6
     }
 }

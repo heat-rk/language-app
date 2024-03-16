@@ -11,6 +11,12 @@ object AuthComponent : Component(authScope) {
     val signUpViewModelFactory: ViewModelProvider.Factory
         get() = get<SignUpViewModelFactory>().instance
 
+    val recoveryViewModelFactory: ViewModelProvider.Factory
+        get() = get<RecoveryViewModelFactory>().instance
+
     val signUpComposeRouter: ComposeRouter
         get() = get<SignUpComposeRouter>().instance
+
+    val recoveryRouter: ComposeRouter
+        get() = get<RecoveryComposeRouter>().instance
 }

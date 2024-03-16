@@ -15,6 +15,8 @@ import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.InvalidSignInFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInWithGoogleUseCase
+import ru.heatrk.languageapp.auth.impl.ui.navigation.RECOVERY_FLOW_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.SIGN_IN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.navigation.SIGN_UP_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.SideEffect
@@ -22,7 +24,7 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.S
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.navigation.api.Router
-import ru.heatrk.languageapp.core.navigation.api.RoutingOptions
+import ru.heatrk.languageapp.core.navigation.api.RoutingOption
 import ru.heatrk.languageapp.main.api.MAIN_SCREEN_ROUTE_PATH
 
 typealias IntentBody = SimpleSyntax<State, SideEffect>
@@ -98,8 +100,8 @@ class SignInViewModel(
         }
     }
 
-    private suspend fun IntentBody.onForgotPasswordButtonClick() {
-        // TODO
+    private suspend fun onForgotPasswordButtonClick() {
+        router.navigate(routePath = RECOVERY_FLOW_ROUTE_PATH)
     }
 
     private suspend fun IntentBody.onGoogleSignInButtonClick() {
@@ -133,8 +135,11 @@ class SignInViewModel(
 
                 router.navigate(
                     routePath = MAIN_SCREEN_ROUTE_PATH,
-                    options = RoutingOptions(
-                        shouldBePopUp = true
+                    options = listOf(
+                        RoutingOption.PopUpTo(
+                            routePath = SIGN_IN_SCREEN_ROUTE_PATH,
+                            inclusive = true,
+                        )
                     )
                 )
             },
@@ -164,8 +169,11 @@ class SignInViewModel(
 
                 router.navigate(
                     routePath = MAIN_SCREEN_ROUTE_PATH,
-                    options = RoutingOptions(
-                        shouldBePopUp = true
+                    options = listOf(
+                        RoutingOption.PopUpTo(
+                            routePath = SIGN_IN_SCREEN_ROUTE_PATH,
+                            inclusive = true,
+                        )
                     )
                 )
             },

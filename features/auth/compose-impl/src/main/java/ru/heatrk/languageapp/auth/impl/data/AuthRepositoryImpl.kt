@@ -10,6 +10,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
+import ru.heatrk.languageapp.auth.impl.BuildConfig
 
 class AuthRepositoryImpl(
     private val supabaseClient: SupabaseClient,
@@ -56,6 +57,32 @@ class AuthRepositoryImpl(
         }
     }
 
+    override suspend fun resetPassword(email: String): Unit =
+        withContext(supabaseDispatcher) {
+            supabaseClient.auth.resetPasswordForEmail(
+                email = email,
+                redirectUrl = buildString {
+                    append(BuildConfig.SUPABASE_REDIRECT_SCHEME)
+                    append("://")
+                    append(BuildConfig.SUPABASE_REDIRECT_HOST)
+                    append("/")
+                    append(RECOVERY_CONFIRM_URL_PATH)
+                }
+            )
+        }
+
+    override suspend fun applyRecoveryCode(code: String): Unit =
+        withContext(supabaseDispatcher) {
+            supabaseClient.auth.exchangeCodeForSession(code)
+        }
+
+    override suspend fun changePassword(password: String): Unit =
+        withContext(supabaseDispatcher) {
+            supabaseClient.auth.modifyUser {
+                this.password = password
+            }
+        }
+
     private fun jsonOf(firstName: String, lastName: String) =
         JsonObject(
             mapOf(
@@ -63,4 +90,8 @@ class AuthRepositoryImpl(
                 "last_name" to JsonPrimitive(lastName),
             )
         )
+
+    companion object {
+        const val RECOVERY_CONFIRM_URL_PATH = "recovery_confirm"
+    }
 }

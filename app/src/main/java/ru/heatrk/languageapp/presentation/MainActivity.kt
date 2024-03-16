@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -28,8 +29,13 @@ import ru.heatrk.languageapp.presentation.navigation.AppNavHost
 
 class MainActivity : ComponentActivity() {
 
+    private val viewModel: MainViewModel by viewModels(
+        factoryProducer = { AppComponent.getMainViewModelFactory(intent) }
+    )
+
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        viewModel.onNewIntent(intent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,10 +45,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppRootContainer { isDarkTheme ->
-                val viewModel: MainViewModel = viewModel(
-                    factory = AppComponent.mainViewModelFactory
-                )
-
                 val isInitializationFinished by viewModel.isInitializationFinished.collectAsStateWithLifecycle()
 
                 val navController = rememberNavController()

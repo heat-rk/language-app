@@ -10,6 +10,7 @@
     <string name="button_continue">Continue</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="enter_email">Enter Email</string>
 
     <string name="login">Login</string>
     <string name="sign_in_success">Successfully authorized!</string>
@@ -29,7 +30,15 @@
     <string name="signup_waiting_for_email_confirm">Waiting for Email Confirmation</string>
     <string name="signup_email_confirm_description">We just need one small favor from you - please confirm your email address to continue using Language App and start learning!</string>
 
+    <string name="password_recovery">Password Recovery</string>
+    <string name="password_recovery_reset_password">Reset Password</string>
+    <string name="password_recovery_check_email">Check Your Email</string>
+    <string name="password_recovery_check_email_description">We\'ve sent instructions on how to reset your password to %1$s</string>
+    <string name="password_recovery_success">Password changed!</string>
+    <string name="password_recovery_success_description">Your password has been changed successfully!</string>
+
     <string name="error_smth_went_wrong">Something went wrong :(</string>
+    <string name="error_smth_went_wrong_description">Please try again later</string>
     <string name="error_check_your_creds">Error. Check your credentials!</string>
     <string name="error_empty_field">This field is required</string>
     <string name="error_invalid_email">Invalid email format</string>

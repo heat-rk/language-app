@@ -15,8 +15,8 @@ fun Registry.useSupaBaseBeans() {
         ) {
             install(Auth) {
                 flowType = FlowType.PKCE
-                scheme = "app"
-                host = "supabase.com"
+                scheme = BuildConfig.SUPABASE_REDIRECT_SCHEME
+                host = BuildConfig.SUPABASE_REDIRECT_HOST
             }
         }
     }

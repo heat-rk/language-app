@@ -22,7 +22,7 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.S
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.navigation.api.Router
-import ru.heatrk.languageapp.core.navigation.api.RoutingOptions
+import ru.heatrk.languageapp.core.navigation.api.RoutingOption
 
 private typealias IntentBody = SimpleSyntax<State, SideEffect>
 
@@ -113,7 +113,7 @@ class SignUpViewModel(
         when {
             signUpRouter.currentRoute == SIGN_UP_EMAIL_CONFIRM_SCREEN_ROUTE_PATH ->
                 router.navigateBack()
-            signUpRouter.isFirstDestination ->
+            signUpRouter.previousRoute == null ->
                 router.navigateBack()
             else ->
                 signUpRouter.navigateBack()
@@ -243,8 +243,9 @@ class SignUpViewModel(
     private suspend fun navigateToSignIn() {
         router.navigate(
             routePath = SIGN_IN_SCREEN_ROUTE_PATH,
-            options = RoutingOptions(
-                singleTop = true
+            options = listOf(
+                RoutingOption.PopUpTo(SIGN_IN_SCREEN_ROUTE_PATH),
+                RoutingOption.LaunchSingleTop(true),
             )
         )
     }

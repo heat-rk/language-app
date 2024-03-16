@@ -11,8 +11,10 @@ object AuthGraphRoute : Route.Graph(
     builder = {
         val signInViewModelFactory = AuthComponent.signInViewModelFactory
         val signUpViewModelFactory = AuthComponent.signUpViewModelFactory
+        val recoveryViewModelFactory = AuthComponent.recoveryViewModelFactory
 
         route(SignInScreenRoute(signInViewModelFactory = signInViewModelFactory))
         route(SignUpFlowRoute(signUpViewModelFactory = signUpViewModelFactory))
+        route(RecoveryFlowRoute(recoveryViewModelFactory = recoveryViewModelFactory))
     }
 )

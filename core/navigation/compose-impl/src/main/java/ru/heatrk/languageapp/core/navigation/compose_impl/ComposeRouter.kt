@@ -9,8 +9,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import ru.heatrk.languageapp.common.utils.currentRoute
+import ru.heatrk.languageapp.common.utils.previousRoute
 import ru.heatrk.languageapp.core.navigation.api.Router
-import ru.heatrk.languageapp.core.navigation.api.RoutingOptions
+import ru.heatrk.languageapp.core.navigation.api.RoutingOption
 
 class ComposeRouter : Router {
 
@@ -19,13 +20,13 @@ class ComposeRouter : Router {
 
     private var navController: NavController? = null
 
-    override val isFirstDestination
-        get() = navController?.previousBackStackEntry == null
-
     override val currentRoute: String?
         get() = navController?.currentRoute
 
-    override suspend fun navigate(routePath: String, options: RoutingOptions) {
+    override val previousRoute: String?
+        get() = navController?.previousRoute
+
+    override suspend fun navigate(routePath: String, options: List<RoutingOption>) {
         action(RoutingAction.NavigateTo(routePath, options))
     }
 
@@ -64,22 +65,19 @@ class ComposeRouter : Router {
     private fun handleNavigateToRouting(
         navController: NavController,
         routePath: String,
-        options: RoutingOptions
+        options: List<RoutingOption>,
     ) {
         navController.navigate(routePath) {
-            if (options.shouldBePopUp) {
-                navController.currentRoute?.let { currentRoute ->
-                    popUpTo(currentRoute) {
-                        inclusive = true
+            options.forEach { option ->
+                when (option) {
+                    is RoutingOption.LaunchSingleTop -> {
+                        launchSingleTop = option.launchSingleTop
                     }
-                }
-            }
-
-            if (options.singleTop) {
-                launchSingleTop = true
-
-                popUpTo(routePath) {
-                    inclusive = false
+                    is RoutingOption.PopUpTo -> {
+                        popUpTo(option.routePath) {
+                            inclusive = option.inclusive
+                        }
+                    }
                 }
             }
         }
