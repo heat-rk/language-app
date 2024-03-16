@@ -15,9 +15,9 @@ import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.InvalidSignInFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInWithGoogleUseCase
-import ru.heatrk.languageapp.auth.impl.ui.navigation.RECOVERY_FLOW_ROUTE_PATH
-import ru.heatrk.languageapp.auth.impl.ui.navigation.SIGN_IN_SCREEN_ROUTE_PATH
-import ru.heatrk.languageapp.auth.impl.ui.navigation.SIGN_UP_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_FLOW_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_in.SIGN_IN_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_up.SIGN_UP_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.SideEffect
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.State

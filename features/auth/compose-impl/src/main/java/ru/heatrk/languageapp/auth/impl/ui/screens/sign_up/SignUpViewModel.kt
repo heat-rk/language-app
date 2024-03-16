@@ -13,9 +13,9 @@ import org.orbitmvi.orbit.viewmodel.container
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.domain.sign_up.InvalidSignUpFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.sign_up.SignUpUseCase
-import ru.heatrk.languageapp.auth.impl.ui.navigation.SIGN_IN_SCREEN_ROUTE_PATH
-import ru.heatrk.languageapp.auth.impl.ui.navigation.SIGN_UP_EMAIL_CONFIRM_SCREEN_ROUTE_PATH
-import ru.heatrk.languageapp.auth.impl.ui.navigation.SIGN_UP_PASSWORD_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_in.SIGN_IN_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_up.SIGN_UP_EMAIL_CONFIRM_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_up.SIGN_UP_PASSWORD_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.SideEffect
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.State

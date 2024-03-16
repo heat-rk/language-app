@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.ui.navigation
+package ru.heatrk.languageapp.auth.impl.ui.navigation.recovery
 
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowViewModel
 import ru.heatrk.languageapp.core.navigation.api.Route

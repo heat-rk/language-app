@@ -12,10 +12,10 @@ import org.orbitmvi.orbit.viewmodel.container
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.domain.recovery.InvalidRecoveryFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.recovery.RecoveryUseCase
-import ru.heatrk.languageapp.auth.impl.ui.navigation.RECOVERY_CHECK_EMAIL_SCREEN_ROUTE_PATH
-import ru.heatrk.languageapp.auth.impl.ui.navigation.RECOVERY_CHOOSE_PASSWORD_SCREEN_ROUTE_PATH
-import ru.heatrk.languageapp.auth.impl.ui.navigation.RECOVERY_SUCCESS_SCREEN_ROUTE_PATH
-import ru.heatrk.languageapp.auth.impl.ui.navigation.SIGN_IN_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_CHECK_EMAIL_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_CHOOSE_PASSWORD_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_SUCCESS_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_in.SIGN_IN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.SideEffect
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.State

@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.ui.navigation
+package ru.heatrk.languageapp.auth.impl.ui.navigation.recovery
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable

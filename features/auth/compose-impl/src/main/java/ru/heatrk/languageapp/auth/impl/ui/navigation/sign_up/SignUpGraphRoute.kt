@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.ui.navigation
+package ru.heatrk.languageapp.auth.impl.ui.navigation.sign_up
 
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpViewModel
 import ru.heatrk.languageapp.core.navigation.api.Route

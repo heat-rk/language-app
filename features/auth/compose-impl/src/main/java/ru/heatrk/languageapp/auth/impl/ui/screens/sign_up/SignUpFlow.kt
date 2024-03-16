@@ -38,7 +38,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.di.AuthComponent
-import ru.heatrk.languageapp.auth.impl.ui.navigation.SignUpGraphRoute
+import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_up.SignUpGraphRoute
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.SideEffect
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.State
