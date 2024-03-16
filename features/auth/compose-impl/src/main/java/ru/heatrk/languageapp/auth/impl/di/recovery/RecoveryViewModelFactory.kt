@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.di
+package ru.heatrk.languageapp.auth.impl.di.recovery
 
 import androidx.lifecycle.ViewModelProvider
 

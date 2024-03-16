@@ -5,6 +5,13 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 import ru.heatrk.languageapp.auth.impl.data.AuthRepositoryImpl
 import ru.heatrk.languageapp.auth.impl.data.google.AuthGoogleNonceProviderImpl
+import ru.heatrk.languageapp.auth.impl.di.recovery.RecoveryComposeRouter
+import ru.heatrk.languageapp.auth.impl.di.recovery.RecoveryRouter
+import ru.heatrk.languageapp.auth.impl.di.recovery.RecoveryViewModelFactory
+import ru.heatrk.languageapp.auth.impl.di.sign_in.SignInViewModelFactory
+import ru.heatrk.languageapp.auth.impl.di.sign_up.SignUpComposeRouter
+import ru.heatrk.languageapp.auth.impl.di.sign_up.SignUpRouter
+import ru.heatrk.languageapp.auth.impl.di.sign_up.SignUpViewModelFactory
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.password_validator.PasswordValidator
 import ru.heatrk.languageapp.auth.impl.domain.recovery.RecoveryUseCase

@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.di
+package ru.heatrk.languageapp.auth.impl.di.sign_up
 
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter

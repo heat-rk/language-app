@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.di
+package ru.heatrk.languageapp.auth.impl.di.sign_in
 
 import androidx.lifecycle.ViewModelProvider
 
