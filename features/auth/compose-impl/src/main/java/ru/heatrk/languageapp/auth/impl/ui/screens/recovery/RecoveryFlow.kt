@@ -10,10 +10,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
@@ -24,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -49,8 +52,7 @@ fun RecoveryFlow(viewModel: RecoveryFlowViewModel) {
     val appBarTitle = stringResource(R.string.password_recovery)
     val navController = rememberNavController()
     val buttonsController = rememberRecoveryButtonsController()
-    
-    RecoveryLaunchedRouterEffect(navController = navController)
+    val coroutineScope = rememberCoroutineScope()
 
     RecoveryFlowSideEffects(sideEffects = viewModel.container.sideEffectFlow)
 
@@ -89,18 +91,26 @@ fun RecoveryFlow(viewModel: RecoveryFlowViewModel) {
                 .padding(horizontal = 24.dp)
         )
     }
+
+    RecoveryLaunchedRouterEffect(
+        coroutineScope = coroutineScope,
+        navController = navController
+    )
 }
 
 @Composable
 private fun RecoveryLaunchedRouterEffect(
+    coroutineScope: CoroutineScope,
     navController: NavController,
     router: ComposeRouter = AuthComponent.recoveryRouter,
 ) {
-    LaunchedEffect(navController, router) {
+    DisposableEffect(coroutineScope, navController, router) {
         router.attachNavController(
             navController = navController,
-            coroutineScope = this
+            coroutineScope = coroutineScope
         )
+
+        onDispose { router.detachNavController() }
     }
 }
 

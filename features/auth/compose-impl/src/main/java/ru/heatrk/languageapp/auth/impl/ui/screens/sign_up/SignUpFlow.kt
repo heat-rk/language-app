@@ -14,10 +14,12 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
@@ -33,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -60,7 +63,7 @@ fun SignUpFlow(viewModel: SignUpViewModel) {
     val appBarTitle = stringResource(R.string.signup)
     val navController = rememberNavController()
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
-
+    val coroutineScope = rememberCoroutineScope()
     val buttonsController = rememberSignUpButtonsController()
 
     SignUpScreenSideEffects(
@@ -102,7 +105,10 @@ fun SignUpFlow(viewModel: SignUpViewModel) {
         )
     }
 
-    SignUpLaunchedRouterEffect(navController = navController)
+    SignUpLaunchedRouterEffect(
+        coroutineScope = coroutineScope,
+        navController = navController,
+    )
 }
 
 @Composable
@@ -167,14 +173,17 @@ internal fun ColumnScope.SignUpTitle(
 
 @Composable
 private fun SignUpLaunchedRouterEffect(
+    coroutineScope: CoroutineScope,
     navController: NavController,
     router: ComposeRouter = AuthComponent.signUpComposeRouter,
 ) {
-    LaunchedEffect(navController, router) {
+    DisposableEffect(coroutineScope, navController, router) {
         router.attachNavController(
             navController = navController,
-            coroutineScope = this
+            coroutineScope = coroutineScope
         )
+
+        onDispose { router.detachNavController() }
     }
 }
 
