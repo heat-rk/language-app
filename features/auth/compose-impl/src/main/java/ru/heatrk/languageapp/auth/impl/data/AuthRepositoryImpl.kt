@@ -14,8 +14,19 @@ import ru.heatrk.languageapp.auth.impl.BuildConfig
 
 class AuthRepositoryImpl(
     private val supabaseClient: SupabaseClient,
+    private val authStorage: AuthStorage,
     private val supabaseDispatcher: CoroutineDispatcher,
 ) : AuthRepository {
+
+    override suspend fun awaitInitialization() {
+        supabaseClient.auth.awaitInitialization()
+    }
+
+    override suspend fun hasSavedSession(): Boolean =
+        withContext(supabaseDispatcher) {
+            supabaseClient.auth.currentSessionOrNull() != null
+        }
+
     override suspend fun signIn(
         email: String,
         password: String
@@ -82,6 +93,17 @@ class AuthRepositoryImpl(
                 this.password = password
             }
         }
+
+    private suspend fun saveTokens() {
+        val currentSession = supabaseClient.auth.currentSessionOrNull()
+
+        authStorage.saveTokens(
+            AuthStorage.Tokens(
+                accessToken = currentSession?.accessToken,
+                refreshToken = currentSession?.refreshToken
+            )
+        )
+    }
 
     private fun jsonOf(firstName: String, lastName: String) =
         JsonObject(

@@ -4,6 +4,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 import ru.heatrk.languageapp.auth.impl.data.AuthRepositoryImpl
+import ru.heatrk.languageapp.auth.impl.data.AuthStorage
 import ru.heatrk.languageapp.auth.impl.data.google.AuthGoogleNonceProviderImpl
 import ru.heatrk.languageapp.auth.impl.di.recovery.RecoveryComposeRouter
 import ru.heatrk.languageapp.auth.impl.di.recovery.RecoveryRouter
@@ -48,9 +49,17 @@ fun ScopeBuilder.useAuthApiBeans() {
     singleton<RecoveryComposeRouter> { RecoveryComposeRouter(ComposeRouter()) }
     singleton<RecoveryRouter> { RecoveryRouter(instance = get<RecoveryComposeRouter>().instance) }
 
+    singleton<AuthStorage> {
+        AuthStorage(
+            storageDispatcher = get<IoCoroutineDispatcher>().instance,
+            applicationContext = get()
+        )
+    }
+
     reusable<AuthRepository> {
         AuthRepositoryImpl(
             supabaseClient = get(),
+            authStorage = get(),
             supabaseDispatcher = get<IoCoroutineDispatcher>().instance
         )
     }

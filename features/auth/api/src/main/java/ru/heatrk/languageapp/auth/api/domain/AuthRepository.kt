@@ -1,6 +1,11 @@
 package ru.heatrk.languageapp.auth.api.domain
 
 interface AuthRepository {
+
+    suspend fun awaitInitialization()
+
+    suspend fun hasSavedSession(): Boolean
+
     suspend fun signIn(
         email: String,
         password: String,

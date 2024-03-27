@@ -15,6 +15,7 @@ object AppComponent : Component(appScope) {
             initializer {
                 MainViewModel(
                     onboardingRepository = get(),
+                    authRepository = get(),
                     router = get(),
                     deepLinkRouters = collect(),
                     intent = intent,
