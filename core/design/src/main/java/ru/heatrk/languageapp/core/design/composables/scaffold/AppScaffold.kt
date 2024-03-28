@@ -57,7 +57,7 @@ private fun appScaffoldTopBar(
         AppBarState.Hidden -> {
             EmptyComposable
         }
-        is AppBarState.Shown -> {
+        is AppBarState.Default -> {
             {
                 AppBar(
                     title = appBarState.title,
@@ -66,6 +66,9 @@ private fun appScaffoldTopBar(
                     onGoBackClick = appBarState.onGoBackClick,
                 )
             }
+        }
+        is AppBarState.Custom -> {
+            appBarState.content
         }
     }
 } else {
@@ -82,13 +85,16 @@ private fun appScaffoldTopBar(
                             .fillMaxWidth()
                     )
                 }
-                is AppBarState.Shown -> {
+                is AppBarState.Default -> {
                     AppBar(
                         title = state.title,
                         titleGravity = state.titleGravity,
                         actions = state.actions,
                         onGoBackClick = state.onGoBackClick,
                     )
+                }
+                is AppBarState.Custom -> {
+                    state.content()
                 }
             }
         }
@@ -98,11 +104,15 @@ private fun appScaffoldTopBar(
 sealed interface AppBarState {
     data object Hidden : AppBarState
 
-    data class Shown(
+    data class Default(
         val title: String,
         val titleGravity: AppBarTitleGravity = AppBarTitleGravity.START,
         val actions: List<AppBarActionItem> = emptyList(),
         val onGoBackClick: (() -> Unit)? = null,
+    ) : AppBarState
+
+    data class Custom(
+        val content: @Composable () -> Unit
     ) : AppBarState
 }
 
@@ -113,7 +123,7 @@ private val EmptyComposable: @Composable () -> Unit = {}
 private fun AppScaffoldPreview() {
     AppTheme {
         AppScaffold(
-            appBarState = AppBarState.Shown(
+            appBarState = AppBarState.Default(
                 title = "Toolbar Title",
                 titleGravity = AppBarTitleGravity.CENTER,
                 onGoBackClick = {}

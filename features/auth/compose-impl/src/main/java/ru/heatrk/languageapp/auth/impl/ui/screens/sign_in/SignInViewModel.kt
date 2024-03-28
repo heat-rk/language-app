@@ -25,7 +25,7 @@ import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingOption
-import ru.heatrk.languageapp.main.api.MAIN_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.main.api.MAIN_GRAPH_ROUTE_PATH
 
 typealias IntentBody = SimpleSyntax<State, SideEffect>
 
@@ -134,7 +134,7 @@ class SignInViewModel(
                 delay(AUTHORIZING_STATE_DELAY_MILLIS)
 
                 router.navigate(
-                    routePath = MAIN_SCREEN_ROUTE_PATH,
+                    routePath = MAIN_GRAPH_ROUTE_PATH,
                     options = listOf(
                         RoutingOption.PopUpTo(
                             routePath = SIGN_IN_SCREEN_ROUTE_PATH,
@@ -168,7 +168,7 @@ class SignInViewModel(
                 delay(AUTHORIZING_STATE_DELAY_MILLIS)
 
                 router.navigate(
-                    routePath = MAIN_SCREEN_ROUTE_PATH,
+                    routePath = MAIN_GRAPH_ROUTE_PATH,
                     options = listOf(
                         RoutingOption.PopUpTo(
                             routePath = SIGN_IN_SCREEN_ROUTE_PATH,

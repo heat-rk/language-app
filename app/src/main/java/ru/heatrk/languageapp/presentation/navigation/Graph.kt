@@ -8,14 +8,14 @@ import ru.heatrk.languageapp.auth.impl.ui.navigation.AuthGraphRoute
 import ru.heatrk.languageapp.core.navigation.api.NavHost
 import ru.heatrk.languageapp.core.navigation.api.route
 import ru.heatrk.languageapp.features.splash.impl.ui.navigation.SplashScreenRoute
-import ru.heatrk.languageapp.main.impl.ui.navigation.MainScreenRoute
+import ru.heatrk.languageapp.main.impl.ui.navigation.MainGraphRoute
 import ru.heatrk.languageapp.onboarding.impl.ui.navigation.OnboardingScreenRoute
 
 private fun NavGraphBuilder.buildGraph() {
     route(SplashScreenRoute)
     route(OnboardingScreenRoute)
     route(AuthGraphRoute)
-    route(MainScreenRoute)
+    route(MainGraphRoute)
 }
 
 @Composable

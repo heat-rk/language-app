@@ -57,7 +57,7 @@ fun RecoveryFlow(viewModel: RecoveryFlowViewModel) {
     RecoveryFlowSideEffects(sideEffects = viewModel.container.sideEffectFlow)
 
     AppScaffoldControllerEffect(
-        appBarState = AppBarState.Shown(
+        appBarState = AppBarState.Default(
             title = appBarTitle,
             titleGravity = AppBarTitleGravity.CENTER,
             onGoBackClick = { viewModel.processIntent(Intent.OnGoBackClick) },

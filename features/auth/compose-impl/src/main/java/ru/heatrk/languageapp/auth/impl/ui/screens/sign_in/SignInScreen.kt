@@ -88,7 +88,7 @@ private fun SignInScreen(
     val appBarTitle = stringResource(R.string.login)
 
     AppScaffoldControllerEffect(
-        appBarState = AppBarState.Shown(
+        appBarState = AppBarState.Default(
             title = appBarTitle,
             titleGravity = AppBarTitleGravity.CENTER,
         )

@@ -71,7 +71,7 @@ fun SignUpFlow(viewModel: SignUpViewModel) {
     )
 
     AppScaffoldControllerEffect(
-        appBarState = AppBarState.Shown(
+        appBarState = AppBarState.Default(
             title = appBarTitle,
             titleGravity = AppBarTitleGravity.CENTER,
             onGoBackClick = { viewModel.processIntent(Intent.OnGoBackClick) },
