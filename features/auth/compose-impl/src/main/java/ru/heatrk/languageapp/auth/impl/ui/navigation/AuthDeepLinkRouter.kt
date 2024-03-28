@@ -10,6 +10,7 @@ import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_CHOOSE_PA
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_ENTER_EMAIL_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_ERROR_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_FLOW_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_in.SIGN_IN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.core.navigation.api.DeepLinkRouter
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingOption
@@ -21,6 +22,10 @@ internal class AuthDeepLinkRouter(
 ) : DeepLinkRouter {
     override suspend fun handle(intent: Intent): Boolean {
         when {
+            isEmailConfirmDeepLink(intent) -> {
+                navigateToSignIn()
+                return true
+            }
             isRecoveryConfirmDeepLink(intent) -> {
                 val params = parseParams(intent.data?.query)
 
@@ -50,6 +55,19 @@ internal class AuthDeepLinkRouter(
         }
 
         return false
+    }
+
+    private suspend fun navigateToSignIn() {
+        router.navigate(
+            routePath = SIGN_IN_SCREEN_ROUTE_PATH,
+            options = listOf(
+                RoutingOption.PopUpTo(
+                    routePath = SIGN_IN_SCREEN_ROUTE_PATH,
+                    inclusive = false,
+                ),
+                RoutingOption.LaunchSingleTop(true),
+            )
+        )
     }
 
     private suspend fun navigateToRecoveryFlow() {
@@ -94,6 +112,9 @@ internal class AuthDeepLinkRouter(
 
         return params
     }
+
+    private fun isEmailConfirmDeepLink(intent: Intent) =
+        intent.data?.pathSegments?.contains(AuthRepositoryImpl.EMAIL_CONFIRM_URL_PATH) ?: false
 
     private fun isRecoveryConfirmDeepLink(intent: Intent) =
         intent.data?.pathSegments?.contains(AuthRepositoryImpl.RECOVERY_CONFIRM_URL_PATH) ?: false

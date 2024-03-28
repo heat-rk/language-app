@@ -129,7 +129,16 @@ class AuthRepositoryImpl(
         email: String,
         password: String
     ): Unit = withContext(supabaseDispatcher) {
-        supabaseClient.auth.signUpWith(Email) {
+        supabaseClient.auth.signUpWith(
+            provider = Email,
+            redirectUrl = buildString {
+                append(BuildConfig.SUPABASE_REDIRECT_SCHEME)
+                append("://")
+                append(BuildConfig.SUPABASE_REDIRECT_HOST)
+                append("/")
+                append(EMAIL_CONFIRM_URL_PATH)
+            }
+        ) {
             this.email = email
             this.password = password
 
@@ -172,5 +181,6 @@ class AuthRepositoryImpl(
 
     companion object {
         const val RECOVERY_CONFIRM_URL_PATH = "recovery_confirm"
+        const val EMAIL_CONFIRM_URL_PATH = "email_confirm"
     }
 }
