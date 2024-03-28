@@ -1,6 +1,7 @@
 package ru.heatrk.languageapp.auth.impl.data
 
 import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.exceptions.RestException
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.gotrue.providers.Google
 import io.github.jan.supabase.gotrue.providers.builtin.Email
@@ -24,7 +25,25 @@ class AuthRepositoryImpl(
 
     override suspend fun hasSavedSession(): Boolean =
         withContext(supabaseDispatcher) {
-            supabaseClient.auth.currentSessionOrNull() != null
+            var savedSession = supabaseClient.auth.currentSessionOrNull()
+
+            if (savedSession == null) {
+                val refreshToken = authStorage.getRefreshToken()
+                if (refreshToken != null) {
+                    try {
+                        savedSession = supabaseClient.auth.refreshSession(refreshToken)
+                    } catch (ignored: RestException) {}
+                }
+            }
+
+            authStorage.saveTokens(
+                AuthStorage.Tokens(
+                    accessToken = savedSession?.accessToken,
+                    refreshToken = savedSession?.refreshToken
+                )
+            )
+
+            savedSession != null
         }
 
     override suspend fun signIn(
@@ -35,6 +54,15 @@ class AuthRepositoryImpl(
             this.email = email
             this.password = password
         }
+
+        val currentSession = supabaseClient.auth.currentSessionOrNull()
+
+        authStorage.saveTokens(
+            AuthStorage.Tokens(
+                accessToken = currentSession?.accessToken,
+                refreshToken = currentSession?.refreshToken
+            )
+        )
     }
 
     override suspend fun signInWithGoogle(
@@ -53,6 +81,15 @@ class AuthRepositoryImpl(
         supabaseClient.auth.modifyUser {
             this.data = jsonOf(firstName, lastName)
         }
+
+        val currentSession = supabaseClient.auth.currentSessionOrNull()
+
+        authStorage.saveTokens(
+            AuthStorage.Tokens(
+                accessToken = currentSession?.accessToken,
+                refreshToken = currentSession?.refreshToken
+            )
+        )
     }
 
     override suspend fun signUp(
@@ -93,17 +130,6 @@ class AuthRepositoryImpl(
                 this.password = password
             }
         }
-
-    private suspend fun saveTokens() {
-        val currentSession = supabaseClient.auth.currentSessionOrNull()
-
-        authStorage.saveTokens(
-            AuthStorage.Tokens(
-                accessToken = currentSession?.accessToken,
-                refreshToken = currentSession?.refreshToken
-            )
-        )
-    }
 
     private fun jsonOf(firstName: String, lastName: String) =
         JsonObject(
