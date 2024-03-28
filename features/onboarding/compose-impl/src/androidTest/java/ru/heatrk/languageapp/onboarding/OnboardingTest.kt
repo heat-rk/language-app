@@ -19,6 +19,7 @@ import androidx.navigation.testing.TestNavHostController
 import org.junit.Rule
 import org.junit.Test
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
+import ru.heatrk.languageapp.auth.api.domain.User
 import ru.heatrk.languageapp.auth.api.ui.navigation.AUTH_GRAPH_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
@@ -230,6 +231,14 @@ class OnboardingTest {
 
     private fun createAuthRepository() = object : AuthRepository {
         override suspend fun signIn(email: String, password: String) = Unit
+        override suspend fun awaitInitialization() = Unit
+        override suspend fun hasSavedSession() = false
+        override suspend fun resetPassword(email: String) = Unit
+        override suspend fun applyRecoveryCode(code: String) = Unit
+        override suspend fun changePassword(password: String) = Unit
+
+        override suspend fun getCurrentUser() =
+            User("", "", "", 0, null)
 
         override suspend fun signInWithGoogle(
             idToken: String,

@@ -3,6 +3,7 @@ package ru.heatrk.languageapp.main.impl.ui.composables.app_bar
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,7 +30,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import coil.size.Size
 import ru.heatrk.languageapp.common.utils.PainterResource
+import ru.heatrk.languageapp.common.utils.Size
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
@@ -41,15 +44,11 @@ import kotlin.math.roundToInt
 fun MainAppBar(
     state: MainAppBarState,
     modifier: Modifier = Modifier,
+    onAvatarClick: () -> Unit = {},
     scrollingBehaviour: MainAppBarNestedScrollingConnection =
         MainAppBarDefaultNestedScrollingConnection(LocalDensity.current),
 ) {
     when (state) {
-        MainAppBarState.Error ->
-            MainAppBarError(
-                scrollingBehaviour = scrollingBehaviour,
-                modifier = modifier,
-            )
         MainAppBarState.Loading ->
             MainAppBarLoading(
                 scrollingBehaviour = scrollingBehaviour,
@@ -58,6 +57,7 @@ fun MainAppBar(
         is MainAppBarState.Ok ->
             MainAppBarOk(
                 state = state,
+                onAvatarClick = onAvatarClick,
                 scrollingBehaviour = scrollingBehaviour,
                 modifier = modifier,
             )
@@ -67,21 +67,30 @@ fun MainAppBar(
 @Composable
 private fun MainAppBarOk(
     state: MainAppBarState.Ok,
+    onAvatarClick: () -> Unit,
     modifier: Modifier = Modifier,
     scrollingBehaviour: MainAppBarNestedScrollingConnection,
 ) {
     MainAppBarLayout(
         avatarContent = {
             Image(
-                painter = state.avatar.extract(),
+                painter = state.avatar
+                    ?.extract(size = Size(AvatarSize.value.roundToInt()))
+                    ?: painterResource(R.drawable.ic_avatar_placeholder),
                 contentDescription = stringResource(R.string.accessibility_go_to_profile),
                 modifier = Modifier
-                    .size(54.dp)
+                    .size(AvatarSize)
+                    .clickable(onClick = onAvatarClick)
+                    .clip(CircleShape)
             )
         },
         titleContent = {
             Text(
-                text = stringResource(R.string.main_app_bar_title_named, state.firstName),
+                text = if (state.firstName.isNullOrBlank()) {
+                    stringResource(R.string.main_app_bar_title)
+                } else {
+                    stringResource(R.string.main_app_bar_title_named, state.firstName)
+                },
                 color = AppTheme.colors.onPrimary,
                 style = AppTheme.typography.titleLarge,
                 fontWeight = FontWeight.Medium
@@ -114,7 +123,7 @@ private fun MainAppBarLoading(
         avatarContent = {
             Box(
                 modifier = Modifier
-                    .requiredSize(54.dp)
+                    .requiredSize(AvatarSize)
                     .clip(CircleShape)
                     .shimmerEffect(
                         shimmerBackgroundColor = shimmerBackgroundColor,
@@ -142,41 +151,6 @@ private fun MainAppBarLoading(
                         shimmerBackgroundColor = shimmerBackgroundColor,
                         shimmerForegroundColor = shimmerForegroundColor
                     )
-            )
-        },
-        scrollingBehaviour = scrollingBehaviour,
-        modifier = modifier,
-    )
-}
-
-@Composable
-private fun MainAppBarError(
-    modifier: Modifier = Modifier,
-    scrollingBehaviour: MainAppBarNestedScrollingConnection,
-) {
-    MainAppBarLayout(
-        avatarContent = {
-            Image(
-                painter = painterResource(R.drawable.ic_avatar_placeholder),
-                contentDescription = stringResource(R.string.accessibility_go_to_profile),
-                modifier = Modifier
-                    .size(54.dp)
-            )
-        },
-        titleContent = {
-            Text(
-                text = stringResource(R.string.main_app_bar_title),
-                color = AppTheme.colors.onPrimary,
-                style = AppTheme.typography.titleLarge,
-                fontWeight = FontWeight.Medium
-            )
-        },
-        descriptionContent = {
-            Text(
-                text = stringResource(R.string.main_app_bar_description),
-                color = AppTheme.colors.textBody,
-                style = AppTheme.typography.titleMedium,
-                fontWeight = FontWeight.Medium
             )
         },
         scrollingBehaviour = scrollingBehaviour,
@@ -230,20 +204,18 @@ private fun MainAppBarLayout(
 sealed interface MainAppBarState {
     data object Loading : MainAppBarState
 
-    data object Error : MainAppBarState
-
     data class Ok(
-        val firstName: String,
-        val avatar: PainterResource
+        val firstName: String?,
+        val avatar: PainterResource?
     ) : MainAppBarState
 }
 
 val MainAppBarHeight = 175.dp
+val AvatarSize = 54.dp
 
 private class MainAppBarPreviewStateProvider : PreviewParameterProvider<MainAppBarState> {
     override val values = sequenceOf(
         MainAppBarState.Loading,
-        MainAppBarState.Error,
         MainAppBarState.Ok(
             firstName = "Emil",
             avatar = painterRes(R.drawable.ic_avatar_placeholder),

@@ -2,6 +2,7 @@ package ru.heatrk.languageapp.common.utils
 
 import android.net.Uri
 import androidx.annotation.DrawableRes
+import androidx.annotation.Px
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.painter.Painter
@@ -30,7 +31,9 @@ fun painterRes(file: File) = PainterResource.ByFile(file)
 fun painterRes(uri: Uri) = PainterResource.ByUri(uri)
 
 @Composable
-fun PainterResource.extract() = when (this) {
+fun PainterResource.extract(
+    size: Size = Size.ORIGINAL
+) = when (this) {
     is PainterResource.ByPainter -> painter
     is PainterResource.ByRes -> painterResource(id = res)
     is PainterResource.ByFile -> {
@@ -40,7 +43,7 @@ fun PainterResource.extract() = when (this) {
         rememberAsyncImagePainter(
             model = ImageRequest.Builder(context)
                 .data(file)
-                .apply { size(Size.ORIGINAL) }
+                .apply { size(size) }
                 .build(),
             imageLoader = imageLoader,
         )
@@ -52,7 +55,7 @@ fun PainterResource.extract() = when (this) {
         rememberAsyncImagePainter(
             model = ImageRequest.Builder(context)
                 .data(uri)
-                .apply { size(Size.ORIGINAL) }
+                .apply { size(size) }
                 .build(),
             imageLoader = imageLoader,
         )
@@ -67,3 +70,5 @@ fun PainterResource.isEmpty() = when (this) {
 }
 
 fun PainterResource.isNotEmpty() = !isEmpty()
+
+fun Size(@Px size: Int) = Size(size, size)

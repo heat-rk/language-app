@@ -17,7 +17,9 @@ fun Scope.includeMainScope() {
             MainViewModelFactory(
                 viewModelFactory {
                     initializer {
-                        MainViewModel()
+                        MainViewModel(
+                            authRepository = get()
+                        )
                     }
                 }
             )

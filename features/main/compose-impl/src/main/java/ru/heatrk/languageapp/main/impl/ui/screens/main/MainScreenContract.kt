@@ -1,6 +1,7 @@
 package ru.heatrk.languageapp.main.impl.ui.screens.main
 
 import ru.heatrk.languageapp.common.utils.PainterResource
+import ru.heatrk.languageapp.common.utils.StringResource
 
 object MainScreenContract {
     data class State(
@@ -9,12 +10,18 @@ object MainScreenContract {
         sealed interface Profile {
             data object Loading : Profile
 
-            data object Error : Profile
-
-            data class Ok(
-                val firstName: String,
-                val avatar: PainterResource
+            data class Loaded(
+                val firstName: String?,
+                val avatar: PainterResource?
             ) : Profile
         }
+    }
+
+    sealed interface Intent {
+        data object OnProfileClick : Intent
+    }
+
+    sealed interface SideEffect {
+        data class Message(val text: StringResource) : SideEffect
     }
 }

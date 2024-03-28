@@ -6,6 +6,8 @@ interface AuthRepository {
 
     suspend fun hasSavedSession(): Boolean
 
+    suspend fun getCurrentUser(): User
+
     suspend fun signIn(
         email: String,
         password: String,

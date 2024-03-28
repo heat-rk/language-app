@@ -8,19 +8,23 @@ import io.github.jan.supabase.gotrue.providers.builtin.Email
 import io.github.jan.supabase.gotrue.providers.builtin.IDToken
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromJsonElement
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
+import ru.heatrk.languageapp.auth.api.domain.User
 import ru.heatrk.languageapp.auth.impl.BuildConfig
 
 class AuthRepositoryImpl(
     private val supabaseClient: SupabaseClient,
     private val authStorage: AuthStorage,
+    private val json: Json,
     private val supabaseDispatcher: CoroutineDispatcher,
 ) : AuthRepository {
 
     override suspend fun awaitInitialization() {
         supabaseClient.auth.awaitInitialization()
+        supabaseClient.auth.currentUserOrNull()
     }
 
     override suspend fun hasSavedSession(): Boolean =
@@ -44,6 +48,26 @@ class AuthRepositoryImpl(
             )
 
             savedSession != null
+        }
+
+    override suspend fun getCurrentUser(): User =
+        withContext(supabaseDispatcher) {
+            val currentUserInfo = supabaseClient.auth.currentUserOrNull()
+                ?: throw IllegalStateException("No current user found")
+
+            val userMetadata = currentUserInfo.userMetadata?.let { metadata ->
+                json.decodeFromJsonElement<UserMetadata>(metadata)
+            }
+
+            val names = userMetadata?.fullName?.split(" ")
+
+            User(
+                email = currentUserInfo.email,
+                firstName = userMetadata?.firstName ?: names?.firstOrNull(),
+                lastName = userMetadata?.lastName ?: names?.lastOrNull(),
+                totalScore = userMetadata?.totalScore ?: 0,
+                avatarUrl = userMetadata?.avatarUrl,
+            )
         }
 
     override suspend fun signIn(
@@ -79,7 +103,14 @@ class AuthRepositoryImpl(
         }
 
         supabaseClient.auth.modifyUser {
-            this.data = jsonOf(firstName, lastName)
+            this.data = json.decodeFromString(
+                json.encodeToString(
+                    UserMetadata(
+                        firstName = firstName,
+                        lastName = lastName,
+                    )
+                )
+            )
         }
 
         val currentSession = supabaseClient.auth.currentSessionOrNull()
@@ -101,7 +132,15 @@ class AuthRepositoryImpl(
         supabaseClient.auth.signUpWith(Email) {
             this.email = email
             this.password = password
-            this.data = jsonOf(firstName, lastName)
+
+            this.data = json.decodeFromString(
+                json.encodeToString(
+                    UserMetadata(
+                        firstName = firstName,
+                        lastName = lastName,
+                    )
+                )
+            )
         }
     }
 
@@ -130,14 +169,6 @@ class AuthRepositoryImpl(
                 this.password = password
             }
         }
-
-    private fun jsonOf(firstName: String, lastName: String) =
-        JsonObject(
-            mapOf(
-                "first_name" to JsonPrimitive(firstName),
-                "last_name" to JsonPrimitive(lastName),
-            )
-        )
 
     companion object {
         const val RECOVERY_CONFIRM_URL_PATH = "recovery_confirm"

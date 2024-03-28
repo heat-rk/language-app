@@ -60,6 +60,7 @@ dependencies {
     dependencies(
         AppDependencies.Ktx.core,
         AppDependencies.Splash.core,
+        AppDependencies.Coil.compose,
         AppDependencies.Compose.bom,
         AppDependencies.Compose.material,
         AppDependencies.Compose.preview,

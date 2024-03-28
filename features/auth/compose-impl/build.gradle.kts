@@ -3,6 +3,7 @@ import dependencies.AppDependencies
 plugins {
     id(AppPlugins.androidLibrary)
     id(AppPlugins.androidKotlin)
+    id(AppPlugins.serialization)
 }
 
 android {
@@ -65,6 +66,7 @@ dependencies {
     )
 
     dependencies(
+        AppDependencies.kotlinXSerialization,
         AppDependencies.Scout.core,
         AppDependencies.Orbit.viewModel,
         AppDependencies.Orbit.compose,

@@ -59,17 +59,19 @@ class SignUpUseCase(
             }
         }
 
-        try {
-            validatePassword(
-                password = password,
-                confirmedPassword = confirmedPassword
-            )
-        } catch (e: InvalidPasswordValuesException) {
-            errorBuilder.transform { error ->
-                error.copy(
-                    passwordError = e.passwordError?.toSignUpError(),
-                    confirmedPasswordError = e.confirmedPasswordError?.toSignUpError(),
+        if (Field.PASSWORD in fieldsToValidate) {
+            try {
+                validatePassword(
+                    password = password,
+                    confirmedPassword = confirmedPassword
                 )
+            } catch (e: InvalidPasswordValuesException) {
+                errorBuilder.transform { error ->
+                    error.copy(
+                        passwordError = e.passwordError?.toSignUpError(),
+                        confirmedPasswordError = e.confirmedPasswordError?.toSignUpError(),
+                    )
+                }
             }
         }
 

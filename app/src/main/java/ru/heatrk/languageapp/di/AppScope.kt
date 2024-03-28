@@ -8,6 +8,7 @@ import ru.heatrk.languageapp.core.coroutines.dispatchers.di.useDispatchersBeans
 import ru.heatrk.languageapp.core.coroutines.scopes.di.useCoroutineScopesBeans
 import ru.heatrk.languageapp.core.data.db.di.useDatabaseBeans
 import ru.heatrk.languageapp.core.data.http_client.di.useHttpClientBeans
+import ru.heatrk.languageapp.core.data.serialization.di.useSerializationBeans
 import ru.heatrk.languageapp.core.data.supabase.di.useSupaBaseBeans
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
@@ -23,6 +24,7 @@ val appScope = scope("app_scope") {
     useCoroutineScopesBeans()
     useDatabaseBeans()
     useHttpClientBeans()
+    useSerializationBeans()
     useSupaBaseBeans()
     useComposeNavigationBeans()
 

@@ -6,6 +6,11 @@ object AppDependencies {
         version = Versions.immutableCollections
     )
 
+    val kotlinXSerialization = Dependency(
+        notation = "org.jetbrains.kotlinx:kotlinx-serialization-json",
+        version = Versions.serialization
+    )
+
     object Supabase {
         val bom = Dependency(
             notation = "io.github.jan-tennert.supabase:bom",
@@ -248,5 +253,6 @@ object AppDependencies {
         const val mockitoCore = "5.10.0"
         const val mockitoKotlin = "5.2.1"
         const val supabase = "2.1.5"
+        const val serialization = "1.6.3"
     }
 }

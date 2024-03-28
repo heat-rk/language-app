@@ -2,6 +2,7 @@
 plugins {
     id(AppPlugins.androidApplication) version AppPlugins.Versions.androidApplication apply false
     id(AppPlugins.androidKotlin) version AppPlugins.Versions.androidKotlin apply false
+    id(AppPlugins.serialization) version AppPlugins.Versions.androidKotlin apply false
     id(AppPlugins.detekt) version AppPlugins.Versions.detekt
 }
 

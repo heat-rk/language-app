@@ -60,6 +60,7 @@ fun ScopeBuilder.useAuthApiBeans() {
         AuthRepositoryImpl(
             supabaseClient = get(),
             authStorage = get(),
+            json = get(),
             supabaseDispatcher = get<IoCoroutineDispatcher>().instance
         )
     }

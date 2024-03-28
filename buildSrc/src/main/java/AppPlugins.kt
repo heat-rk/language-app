@@ -4,7 +4,7 @@ object AppPlugins {
     const val androidKotlin = "org.jetbrains.kotlin.android"
     const val kotlinKapt = "kotlin-kapt"
     const val detekt = "io.gitlab.arturbosch.detekt"
-    const val serialization = "plugin.serialization"
+    const val serialization = "org.jetbrains.kotlin.plugin.serialization"
     const val parcelize = "kotlin-parcelize"
 
     object Versions {
