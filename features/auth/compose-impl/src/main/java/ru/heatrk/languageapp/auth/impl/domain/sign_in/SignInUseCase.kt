@@ -42,5 +42,7 @@ class SignInUseCase(
                 totalScore = 0,
             )
         )
+
+        authRepository.saveSession()
     }
 }

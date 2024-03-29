@@ -19,6 +19,7 @@ import androidx.navigation.testing.TestNavHostController
 import org.junit.Rule
 import org.junit.Test
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
+import ru.heatrk.languageapp.auth.api.domain.User
 import ru.heatrk.languageapp.auth.api.ui.navigation.AUTH_GRAPH_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
@@ -31,6 +32,8 @@ import ru.heatrk.languageapp.common.utils.testTag
 import ru.heatrk.languageapp.common.utils.vectorRes
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.navigation.compose_test.rememberTestComposeRouter
+import ru.heatrk.languageapp.core.profiles.api.domain.Profile
+import ru.heatrk.languageapp.core.profiles.api.domain.ProfilesRepository
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
 import ru.heatrk.languageapp.onboarding.api.domain.models.OnboardingUnit
 import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_ROUTE_PATH
@@ -72,13 +75,18 @@ class OnboardingTest {
                         }
 
                         composable(AUTH_GRAPH_ROUTE_PATH) {
+                            val authRepository = createAuthRepository()
+                            val profilesRepository = createProfileRepository()
+
                             SignInScreen(
                                 viewModel = SignInViewModel(
                                     signIn = SignInUseCase(
-                                        authRepository = createAuthRepository()
+                                        authRepository = authRepository,
+                                        profilesRepository = profilesRepository,
                                     ),
                                     signInWithGoogle = SignInWithGoogleUseCase(
-                                        authRepository = createAuthRepository()
+                                        authRepository = authRepository,
+                                        profilesRepository = profilesRepository,
                                     ),
                                     authGoogleNonceProvider = createAuthGoogleNonceProvider(),
                                     router = composeRouter
@@ -229,8 +237,11 @@ class OnboardingTest {
     }
 
     private fun createAuthRepository() = object : AuthRepository {
-        override suspend fun signIn(email: String, password: String) = Unit
+        private val userStub = User("", null, null, null)
+
+        override suspend fun signIn(email: String, password: String) = userStub
         override suspend fun awaitInitialization() = Unit
+        override suspend fun saveSession() = Unit
         override suspend fun hasSavedSession() = false
         override suspend fun resetPassword(email: String) = Unit
         override suspend fun applyRecoveryCode(code: String) = Unit
@@ -242,7 +253,7 @@ class OnboardingTest {
             firstName: String,
             lastName: String,
             rawNonce: String
-        ) = Unit
+        ) = userStub
 
         override suspend fun signUp(
             firstName: String,
@@ -250,6 +261,15 @@ class OnboardingTest {
             email: String,
             password: String
         ) = Unit
+    }
+
+    private fun createProfileRepository() = object : ProfilesRepository {
+        override suspend fun createProfile(profile: Profile) = Unit
+
+        override suspend fun getCurrentProfile() =
+            Profile("", null, null, null, 0, null)
+
+        override suspend fun getLeaderboard(count: Long) = emptyList<Profile>()
     }
 
     private fun createAuthGoogleNonceProvider() = object : AuthGoogleNonceProvider {

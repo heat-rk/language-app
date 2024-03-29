@@ -33,5 +33,7 @@ class SignInWithGoogleUseCase(
                 totalScore = 0,
             )
         )
+
+        authRepository.saveSession()
     }
 }

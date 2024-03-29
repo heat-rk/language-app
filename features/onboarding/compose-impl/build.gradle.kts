@@ -66,6 +66,7 @@ dependencies {
         ":core:navigation:compose-impl",
         ":core:navigation:compose-test",
         ":features:auth:compose-impl",
+        ":core:data:profiles:api",
     )
 
     dependencies(

@@ -4,6 +4,8 @@ interface AuthRepository {
 
     suspend fun awaitInitialization()
 
+    suspend fun saveSession()
+
     suspend fun hasSavedSession(): Boolean
 
     suspend fun signIn(

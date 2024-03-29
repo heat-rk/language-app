@@ -26,6 +26,17 @@ class AuthRepositoryImpl(
         supabaseClient.auth.awaitInitialization()
     }
 
+    override suspend fun saveSession() {
+        val currentSession = supabaseClient.auth.currentSessionOrNull()
+
+        authStorage.saveTokens(
+            AuthStorage.Tokens(
+                accessToken = currentSession?.accessToken,
+                refreshToken = currentSession?.refreshToken
+            )
+        )
+    }
+
     override suspend fun hasSavedSession(): Boolean =
         withContext(supabaseDispatcher) {
             var savedSession = supabaseClient.auth.currentSessionOrNull()
@@ -57,15 +68,6 @@ class AuthRepositoryImpl(
             this.email = email
             this.password = password
         }
-
-        val currentSession = supabaseClient.auth.currentSessionOrNull()
-
-        authStorage.saveTokens(
-            AuthStorage.Tokens(
-                accessToken = currentSession?.accessToken,
-                refreshToken = currentSession?.refreshToken
-            )
-        )
 
         val userInfo = supabaseClient.auth.currentUserOrNull()
             ?: throw IllegalStateException("No new user found")
@@ -104,15 +106,6 @@ class AuthRepositoryImpl(
                 )
             )
         }
-
-        val currentSession = supabaseClient.auth.currentSessionOrNull()
-
-        authStorage.saveTokens(
-            AuthStorage.Tokens(
-                accessToken = currentSession?.accessToken,
-                refreshToken = currentSession?.refreshToken
-            )
-        )
 
         val userInfo = supabaseClient.auth.currentUserOrNull()
             ?: throw IllegalStateException("No new user found")
