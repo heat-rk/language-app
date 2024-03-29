@@ -32,6 +32,14 @@ class MainViewModel(
         when (intent) {
             Intent.OnProfileClick ->
                 onProfileClick()
+            Intent.OnAuditionButtonClick ->
+                onAuditionButtonClick()
+            Intent.OnGameButtonClick ->
+                onGameButtonClick()
+            Intent.OnGuessAnimalButtonClick ->
+                onGuessAnimalButtonClick()
+            Intent.OnWordPracticeButtonClick ->
+                onWordPracticeButtonClick()
         }
     }
 
@@ -67,6 +75,22 @@ class MainViewModel(
     }
 
     private fun onProfileClick() {
+        // TODO
+    }
+
+    private fun onGuessAnimalButtonClick() {
+        // TODO
+    }
+
+    private fun onWordPracticeButtonClick() {
+        // TODO
+    }
+
+    private fun onAuditionButtonClick() {
+        // TODO
+    }
+
+    private fun onGameButtonClick() {
         // TODO
     }
 }

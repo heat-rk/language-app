@@ -62,6 +62,7 @@ dependencies {
     )
 
     dependencies(
+        AppDependencies.immutableCollections,
         AppDependencies.Scout.core,
         AppDependencies.Orbit.viewModel,
         AppDependencies.Orbit.compose,

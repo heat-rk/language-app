@@ -22,6 +22,10 @@ data class AppColors(
     val textBody: Color,
     val success: Color,
     val onSuccess: Color,
+    val exerciseGuessAnimal: Color,
+    val exerciseWordPractice: Color,
+    val exerciseAudition: Color,
+    val exerciseGame: Color,
 ) {
     val primary = materialColors.primary
     val onPrimary = materialColors.onPrimary
@@ -52,6 +56,10 @@ val darkAppColors = AppColors(
     inputFieldText = Color(0xFF363B44),
     success = Color(0xFF5BA890),
     onSuccess = Color(0xFFFFFFFF),
+    exerciseGuessAnimal = Color(0xFF4A63C9),
+    exerciseWordPractice = Color(0xFFAF144D),
+    exerciseAudition = Color(0xFFC55000),
+    exerciseGame = Color(0xFF50927E),
     materialColors = darkColorScheme(
         primary = Color(0xFF410FA3),
         onPrimary = Color(0xFFFFFFFF),
@@ -86,6 +94,10 @@ val lightAppColors = AppColors(
     inputFieldText = Color(0xFF363B44),
     success = Color(0xFF5BA890),
     onSuccess = Color(0xFFFFFFFF),
+    exerciseGuessAnimal = Color(0xFF5B7BFE),
+    exerciseWordPractice = Color(0xFFD6185D),
+    exerciseAudition = Color(0xFFF76400),
+    exerciseGame = Color(0xFF5BA890),
     materialColors = lightColorScheme(
         primary = Color(0xFF410FA3),
         onPrimary = Color(0xFFFFFFFF),

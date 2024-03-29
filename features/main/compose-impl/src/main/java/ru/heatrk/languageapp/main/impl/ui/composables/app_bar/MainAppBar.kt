@@ -80,8 +80,8 @@ private fun MainAppBarOk(
                 contentDescription = stringResource(R.string.accessibility_go_to_profile),
                 modifier = Modifier
                     .size(AvatarSize)
-                    .clickable(onClick = onAvatarClick)
                     .clip(CircleShape)
+                    .clickable(onClick = onAvatarClick)
             )
         },
         titleContent = {
