@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
@@ -27,10 +26,10 @@ import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
 import ru.heatrk.languageapp.di.AppComponent
 import ru.heatrk.languageapp.presentation.navigation.AppNavHost
 
-class MainActivity : ComponentActivity() {
+class RootActivity : ComponentActivity() {
 
-    private val viewModel: MainViewModel by viewModels(
-        factoryProducer = { AppComponent.getMainViewModelFactory(intent) }
+    private val viewModel: RootViewModel by viewModels(
+        factoryProducer = { AppComponent.getRootViewModelFactory(intent) }
     )
 
     override fun onNewIntent(intent: Intent?) {
