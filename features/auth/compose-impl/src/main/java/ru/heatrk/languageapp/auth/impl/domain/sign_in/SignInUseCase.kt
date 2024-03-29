@@ -1,9 +1,12 @@
 package ru.heatrk.languageapp.auth.impl.domain.sign_in
 
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
+import ru.heatrk.languageapp.core.profiles.api.domain.Profile
+import ru.heatrk.languageapp.core.profiles.api.domain.ProfilesRepository
 
 class SignInUseCase(
-    private val repository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val profilesRepository: ProfilesRepository,
 ) {
     suspend operator fun invoke(
         email: String,
@@ -24,9 +27,20 @@ class SignInUseCase(
             )
         }
 
-        repository.signIn(
+        val user = authRepository.signIn(
             email = email.trim(),
             password = password.trim()
+        )
+
+        profilesRepository.createProfile(
+            Profile(
+                id = user.id,
+                avatarUrl = user.avatarUrl,
+                firstName = user.firstName,
+                lastName = user.lastName,
+                email = email,
+                totalScore = 0,
+            )
         )
     }
 }

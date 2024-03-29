@@ -4,6 +4,8 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.gotrue.Auth
 import io.github.jan.supabase.gotrue.FlowType
+import io.github.jan.supabase.postgrest.Postgrest
+import io.github.jan.supabase.serializer.KotlinXSerializer
 import ru.heatrk.languageapp.core.data.supabase.BuildConfig
 import scout.definition.Registry
 
@@ -13,11 +15,15 @@ fun Registry.useSupaBaseBeans() {
             supabaseUrl = BuildConfig.SUPABASE_URL,
             supabaseKey = BuildConfig.SUPABASE_ANON_KEY,
         ) {
+            defaultSerializer = KotlinXSerializer(get())
+
             install(Auth) {
                 flowType = FlowType.PKCE
                 scheme = BuildConfig.SUPABASE_REDIRECT_SCHEME
                 host = BuildConfig.SUPABASE_REDIRECT_HOST
             }
+
+            install(Postgrest)
         }
     }
 }

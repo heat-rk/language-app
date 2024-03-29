@@ -137,13 +137,15 @@ private fun ScopeBuilder.useUseCasesBeans() {
 
     reusable<SignInUseCase> {
         SignInUseCase(
-            repository = get()
+            authRepository = get(),
+            profilesRepository = get(),
         )
     }
 
     reusable<SignInWithGoogleUseCase> {
         SignInWithGoogleUseCase(
-            repository = get()
+            authRepository = get(),
+            profilesRepository = get(),
         )
     }
 

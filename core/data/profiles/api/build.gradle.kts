@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.heatrk.languageapp.core.data.supabase"
+    namespace = "ru.heatrk.languageapp.core.data.profiles.api"
 
     compileSdk = AppConfig.Sdk.compile
 
@@ -20,16 +20,6 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("debug")
-
-            AppConfig.buildConfigFields(project).forEach { field ->
-                buildConfigField(field.type, field.name, "\"${field.releaseValue}\"")
-            }
-        }
-
-        debug {
-            AppConfig.buildConfigFields(project).forEach { field ->
-                buildConfigField(field.type, field.name, "\"${field.debugValue}\"")
-            }
         }
     }
 
@@ -41,21 +31,8 @@ android {
     kotlinOptions {
         jvmTarget = AppConfig.jvmTarget
     }
-
-    buildFeatures {
-        buildConfig = true
-    }
 }
 
 dependencies {
-    dependencies(
-        AppDependencies.Scout.core,
-    )
 
-    apiDependencies(
-        AppDependencies.Supabase.bom,
-        AppDependencies.Supabase.auth,
-        AppDependencies.Supabase.composeAuth,
-        AppDependencies.Supabase.postgrest,
-    )
 }

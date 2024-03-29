@@ -34,5 +34,6 @@ android {
 dependencies {
     modules(
         ":core:navigation:api",
+        ":features:auth:api",
     )
 }

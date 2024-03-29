@@ -55,9 +55,9 @@ android {
 dependencies {
     modules(
         ":features:main:api",
-        ":features:auth:api",
         ":core:navigation:api",
         ":core:design",
+        ":core:data:profiles:api",
         ":common:utils",
     )
 

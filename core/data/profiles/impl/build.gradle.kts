@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.heatrk.languageapp.auth.impl"
+    namespace = "ru.heatrk.languageapp.core.data.profiles.impl"
 
     compileSdk = AppConfig.Sdk.compile
 
@@ -44,44 +44,20 @@ android {
     }
 
     buildFeatures {
-        compose = true
         buildConfig = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = AppConfig.composeKotlinCompilerExtensionVersion
     }
 }
 
 dependencies {
     modules(
-        ":features:auth:api",
-        ":features:main:api",
-        ":core:navigation:api",
-        ":core:navigation:compose-impl",
-        ":core:design",
+        ":core:coroutines:dispatchers",
+        ":core:data:serialization",
         ":core:data:supabase",
         ":core:data:profiles:api",
-        ":core:coroutines:dispatchers",
-        ":common:utils",
     )
 
     dependencies(
         AppDependencies.kotlinXSerialization,
         AppDependencies.Scout.core,
-        AppDependencies.Orbit.viewModel,
-        AppDependencies.Orbit.compose,
-        AppDependencies.Coroutines.core,
-        AppDependencies.Coroutines.android,
-        AppDependencies.Compose.bom,
-        AppDependencies.Compose.material,
-        AppDependencies.Compose.viewModel,
-        AppDependencies.Compose.navigation,
-        AppDependencies.Compose.lifeCycleRuntime,
-        AppDependencies.Compose.preview,
-    )
-
-    debugDependencies(
-        AppDependencies.Compose.debugPreview,
     )
 }

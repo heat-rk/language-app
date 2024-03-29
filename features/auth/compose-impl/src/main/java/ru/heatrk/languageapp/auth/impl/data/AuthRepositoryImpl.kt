@@ -24,7 +24,6 @@ class AuthRepositoryImpl(
 
     override suspend fun awaitInitialization() {
         supabaseClient.auth.awaitInitialization()
-        supabaseClient.auth.currentUserOrNull()
     }
 
     override suspend fun hasSavedSession(): Boolean =
@@ -50,26 +49,6 @@ class AuthRepositoryImpl(
             savedSession != null
         }
 
-    override suspend fun getCurrentUser(): User =
-        withContext(supabaseDispatcher) {
-            val currentUserInfo = supabaseClient.auth.currentUserOrNull()
-                ?: throw IllegalStateException("No current user found")
-
-            val userMetadata = currentUserInfo.userMetadata?.let { metadata ->
-                json.decodeFromJsonElement<UserMetadata>(metadata)
-            }
-
-            val names = userMetadata?.fullName?.split(" ")
-
-            User(
-                email = currentUserInfo.email,
-                firstName = userMetadata?.firstName ?: names?.firstOrNull(),
-                lastName = userMetadata?.lastName ?: names?.lastOrNull(),
-                totalScore = userMetadata?.totalScore ?: 0,
-                avatarUrl = userMetadata?.avatarUrl,
-            )
-        }
-
     override suspend fun signIn(
         email: String,
         password: String
@@ -87,6 +66,19 @@ class AuthRepositoryImpl(
                 refreshToken = currentSession?.refreshToken
             )
         )
+
+        val userInfo = supabaseClient.auth.currentUserOrNull()
+            ?: throw IllegalStateException("No new user found")
+
+        val userMetaData = userInfo.userMetadata
+            ?.let { json.decodeFromJsonElement<UserMetaData>(it) }
+
+        User(
+            id = userInfo.id,
+            avatarUrl = userMetaData?.avatarUrl,
+            firstName = userMetaData?.firstName,
+            lastName = userMetaData?.lastName,
+        )
     }
 
     override suspend fun signInWithGoogle(
@@ -95,7 +87,7 @@ class AuthRepositoryImpl(
         firstName: String,
         lastName: String,
         rawNonce: String,
-    ): Unit = withContext(supabaseDispatcher) {
+    ): User = withContext(supabaseDispatcher) {
         supabaseClient.auth.signInWith(IDToken) {
             this.provider = Google
             this.idToken = idToken
@@ -105,7 +97,7 @@ class AuthRepositoryImpl(
         supabaseClient.auth.modifyUser {
             this.data = json.decodeFromString(
                 json.encodeToString(
-                    UserMetadata(
+                    UserMetaData(
                         firstName = firstName,
                         lastName = lastName,
                     )
@@ -120,6 +112,19 @@ class AuthRepositoryImpl(
                 accessToken = currentSession?.accessToken,
                 refreshToken = currentSession?.refreshToken
             )
+        )
+
+        val userInfo = supabaseClient.auth.currentUserOrNull()
+            ?: throw IllegalStateException("No new user found")
+
+        val userMetaData = userInfo.userMetadata
+            ?.let { json.decodeFromJsonElement<UserMetaData>(it) }
+
+        User(
+            id = userInfo.id,
+            avatarUrl = userMetaData?.avatarUrl,
+            firstName = firstName,
+            lastName = lastName,
         )
     }
 
@@ -144,7 +149,7 @@ class AuthRepositoryImpl(
 
             this.data = json.decodeFromString(
                 json.encodeToString(
-                    UserMetadata(
+                    UserMetaData(
                         firstName = firstName,
                         lastName = lastName,
                     )

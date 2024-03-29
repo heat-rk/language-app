@@ -28,6 +28,8 @@ include(
     ":core:data:http-client",
     ":core:data:serialization",
     ":core:data:supabase",
+    ":core:data:profiles:api",
+    ":core:data:profiles:impl",
     ":features:onboarding:api",
     ":features:onboarding:compose-impl",
     ":features:auth:api",

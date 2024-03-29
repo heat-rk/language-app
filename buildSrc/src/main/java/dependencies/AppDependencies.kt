@@ -25,6 +25,10 @@ object AppDependencies {
         val composeAuth = Dependency(
             notation = "io.github.jan-tennert.supabase:compose-auth"
         )
+
+        val postgrest = Dependency(
+            notation = "io.github.jan-tennert.supabase:postgrest-kt"
+        )
     }
 
     object Ktor {

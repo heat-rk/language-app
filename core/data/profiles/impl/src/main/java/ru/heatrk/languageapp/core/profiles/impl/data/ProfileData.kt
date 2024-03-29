@@ -1,12 +1,14 @@
-package ru.heatrk.languageapp.auth.impl.data
+package ru.heatrk.languageapp.core.profiles.impl.data
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UserMetadata(
-    @SerialName("full_name")
-    val fullName: String? = null,
+internal data class ProfileData(
+    @SerialName("id")
+    val id: String,
+    @SerialName("email")
+    val email: String? = null,
     @SerialName("first_name")
     val firstName: String? = null,
     @SerialName("last_name")

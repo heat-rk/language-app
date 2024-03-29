@@ -1,9 +1,8 @@
 package ru.heatrk.languageapp.auth.api.domain
 
 data class User(
-    val email: String?,
+    val id: String,
+    val avatarUrl: String?,
     val firstName: String?,
     val lastName: String?,
-    val totalScore: Int,
-    val avatarUrl: String?,
 )

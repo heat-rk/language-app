@@ -6,12 +6,10 @@ interface AuthRepository {
 
     suspend fun hasSavedSession(): Boolean
 
-    suspend fun getCurrentUser(): User
-
     suspend fun signIn(
         email: String,
         password: String,
-    )
+    ): User
 
     suspend fun signInWithGoogle(
         idToken: String,
@@ -19,7 +17,7 @@ interface AuthRepository {
         firstName: String,
         lastName: String,
         rawNonce: String
-    )
+    ): User
 
     suspend fun signUp(
         firstName: String,

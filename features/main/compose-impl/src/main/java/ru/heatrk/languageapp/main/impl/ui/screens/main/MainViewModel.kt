@@ -8,9 +8,9 @@ import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.painterRes
+import ru.heatrk.languageapp.core.profiles.api.domain.ProfilesRepository
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.Intent
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.SideEffect
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.State
@@ -18,7 +18,7 @@ import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.State
 private typealias IntentBody = SimpleSyntax<State, SideEffect>
 
 class MainViewModel(
-    private val authRepository: AuthRepository
+    private val profilesRepository: ProfilesRepository
 ) : ViewModel(), ContainerHost<State, SideEffect> {
     override val container = container<State, SideEffect>(
         initialState = State()
@@ -48,7 +48,7 @@ class MainViewModel(
             block = {
                 reduce { state.copy(profileState = State.Profile.Loading) }
 
-                val user = authRepository.getCurrentUser()
+                val user = profilesRepository.getCurrentProfile()
 
                 reduce {
                     state.copy(
