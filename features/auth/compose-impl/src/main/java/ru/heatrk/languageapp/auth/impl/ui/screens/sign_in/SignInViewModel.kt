@@ -25,7 +25,7 @@ import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingOption
-import ru.heatrk.languageapp.main.api.MAIN_GRAPH_ROUTE_PATH
+import ru.heatrk.languageapp.main.api.ui.navigation.MAIN_GRAPH_ROUTE_PATH
 
 typealias IntentBody = SimpleSyntax<State, SideEffect>
 
