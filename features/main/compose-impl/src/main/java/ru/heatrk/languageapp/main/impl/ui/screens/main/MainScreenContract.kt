@@ -28,7 +28,7 @@ object MainScreenContract {
 
             data class Item(
                 val id: String,
-                val fullName: String?,
+                val fullName: StringResource?,
                 val avatar: PainterResource?,
                 val totalScore: Int,
             )

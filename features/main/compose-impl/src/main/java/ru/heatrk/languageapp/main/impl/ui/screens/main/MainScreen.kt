@@ -46,6 +46,7 @@ import ru.heatrk.languageapp.main.impl.ui.screens.main.composables.MainExerciseI
 import ru.heatrk.languageapp.main.impl.ui.screens.main.composables.MainLeaderboardItem
 import ru.heatrk.languageapp.main.impl.ui.screens.main.composables.MainLeaderboardItemShimmer
 import ru.heatrk.languageapp.main.impl.ui.screens.main.composables.MainTitleItem
+import ru.heatrk.languageapp.main.impl.ui.screens.main.composables.MainTitleShimmerItem
 
 @Composable
 fun MainScreen(viewModel: MainViewModel) {
@@ -92,32 +93,7 @@ private fun MainScreen(
             .nestedScroll(appBarScrollingBehaviour)
             .fillMaxSize()
     ) {
-        titleItem(titleRes = R.string.main_top_users)
-
-        when (state.leaderboard) {
-            State.Leaderboard.Loading -> {
-                items(
-                    count = LEADERBOARD_SHIMMER_ITEMS_COUNT,
-                    span = { GridItemSpan(maxLineSpan) },
-                ) { index ->
-                    MainLeaderboardItemShimmer(
-                        includeSpacer = index != LEADERBOARD_SHIMMER_ITEMS_COUNT - 1
-                    )
-                }
-            }
-            is State.Leaderboard.Loaded -> {
-                itemsIndexed(
-                    items = state.leaderboard.items,
-                    span = { _, _, -> GridItemSpan(maxLineSpan) },
-                    key = { _, leader -> leader.id }
-                ) { index, leader ->
-                    MainLeaderboardItem(
-                        leader = leader,
-                        includeSpacer = index != state.leaderboard.items.lastIndex
-                    )
-                }
-            }
-        }
+        topUsers(state)
 
         titleItem(
             titleRes = R.string.main_available_exercises,
@@ -125,6 +101,46 @@ private fun MainScreen(
         )
 
         exercisesItems(onIntent)
+    }
+}
+
+private fun LazyGridScope.topUsers(
+    state: State
+) {
+    when {
+        state.leaderboard is State.Leaderboard.Loading -> {
+            titleShimmerItem()
+        }
+
+        state.leaderboard is State.Leaderboard.Loaded &&
+        state.leaderboard.items.isNotEmpty() -> {
+            titleItem(titleRes = R.string.main_top_users)
+        }
+    }
+
+    when (state.leaderboard) {
+        State.Leaderboard.Loading -> {
+            items(
+                count = MainViewModel.LEADERBOARD_ITEMS_COUNT,
+                span = { GridItemSpan(maxLineSpan) },
+            ) { index ->
+                MainLeaderboardItemShimmer(
+                    includeSpacer = index != MainViewModel.LEADERBOARD_ITEMS_COUNT - 1
+                )
+            }
+        }
+        is State.Leaderboard.Loaded -> {
+            itemsIndexed(
+                items = state.leaderboard.items,
+                span = { _, _, -> GridItemSpan(maxLineSpan) },
+                key = { _, leader -> leader.id }
+            ) { index, leader ->
+                MainLeaderboardItem(
+                    leader = leader,
+                    includeSpacer = index != state.leaderboard.items.lastIndex
+                )
+            }
+        }
     }
 }
 
@@ -184,6 +200,18 @@ private fun LazyGridScope.titleItem(
     }
 }
 
+private fun LazyGridScope.titleShimmerItem(
+    paddingTop: Dp = 0.dp,
+    paddingBottom: Dp = 9.dp,
+) {
+    item(span = { GridItemSpan(maxLineSpan) },) {
+        MainTitleShimmerItem(
+            modifier = Modifier
+                .padding(top = paddingTop, bottom = paddingBottom)
+        )
+    }
+}
+
 @Composable
 private fun MainScreenSideEffects(
     sideEffects: Flow<SideEffect>,
@@ -228,8 +256,6 @@ private fun State.Profile.toAppBarState() = when (this) {
             avatar = avatar
         )
 }
-
-private const val LEADERBOARD_SHIMMER_ITEMS_COUNT = 3
 
 @Composable
 private fun MainScreenPreview() {

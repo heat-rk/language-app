@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import ru.heatrk.languageapp.common.utils.Size
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.painterRes
+import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.main.impl.R
@@ -62,7 +63,7 @@ fun MainLeaderboardItem(
         Spacer(modifier = Modifier.width(24.dp))
 
         Text(
-            text = leader.fullName ?: stringResource(R.string.main_leader_name_unknown),
+            text = leader.fullName?.extract() ?: stringResource(R.string.main_leader_name_unknown),
             style = AppTheme.typography.bodyLarge,
             fontSize = 17.sp,
             fontWeight = FontWeight.Medium,
@@ -147,7 +148,7 @@ private fun MainLeaderboardItemPreview() {
             MainLeaderboardItem(
                 leader = MainScreenContract.State.Leaderboard.Item(
                     id = "1",
-                    fullName = "Ivanov Ivan",
+                    fullName = strRes("Ivanov Ivan"),
                     avatar = painterRes(R.drawable.ic_avatar_placeholder),
                     totalScore = 10
                 )

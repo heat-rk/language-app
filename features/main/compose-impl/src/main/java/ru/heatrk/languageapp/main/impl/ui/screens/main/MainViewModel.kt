@@ -3,17 +3,24 @@ package ru.heatrk.languageapp.main.impl.ui.screens.main
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import ru.heatrk.languageapp.common.utils.StringResource
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.painterRes
+import ru.heatrk.languageapp.common.utils.strRes
+import ru.heatrk.languageapp.core.profiles.api.domain.Profile
 import ru.heatrk.languageapp.core.profiles.api.domain.ProfilesRepository
+import ru.heatrk.languageapp.main.impl.R
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.Intent
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.SideEffect
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.State
+import ru.heatrk.languageapp.core.design.R as DesignR
 
 private typealias IntentBody = SimpleSyntax<State, SideEffect>
 
@@ -25,7 +32,7 @@ class MainViewModel(
     )
 
     init {
-        loadUserData()
+        loadData()
     }
 
     fun processIntent(intent: Intent) = intent {
@@ -41,6 +48,11 @@ class MainViewModel(
             Intent.OnWordPracticeButtonClick ->
                 onWordPracticeButtonClick()
         }
+    }
+
+    private fun loadData() {
+        loadUserData()
+        loadLeaderboard()
     }
 
     private fun loadUserData() = intent {
@@ -74,6 +86,35 @@ class MainViewModel(
         )
     }
 
+    private fun loadLeaderboard() = intent {
+        viewModelScope.launchSafe(
+            block = {
+                reduce { state.copy(leaderboard = State.Leaderboard.Loading) }
+
+                val leaderboard =
+                    profilesRepository.getLeaderboard(LEADERBOARD_ITEMS_COUNT.toLong())
+
+                reduce {
+                    state.copy(
+                        leaderboard = State.Leaderboard.Loaded(
+                            items = leaderboard.map(::toLeaderboardItem)
+                                .toImmutableList()
+                        )
+                    )
+                }
+            },
+            onError = {
+                reduce {
+                    state.copy(
+                        leaderboard = State.Leaderboard.Loaded(
+                            items = persistentListOf()
+                        )
+                    )
+                }
+            }
+        )
+    }
+
     private fun onProfileClick() {
         // TODO
     }
@@ -92,5 +133,32 @@ class MainViewModel(
 
     private fun onGameButtonClick() {
         // TODO
+    }
+
+    private fun toLeaderboardItem(profile: Profile) = State.Leaderboard.Item(
+        id = profile.id,
+        avatar = profile.avatarUrl?.let { url -> painterRes(Uri.parse(url)) },
+        fullName = profile.fullName(),
+        totalScore = profile.totalScore,
+    )
+
+    private fun Profile.fullName(): StringResource {
+        val firstName = firstName
+        val lastName = lastName
+
+        return when {
+            firstName == null && lastName == null ->
+                strRes(R.string.main_leader_name_unknown)
+            firstName == null ->
+                strRes(lastName)
+            lastName == null ->
+                strRes(firstName)
+            else ->
+                strRes(DesignR.string.full_name_formatted, firstName, lastName)
+        }
+    }
+
+    companion object {
+        const val LEADERBOARD_ITEMS_COUNT = 3
     }
 }

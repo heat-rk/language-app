@@ -3,10 +3,13 @@ package ru.heatrk.languageapp.core.profiles.impl.data
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.postgrest.postgrest
+import io.github.jan.supabase.postgrest.query.Order
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.heatrk.languageapp.core.profiles.api.domain.Profile
 import ru.heatrk.languageapp.core.profiles.api.domain.ProfilesRepository
+import ru.heatrk.languageapp.core.profiles.impl.mappers.toData
+import ru.heatrk.languageapp.core.profiles.impl.mappers.toDomain
 
 internal class ProfilesRepositoryImpl(
     private val dispatcher: CoroutineDispatcher,
@@ -16,14 +19,7 @@ internal class ProfilesRepositoryImpl(
         withContext(dispatcher) {
             supabaseClient.postgrest.from("profiles")
                 .upsert(
-                    value = ProfileData(
-                        id = profile.id,
-                        email = profile.email,
-                        firstName = profile.firstName,
-                        lastName = profile.lastName,
-                        totalScore = profile.totalScore,
-                        avatarUrl = profile.avatarUrl,
-                    ),
+                    value = profile.toData(),
                     onConflict = "id",
                     ignoreDuplicates = true
                 )
@@ -42,13 +38,23 @@ internal class ProfilesRepositoryImpl(
                 }
                 .decodeSingle<ProfileData>()
 
-            Profile(
-                id = currentUserInfo.id,
-                email = currentUserInfo.email,
-                firstName = profileData.firstName,
-                lastName = profileData.lastName,
-                totalScore = profileData.totalScore,
-                avatarUrl = profileData.avatarUrl,
-            )
+            profileData.toDomain()
+        }
+
+    override suspend fun getLeaderboard(count: Long): List<Profile> =
+        withContext(dispatcher) {
+            val leaderboardData = supabaseClient.postgrest
+                .from("profiles")
+                .select {
+                    order(
+                        column = "total_score",
+                        order = Order.DESCENDING
+                    )
+
+                    limit(count)
+                }
+                .decodeList<ProfileData>()
+
+            leaderboardData.map(ProfileData::toDomain)
         }
 }
