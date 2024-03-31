@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Immutable
-abstract class MainAppBarNestedScrollingConnection(
+abstract class MainAppBarNestedScrollConnection(
     density: Density,
     protected val appBarMaxHeight: Dp
 ) : NestedScrollConnection {
@@ -30,9 +30,9 @@ abstract class MainAppBarNestedScrollingConnection(
     abstract fun getAppBarProgressState(): State<Float>
 }
 
-class MainAppBarDefaultNestedScrollingConnection(
+class MainAppBarDefaultNestedScrollConnection(
     density: Density,
-) : MainAppBarNestedScrollingConnection(
+) : MainAppBarNestedScrollConnection(
     density = density,
     appBarMaxHeight = 0.dp
 ) {
@@ -43,10 +43,10 @@ class MainAppBarDefaultNestedScrollingConnection(
 }
 
 
-class MainAppBarSnapNestedScrollingConnection(
+class MainAppBarSnapNestedScrollConnection(
     density: Density,
     private val scrollableState: ScrollableState,
-) : MainAppBarNestedScrollingConnection(
+) : MainAppBarNestedScrollConnection(
     density = density,
     appBarMaxHeight = MainAppBarHeight,
 ) {
@@ -81,13 +81,13 @@ class MainAppBarSnapNestedScrollingConnection(
 
 
 @Composable
-fun rememberDefaultAppBarScrollingBehaviour(
+fun rememberAppBarSnapScrollConnection(
     scrollableState: ScrollableState
-): MainAppBarNestedScrollingConnection {
+): MainAppBarNestedScrollConnection {
     val density = LocalDensity.current
 
     return remember(density) {
-        MainAppBarSnapNestedScrollingConnection(
+        MainAppBarSnapNestedScrollConnection(
             density = density,
             scrollableState = scrollableState
         )

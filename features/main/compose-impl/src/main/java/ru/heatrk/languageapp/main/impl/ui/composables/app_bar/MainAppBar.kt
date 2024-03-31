@@ -48,8 +48,8 @@ fun MainAppBar(
     state: MainAppBarState,
     modifier: Modifier = Modifier,
     onAvatarClick: () -> Unit = {},
-    scrollingBehaviour: MainAppBarNestedScrollingConnection =
-        MainAppBarDefaultNestedScrollingConnection(LocalDensity.current),
+    scrollingBehaviour: MainAppBarNestedScrollConnection =
+        MainAppBarDefaultNestedScrollConnection(LocalDensity.current),
 ) {
     when (state) {
         MainAppBarState.Loading ->
@@ -72,7 +72,7 @@ private fun MainAppBarOk(
     state: MainAppBarState.Ok,
     onAvatarClick: () -> Unit,
     modifier: Modifier = Modifier,
-    scrollingBehaviour: MainAppBarNestedScrollingConnection,
+    scrollingBehaviour: MainAppBarNestedScrollConnection,
 ) {
     MainAppBarLayout(
         avatarContent = {
@@ -115,7 +115,7 @@ private fun MainAppBarOk(
 @Composable
 private fun MainAppBarLoading(
     modifier: Modifier = Modifier,
-    scrollingBehaviour: MainAppBarNestedScrollingConnection,
+    scrollingBehaviour: MainAppBarNestedScrollConnection,
 ) {
     val shimmerBackgroundColor = AppTheme.colors.shimmerBackground
         .copy(alpha = 0.5f)
@@ -163,7 +163,7 @@ private fun MainAppBarLoading(
 
 @Composable
 private fun MainAppBarLayout(
-    scrollingBehaviour: MainAppBarNestedScrollingConnection,
+    scrollingBehaviour: MainAppBarNestedScrollConnection,
     avatarContent: @Composable () -> Unit,
     titleContent: @Composable () -> Unit,
     descriptionContent: @Composable () -> Unit,

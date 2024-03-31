@@ -45,7 +45,7 @@ import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.main.impl.R
 import ru.heatrk.languageapp.main.impl.ui.composables.app_bar.MainAppBar
 import ru.heatrk.languageapp.main.impl.ui.composables.app_bar.MainAppBarState
-import ru.heatrk.languageapp.main.impl.ui.composables.app_bar.rememberDefaultAppBarScrollingBehaviour
+import ru.heatrk.languageapp.main.impl.ui.composables.app_bar.rememberAppBarSnapScrollConnection
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.Intent
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.SideEffect
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.State
@@ -76,7 +76,7 @@ private fun MainScreen(
     onIntent: (Intent) -> Unit,
 ) {
     val scrollableState = rememberLazyGridState()
-    val appBarScrollingBehaviour = rememberDefaultAppBarScrollingBehaviour(scrollableState)
+    val appBarScrollConnection = rememberAppBarSnapScrollConnection(scrollableState)
     val pullToRefreshState = rememberPullToRefreshState()
 
     AppScaffoldControllerEffect(
@@ -84,7 +84,7 @@ private fun MainScreen(
             MainAppBar(
                 state = state.profileState.toAppBarState(),
                 onAvatarClick = { onIntent(Intent.OnProfileClick) },
-                scrollingBehaviour = appBarScrollingBehaviour,
+                scrollingBehaviour = appBarScrollConnection,
             )
         }
     )
@@ -103,7 +103,7 @@ private fun MainScreen(
                 vertical = 11.dp,
             ),
             modifier = Modifier
-                .nestedScroll(appBarScrollingBehaviour)
+                .nestedScroll(appBarScrollConnection)
                 .fillMaxSize()
         ) {
             topUsers(state)
