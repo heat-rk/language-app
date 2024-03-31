@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.joinAll
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -53,6 +54,8 @@ class MainViewModel(
                 onGuessAnimalButtonClick()
             Intent.OnWordPracticeButtonClick ->
                 onWordPracticeButtonClick()
+            Intent.OnPulledToRefresh ->
+                onPulledToRefresh()
         }
     }
 
@@ -73,7 +76,7 @@ class MainViewModel(
                 }
             },
             onError = { /* ignored */ }
-        )
+        ).join()
     }
 
     private fun loadUserData() = intent {
@@ -104,7 +107,7 @@ class MainViewModel(
                     )
                 }
             }
-        )
+        ).join()
     }
 
     private fun loadLeaderboard() = intent {
@@ -133,7 +136,7 @@ class MainViewModel(
                     )
                 }
             }
-        )
+        ).join()
     }
 
     private fun onProfileClick() {
@@ -154,6 +157,14 @@ class MainViewModel(
 
     private fun onGameButtonClick() {
         // TODO
+    }
+
+    private suspend fun IntentBody.onPulledToRefresh() {
+        reduce { state.copy(isRefreshing = true) }
+
+        joinAll(loadUserData(), loadLeaderboard())
+
+        reduce { state.copy(isRefreshing = false) }
     }
 
     private fun toLeaderboardItem(profile: Profile) = State.Leaderboard.Item(

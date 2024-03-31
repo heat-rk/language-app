@@ -1,9 +1,12 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package ru.heatrk.languageapp.main.impl.ui.screens.main
 
 import android.content.Context
 import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,10 +16,14 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -70,6 +77,7 @@ private fun MainScreen(
 ) {
     val scrollableState = rememberLazyGridState()
     val appBarScrollingBehaviour = rememberDefaultAppBarScrollingBehaviour(scrollableState)
+    val pullToRefreshState = rememberPullToRefreshState()
 
     AppScaffoldControllerEffect(
         appBarState = AppBarState.Custom {
@@ -81,26 +89,54 @@ private fun MainScreen(
         }
     )
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        state = scrollableState,
-        horizontalArrangement = Arrangement.spacedBy(17.dp),
-        contentPadding = PaddingValues(
-            horizontal = 24.dp,
-            vertical = 11.dp,
-        ),
+    Box(
         modifier = Modifier
-            .nestedScroll(appBarScrollingBehaviour)
             .fillMaxSize()
+            .nestedScroll(pullToRefreshState.nestedScrollConnection)
     ) {
-        topUsers(state)
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            state = scrollableState,
+            horizontalArrangement = Arrangement.spacedBy(17.dp),
+            contentPadding = PaddingValues(
+                horizontal = 24.dp,
+                vertical = 11.dp,
+            ),
+            modifier = Modifier
+                .nestedScroll(appBarScrollingBehaviour)
+                .fillMaxSize()
+        ) {
+            topUsers(state)
 
-        titleItem(
-            titleRes = R.string.main_available_exercises,
-            paddingTop = 11.dp
+            titleItem(
+                titleRes = R.string.main_available_exercises,
+                paddingTop = 11.dp
+            )
+
+            exercisesItems(onIntent)
+        }
+
+        if (pullToRefreshState.isRefreshing) {
+            LaunchedEffect(Unit) {
+                onIntent(Intent.OnPulledToRefresh)
+            }
+        }
+
+        LaunchedEffect(state.isRefreshing) {
+            if (state.isRefreshing) {
+                pullToRefreshState.startRefresh()
+            } else {
+                pullToRefreshState.endRefresh()
+            }
+        }
+
+        PullToRefreshContainer(
+            state = pullToRefreshState,
+            containerColor = AppTheme.colors.background,
+            contentColor = AppTheme.colors.primary,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
         )
-
-        exercisesItems(onIntent)
     }
 }
 

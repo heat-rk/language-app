@@ -9,6 +9,7 @@ object MainScreenContract {
     data class State(
         val profileState: Profile = Profile.Loading,
         val leaderboard: Leaderboard = Leaderboard.Loading,
+        val isRefreshing: Boolean = false,
     ) {
         sealed interface Profile {
             data object Loading : Profile
@@ -41,6 +42,7 @@ object MainScreenContract {
         data object OnWordPracticeButtonClick : Intent
         data object OnAuditionButtonClick : Intent
         data object OnGameButtonClick : Intent
+        data object OnPulledToRefresh : Intent
     }
 
     sealed interface SideEffect {
