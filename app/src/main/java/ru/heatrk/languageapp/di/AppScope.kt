@@ -16,6 +16,8 @@ import ru.heatrk.languageapp.core.profiles.impl.di.useProfilesBeans
 import ru.heatrk.languageapp.main.impl.di.includeMainScope
 import ru.heatrk.languageapp.onboarding.impl.di.includeOnboardingScope
 import ru.heatrk.languageapp.onboarding.impl.di.useOnboardingApiBeans
+import ru.heatrk.languageapp.profile.impl.di.includeProfileScope
+import ru.heatrk.languageapp.profile.impl.di.useProfileApiBeans
 import scout.definition.Registry
 import scout.scope
 
@@ -32,10 +34,12 @@ val appScope = scope("app_scope") {
 
     useOnboardingApiBeans()
     useAuthApiBeans()
+    useProfileApiBeans()
 }.apply {
     includeOnboardingScope()
     includeAuthScope()
     includeMainScope()
+    includeProfileScope()
 }
 
 private fun Registry.useComposeNavigationBeans() {

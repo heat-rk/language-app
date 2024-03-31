@@ -20,7 +20,7 @@ fun NavGraphBuilder.route(
         }
         is Route.Screen -> {
             composable(
-                route = route.path,
+                route = route.pathWithParams,
                 arguments = route.namedNavArguments,
                 content = { navBackStackEntry ->
                     with(route) {

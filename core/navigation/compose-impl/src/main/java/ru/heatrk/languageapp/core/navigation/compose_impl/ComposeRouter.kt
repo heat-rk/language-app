@@ -26,8 +26,12 @@ class ComposeRouter : Router {
     override val previousRoute: String?
         get() = navController?.previousRoute
 
-    override suspend fun navigate(routePath: String, options: List<RoutingOption>) {
-        action(RoutingAction.NavigateTo(routePath, options))
+    override suspend fun navigate(
+        routePath: String,
+        options: List<RoutingOption>,
+        arguments: Map<String, Any>,
+    ) {
+        action(RoutingAction.NavigateTo(routePath, options, arguments))
     }
 
     override suspend fun navigateBack() {
@@ -56,7 +60,12 @@ class ComposeRouter : Router {
     ) {
         when (action) {
             is RoutingAction.NavigateTo ->
-                handleNavigateToRouting(navController, action.routePath, action.options)
+                handleNavigateToRouting(
+                    navController = navController,
+                    routePath = action.routePath,
+                    options = action.options,
+                    arguments = action.arguments
+                )
             RoutingAction.NavigateBack ->
                 handleNavigateBackRouting(navController)
         }
@@ -66,8 +75,9 @@ class ComposeRouter : Router {
         navController: NavController,
         routePath: String,
         options: List<RoutingOption>,
+        arguments: Map<String, Any>,
     ) {
-        navController.navigate(routePath) {
+        navController.navigate(getPathWithArguments(routePath, arguments)) {
             options.forEach { option ->
                 when (option) {
                     is RoutingOption.LaunchSingleTop -> {
@@ -91,5 +101,20 @@ class ComposeRouter : Router {
 
     private suspend fun action(action: RoutingAction) {
         _actions.send(action)
+    }
+
+    private fun getPathWithArguments(
+        path: String,
+        arguments: Map<String, Any>
+    ) = buildString {
+        append(path)
+
+        if (arguments.isNotEmpty()) {
+            append('?')
+
+            arguments.forEach { (name, value) ->
+                append("$name=$value")
+            }
+        }
     }
 }

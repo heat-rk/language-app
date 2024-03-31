@@ -36,4 +36,6 @@ include(
     ":features:auth:compose-impl",
     ":features:main:api",
     ":features:main:compose-impl",
+    ":features:profile:api",
+    ":features:profile:compose-impl",
 )

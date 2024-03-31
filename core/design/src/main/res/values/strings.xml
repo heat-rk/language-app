@@ -7,4 +7,8 @@
     <string name="finish_positive">Finish!</string>
     <string name="ok_positive">OK!</string>
     <string name="full_name_formatted">%1$s %2$s</string>
+    <string name="choose">Choose</string>
+
+    <string name="error_smth_went_wrong">Something went wrong :(</string>
+    <string name="error_smth_went_wrong_description">Please try again later</string>
 </resources>

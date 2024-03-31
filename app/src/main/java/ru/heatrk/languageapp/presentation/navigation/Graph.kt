@@ -10,11 +10,13 @@ import ru.heatrk.languageapp.core.navigation.api.route
 import ru.heatrk.languageapp.features.splash.impl.ui.navigation.SplashScreenRoute
 import ru.heatrk.languageapp.main.impl.ui.navigation.MainGraphRoute
 import ru.heatrk.languageapp.onboarding.impl.ui.navigation.OnboardingScreenRoute
+import ru.heatrk.languageapp.profile.impl.ui.navigation.SelectLanguageScreenRoute
 
 private fun NavGraphBuilder.buildGraph() {
     route(SplashScreenRoute)
     route(OnboardingScreenRoute)
     route(AuthGraphRoute)
+    route(SelectLanguageScreenRoute)
     route(MainGraphRoute)
 }
 

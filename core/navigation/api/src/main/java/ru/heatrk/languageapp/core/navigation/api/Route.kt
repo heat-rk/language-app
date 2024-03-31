@@ -8,35 +8,33 @@ import androidx.navigation.NavGraphBuilder
 
 sealed class Route(
     val path: String,
-    val namedNavArguments: List<NamedNavArgument> = emptyList(),
 ) {
-    fun pathWithArgs(args: Map<String, String> = emptyMap()): String =
-        buildString {
+    abstract class Screen(
+        path: String,
+        val namedNavArguments: List<NamedNavArgument> = emptyList(),
+    ) : Route(path) {
+
+        val pathWithParams = buildString {
             append(path)
 
-            if (args.isNotEmpty()) {
+            if (namedNavArguments.isNotEmpty()) {
                 append('?')
-                append(args.toQueryArgs())
+
+                namedNavArguments.forEach { param ->
+                    append("${param.name}={${param.name}}")
+                }
             }
         }
 
-    private fun Map<String, String>.toQueryArgs() =
-        entries.joinToString(separator = "&") { "${it.key}=${it.value}" }
-
-    abstract class Screen(
-        path: String,
-        namedNavArguments: List<NamedNavArgument> = emptyList(),
-    ) : Route(path, namedNavArguments) {
         @Composable
         abstract fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry)
     }
 
     abstract class Graph(
         path: String,
-        namedNavArguments: List<NamedNavArgument> = emptyList(),
         val startDestination: String,
         val builder: NavGraphBuilder.() -> Unit,
-    ) : Route(path, namedNavArguments)
+    ) : Route(path)
 }
 
 

@@ -37,8 +37,6 @@
     <string name="password_recovery_success">Password changed!</string>
     <string name="password_recovery_success_description">Your password has been changed successfully!</string>
 
-    <string name="error_smth_went_wrong">Something went wrong :(</string>
-    <string name="error_smth_went_wrong_description">Please try again later</string>
     <string name="error_check_your_creds">Error. Check your credentials!</string>
     <string name="error_empty_field">This field is required</string>
     <string name="error_invalid_email">Invalid email format</string>

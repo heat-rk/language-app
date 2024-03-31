@@ -11,6 +11,7 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import ru.heatrk.languageapp.auth.impl.R
+import ru.heatrk.languageapp.core.design.R as DesignR
 import ru.heatrk.languageapp.auth.impl.domain.sign_up.InvalidSignUpFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.sign_up.SignUpUseCase
 import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_in.SIGN_IN_SCREEN_ROUTE_PATH
@@ -164,7 +165,7 @@ class SignUpViewModel(
                         reduceErrors(throwable)
                     }
                     else -> {
-                        postSideEffect(SideEffect.Message(strRes(R.string.error_smth_went_wrong)))
+                        postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
                     }
                 }
 
@@ -211,7 +212,7 @@ class SignUpViewModel(
                     }
 
                     else -> {
-                        postSideEffect(SideEffect.Message(strRes(R.string.error_smth_went_wrong)))
+                        postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
                     }
                 }
 

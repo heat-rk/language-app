@@ -10,6 +10,7 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import ru.heatrk.languageapp.auth.impl.R
+import ru.heatrk.languageapp.core.design.R as DesignR
 import ru.heatrk.languageapp.auth.impl.domain.recovery.InvalidRecoveryFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.recovery.RecoveryUseCase
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_CHECK_EMAIL_SCREEN_ROUTE_PATH
@@ -144,7 +145,7 @@ class RecoveryFlowViewModel(
                     }
 
                     else -> {
-                        postSideEffect(SideEffect.Message(strRes(R.string.error_smth_went_wrong)))
+                        postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
                     }
                 }
 
@@ -200,7 +201,7 @@ class RecoveryFlowViewModel(
                     }
 
                     else -> {
-                        postSideEffect(SideEffect.Message(strRes(R.string.error_smth_went_wrong)))
+                        postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
                     }
                 }
 

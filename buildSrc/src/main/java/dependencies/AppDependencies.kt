@@ -11,6 +11,13 @@ object AppDependencies {
         version = Versions.serialization
     )
 
+    object AndroidX {
+        val appCompat = Dependency(
+            notation = "androidx.appcompat:appcompat",
+            version = Versions.androidXAppComapt,
+        )
+    }
+
     object Supabase {
         val bom = Dependency(
             notation = "io.github.jan-tennert.supabase:bom",
@@ -100,11 +107,6 @@ object AppDependencies {
         val lifeCycleRuntime = Dependency(
             notation = "androidx.lifecycle:lifecycle-runtime-compose",
             version = Versions.lifecycle,
-        )
-
-        val activityCore = Dependency(
-            notation = "androidx.activity:activity",
-            version = Versions.composeActivity,
         )
 
         val activity = Dependency(
@@ -258,5 +260,6 @@ object AppDependencies {
         const val mockitoKotlin = "5.2.1"
         const val supabase = "2.1.5"
         const val serialization = "1.6.3"
+        const val androidXAppComapt = "1.6.1"
     }
 }

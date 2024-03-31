@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import dependencies.AppDependencies
 
 plugins {
@@ -9,6 +11,10 @@ plugins {
 android {
     namespace = AppConfig.applicationId
     compileSdk = AppConfig.Sdk.compile
+
+    androidResources {
+        generateLocaleConfig = true
+    }
 
     defaultConfig {
         applicationId = AppConfig.applicationId
@@ -91,6 +97,8 @@ dependencies {
         ":features:onboarding:compose-impl",
         ":features:auth:api",
         ":features:auth:compose-impl",
+        ":features:profile:api",
+        ":features:profile:compose-impl",
         ":features:main:api",
         ":features:main:compose-impl",
     )

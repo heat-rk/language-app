@@ -14,18 +14,24 @@ import ru.heatrk.languageapp.common.utils.StringResource
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.common.utils.strRes
+import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.profiles.api.domain.Profile
 import ru.heatrk.languageapp.core.profiles.api.domain.ProfilesRepository
 import ru.heatrk.languageapp.main.impl.R
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.Intent
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.SideEffect
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.State
+import ru.heatrk.languageapp.profile.api.domain.SettingsRepository
+import ru.heatrk.languageapp.profile.api.ui.navigation.SELECT_LANGUAGE_SCREEN_ROUTE
+import ru.heatrk.languageapp.profile.api.ui.navigation.SelectLanguageScreenArguments
 import ru.heatrk.languageapp.core.design.R as DesignR
 
 private typealias IntentBody = SimpleSyntax<State, SideEffect>
 
 class MainViewModel(
-    private val profilesRepository: ProfilesRepository
+    private val profilesRepository: ProfilesRepository,
+    private val settingsRepository: SettingsRepository,
+    private val router: Router,
 ) : ViewModel(), ContainerHost<State, SideEffect> {
     override val container = container<State, SideEffect>(
         initialState = State()
@@ -51,8 +57,23 @@ class MainViewModel(
     }
 
     private fun loadData() {
+        checkSavedLanguage()
         loadUserData()
         loadLeaderboard()
+    }
+
+    private fun checkSavedLanguage() = intent {
+        viewModelScope.launchSafe(
+            block = {
+                if (!settingsRepository.isLanguageAlreadySelected()) {
+                    router.navigate(
+                        routePath = SELECT_LANGUAGE_SCREEN_ROUTE,
+                        arguments = mapOf(SelectLanguageScreenArguments.CAN_GO_BACK to false)
+                    )
+                }
+            },
+            onError = { /* ignored */ }
+        )
     }
 
     private fun loadUserData() = intent {

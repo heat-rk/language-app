@@ -41,9 +41,9 @@ import ru.heatrk.languageapp.core.design.styles.AppTheme
 @Composable
 fun AppButton(
     text: String,
-    buttonState: AppButtonState = AppButtonState.Idle,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    buttonState: AppButtonState = AppButtonState.Idle,
 ) {
     val currentDensity = LocalDensity.current
     var buttonWidth by remember { mutableFloatStateOf(0f) }
@@ -172,7 +172,7 @@ private fun AppButton(
             }
     ) {
         when (buttonState) {
-            AppButtonState.Idle -> {
+            AppButtonState.Idle, AppButtonState.Disabled -> {
                 Text(
                     text = text,
                     style = AppTheme.typography.titleLarge,

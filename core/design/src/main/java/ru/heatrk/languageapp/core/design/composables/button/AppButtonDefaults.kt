@@ -15,6 +15,8 @@ internal object AppButtonDefaults {
         successContentColor: Color = AppTheme.colors.onSuccess,
         errorColor: Color = AppTheme.colors.error,
         errorContentColor: Color = AppTheme.colors.onError,
+        disabledColor: Color = AppTheme.colors.surface,
+        disabledContentColor: Color = AppTheme.colors.onSecondary,
     ) = AppButtonColors(
         idleColor = idleColor,
         idleContentColor = idleContentColor,
@@ -24,5 +26,7 @@ internal object AppButtonDefaults {
         successContentColor = successContentColor,
         errorColor = errorColor,
         errorContentColor = errorContentColor,
+        disabledColor = disabledColor,
+        disabledContentColor = disabledContentColor,
     )
 }

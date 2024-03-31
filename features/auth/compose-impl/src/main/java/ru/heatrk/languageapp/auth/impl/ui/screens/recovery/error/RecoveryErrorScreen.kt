@@ -22,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryButtonsControllerEffect
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowViewModel
@@ -66,7 +65,7 @@ private fun RecoveryErrorScreen(
         Spacer(modifier = Modifier.height(48.dp))
 
         Text(
-            text = stringResource(R.string.error_smth_went_wrong),
+            text = stringResource(DesignR.string.error_smth_went_wrong),
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Medium,
             style = AppTheme.typography.titleLarge,
@@ -77,7 +76,7 @@ private fun RecoveryErrorScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = stringResource(R.string.error_smth_went_wrong_description),
+            text = stringResource(DesignR.string.error_smth_went_wrong_description),
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Medium,
             color = AppTheme.colors.textBody,

@@ -18,7 +18,9 @@ fun Scope.includeMainScope() {
                 viewModelFactory {
                     initializer {
                         MainViewModel(
-                            profilesRepository = get()
+                            profilesRepository = get(),
+                            settingsRepository = get(),
+                            router = get(),
                         )
                     }
                 }

@@ -5,7 +5,11 @@ interface Router {
 
     val currentRoute: String?
 
-    suspend fun navigate(routePath: String, options: List<RoutingOption> = emptyList())
+    suspend fun navigate(
+        routePath: String,
+        options: List<RoutingOption> = emptyList(),
+        arguments: Map<String, Any> = emptyMap(),
+    )
 
     suspend fun navigateBack()
 }

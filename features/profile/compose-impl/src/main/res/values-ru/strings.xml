@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_title_formatted">Ваш профиль, %1$s</string>
+    <string name="profile_switch_to_dark">Включить темную тему</string>
+    <string name="profile_switch_to_light">Включить светлую тему</string>
+    <string name="profile_change_mother_language">Изменить родной язык</string>
+    <string name="profile_change_image">Изменить фото профиля</string>
+    <string name="profile_change_logout">Выйти</string>
+
+    <string name="language_select_title">Выбор языка</string>
+    <string name="language_select_what_is_your_mother_language">Какой ваш родной язык?</string>
+    <string name="language_select_russian">Русский</string>
+    <string name="language_select_english">Английский</string>
+</resources>
