@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="profile_title_formatted">Ваш профиль, %1$s</string>
+    <string name="profile_title">Профиль</string>
     <string name="profile_switch_to_dark">Включить темную тему</string>
     <string name="profile_switch_to_light">Включить светлую тему</string>
     <string name="profile_change_mother_language">Изменить родной язык</string>

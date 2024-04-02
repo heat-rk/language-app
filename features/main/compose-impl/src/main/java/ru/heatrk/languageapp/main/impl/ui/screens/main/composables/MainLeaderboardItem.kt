@@ -31,6 +31,7 @@ import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.main.impl.R
+import ru.heatrk.languageapp.core.design.R as DesignR
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract
 import kotlin.math.roundToInt
 
@@ -54,7 +55,7 @@ fun MainLeaderboardItem(
         Image(
             painter = leader.avatar
                 ?.extract(size = Size(LeaderAvatarSize.value.roundToInt()))
-                ?: painterResource(R.drawable.ic_avatar_placeholder),
+                ?: painterResource(DesignR.drawable.ic_avatar_placeholder),
             contentDescription = null,
             modifier = Modifier
                 .size(LeaderAvatarSize)
@@ -149,7 +150,7 @@ private fun MainLeaderboardItemPreview() {
                 leader = MainScreenContract.State.Leaderboard.Item(
                     id = "1",
                     fullName = strRes("Ivanov Ivan"),
-                    avatar = painterRes(R.drawable.ic_avatar_placeholder),
+                    avatar = painterRes(DesignR.drawable.ic_avatar_placeholder),
                     totalScore = 10
                 )
             )

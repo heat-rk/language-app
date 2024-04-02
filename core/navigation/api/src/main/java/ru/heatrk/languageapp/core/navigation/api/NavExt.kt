@@ -1,30 +1,33 @@
 package ru.heatrk.languageapp.core.navigation.api
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavGraphBuilder
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 
-fun NavGraphBuilder.route(
-    route: Route
-) {
+fun NavGraphBuilder.route(route: Route) {
     when (route) {
         is Route.Graph -> {
-            navigation(
+            androidBuilder.navigation(
                 startDestination = route.startDestination,
                 route = route.path,
-                builder = route.builder,
+                builder = { applyLibraryBuilder(navController, route.builder) },
             )
         }
         is Route.Screen -> {
-            composable(
+            androidBuilder.composable(
                 route = route.pathWithParams,
                 arguments = route.namedNavArguments,
                 content = { navBackStackEntry ->
                     with(route) {
-                        Content(navBackStackEntry)
+                        Content(navController, navBackStackEntry)
                     }
                 },
             )
@@ -43,7 +46,7 @@ fun NavHost(
         navController = navController,
         startDestination = startDestination.path,
         modifier = modifier,
-        builder = builder,
+        builder = { applyLibraryBuilder(navController, builder) },
     )
 }
 
@@ -55,11 +58,26 @@ fun NavHost(
 ) {
     androidx.navigation.compose.NavHost(
         navController = navController,
-        graph = NavGraphBuilder(
+        graph = androidx.navigation.NavGraphBuilder(
             provider = navController.navigatorProvider,
             route = graph.path,
             startDestination = graph.startDestination,
-        ).apply(graph.builder).build(),
+        ).apply { applyLibraryBuilder(navController, graph.builder) }.build(),
         modifier = modifier,
     )
+}
+
+@Composable
+inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
+    navController: NavController,
+    factory: ViewModelProvider.Factory? = null,
+): T {
+    val navGraphRoute = destination.parent?.route
+        ?: return viewModel(factory = factory)
+
+    val parentEntry = remember(this) {
+        navController.getBackStackEntry(navGraphRoute)
+    }
+
+    return viewModel(viewModelStoreOwner = parentEntry, factory = factory)
 }

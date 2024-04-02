@@ -43,6 +43,7 @@ fun AppButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    buttonColors: AppButtonColors = AppButtonDefaults.colors(),
     buttonState: AppButtonState = AppButtonState.Idle,
 ) {
     val currentDensity = LocalDensity.current
@@ -95,7 +96,7 @@ fun AppButton(
             buttonState = state,
             onClick = onClick,
             buttonShape = buttonShape,
-            buttonColors = AppButtonDefaults.colors(),
+            buttonColors = buttonColors,
             blurPath = blurPath,
             blurPaint = blurPaint,
             modifier = modifier

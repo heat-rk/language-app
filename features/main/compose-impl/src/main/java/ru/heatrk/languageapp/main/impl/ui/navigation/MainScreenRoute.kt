@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import ru.heatrk.languageapp.core.navigation.api.Route
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreen
 
@@ -14,7 +15,10 @@ internal class MainScreenRoute(
     path = MAIN_SCREEN_ROUTE_PATH
 ) {
     @Composable
-    override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
+    override fun AnimatedContentScope.Content(
+        navController: NavController,
+        navBackStackEntry: NavBackStackEntry
+    ) {
         MainScreen(viewModel = viewModel(factory = viewModelFactory))
     }
 }

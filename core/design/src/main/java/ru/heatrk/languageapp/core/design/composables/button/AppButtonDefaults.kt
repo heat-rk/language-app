@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 
-internal object AppButtonDefaults {
+object AppButtonDefaults {
     @Composable
     fun colors(
         idleColor: Color = AppTheme.colors.secondary,

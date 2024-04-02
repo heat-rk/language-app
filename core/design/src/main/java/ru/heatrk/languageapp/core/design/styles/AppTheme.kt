@@ -1,5 +1,6 @@
 package ru.heatrk.languageapp.core.design.styles
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
@@ -9,7 +10,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 
 @Composable
 fun AppTheme(
-    isDarkTheme: Boolean = isSystemInDarkTheme(),
+    isDarkTheme: Boolean = isNightMode(),
     content: @Composable (isDarkTheme: Boolean) -> Unit
 ) {
     val appColors = if (isDarkTheme) {
@@ -28,6 +29,13 @@ fun AppTheme(
             }
         )
     }
+}
+
+@Composable
+fun isNightMode() = when (AppCompatDelegate.getDefaultNightMode()) {
+    AppCompatDelegate.MODE_NIGHT_NO -> false
+    AppCompatDelegate.MODE_NIGHT_YES -> true
+    else -> isSystemInDarkTheme()
 }
 
 object AppTheme {

@@ -41,6 +41,7 @@ import ru.heatrk.languageapp.core.design.composables.animation.FadeInAnimatedCon
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.main.impl.R
+import ru.heatrk.languageapp.core.design.R as DesignR
 import kotlin.math.roundToInt
 
 @Composable
@@ -79,8 +80,8 @@ private fun MainAppBarOk(
             Image(
                 painter = state.avatar
                     ?.extract(size = Size(AvatarSize.value.roundToInt()))
-                    ?: painterResource(R.drawable.ic_avatar_placeholder),
-                contentDescription = stringResource(R.string.accessibility_go_to_profile),
+                    ?: painterResource(DesignR.drawable.ic_avatar_placeholder),
+                contentDescription = stringResource(DesignR.string.accessibility_go_to_profile),
                 modifier = Modifier
                     .size(AvatarSize)
                     .clip(CircleShape)
@@ -284,7 +285,7 @@ private class MainAppBarPreviewStateProvider : PreviewParameterProvider<MainAppB
         MainAppBarState.Loading,
         MainAppBarState.Ok(
             firstName = "Emil",
-            avatar = painterRes(R.drawable.ic_avatar_placeholder),
+            avatar = painterRes(DesignR.drawable.ic_avatar_placeholder),
         )
     )
 }

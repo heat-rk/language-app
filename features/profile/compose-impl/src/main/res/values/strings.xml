@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="profile_title_formatted">Your profile, %1$s</string>
+    <string name="profile_title">Profile</string>
     <string name="profile_switch_to_dark">Switch to Dark</string>
     <string name="profile_switch_to_light">Switch to Light</string>
     <string name="profile_change_mother_language">Change mother language</string>

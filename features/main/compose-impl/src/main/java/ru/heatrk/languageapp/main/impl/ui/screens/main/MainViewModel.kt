@@ -23,6 +23,7 @@ import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.Intent
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.SideEffect
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.State
 import ru.heatrk.languageapp.profile.api.domain.SettingsRepository
+import ru.heatrk.languageapp.profile.api.ui.navigation.PROFILE_GRAPH_ROUTE
 import ru.heatrk.languageapp.profile.api.ui.navigation.SELECT_LANGUAGE_SCREEN_ROUTE
 import ru.heatrk.languageapp.profile.api.ui.navigation.SelectLanguageScreenArguments
 import ru.heatrk.languageapp.core.design.R as DesignR
@@ -139,8 +140,8 @@ class MainViewModel(
         ).join()
     }
 
-    private fun onProfileClick() {
-        // TODO
+    private suspend fun onProfileClick() {
+        router.navigate(routePath = PROFILE_GRAPH_ROUTE)
     }
 
     private fun onGuessAnimalButtonClick() {

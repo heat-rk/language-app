@@ -2,7 +2,7 @@ package ru.heatrk.languageapp.core.design.composables.button
 
 import androidx.compose.ui.graphics.Color
 
-internal data class AppButtonColors(
+data class AppButtonColors(
     val idleColor: Color,
     val idleContentColor: Color,
     val loadingColor: Color,

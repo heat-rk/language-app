@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="accessibility_go_to_profile">Go to profile</string>
+
     <string name="app_name">Language App</string>
     <string name="go_back_icon_content_description">Go back</string>
     <string name="toggle_password_visibility">Toggle password visibility</string>

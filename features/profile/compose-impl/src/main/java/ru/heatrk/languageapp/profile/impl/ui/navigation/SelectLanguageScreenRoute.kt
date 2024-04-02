@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import ru.heatrk.languageapp.core.navigation.api.Route
@@ -21,7 +22,10 @@ object SelectLanguageScreenRoute : Route.Screen(
     )
 ) {
     @Composable
-    override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
+    override fun AnimatedContentScope.Content(
+        navController: NavController,
+        navBackStackEntry: NavBackStackEntry
+    ) {
         SelectLanguageScreen(
             viewModel = viewModel(
                 factory = ProfileComponent.getSelectLanguageViewModelFactory(

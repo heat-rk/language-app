@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreen
 import ru.heatrk.languageapp.core.navigation.api.Route
 
@@ -14,7 +15,10 @@ internal class SignInScreenRoute(
     path =  SIGN_IN_SCREEN_ROUTE_PATH
 ) {
     @Composable
-    override fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry) {
+    override fun AnimatedContentScope.Content(
+        navController: NavController,
+        navBackStackEntry: NavBackStackEntry
+    ) {
         SignInScreen(viewModel = viewModel(factory = signInViewModelFactory))
     }
 }

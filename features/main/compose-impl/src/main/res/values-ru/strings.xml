@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="accessibility_go_to_profile">Перейти в профиль</string>
-
     <string name="main_app_bar_title">Привет!</string>
     <string name="main_app_bar_title_named">Привет, %1$s</string>
     <string name="main_app_bar_description">Готовы познавать новое сегодня?</string>

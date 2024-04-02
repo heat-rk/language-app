@@ -4,7 +4,7 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavController
 
 sealed class Route(
     val path: String,
@@ -27,7 +27,10 @@ sealed class Route(
         }
 
         @Composable
-        abstract fun AnimatedContentScope.Content(navBackStackEntry: NavBackStackEntry)
+        abstract fun AnimatedContentScope.Content(
+            navController: NavController,
+            navBackStackEntry: NavBackStackEntry
+        )
     }
 
     abstract class Graph(
