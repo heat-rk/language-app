@@ -80,7 +80,7 @@ private fun MainScreen(
     val pullToRefreshState = rememberPullToRefreshState()
 
     AppScaffoldControllerEffect(
-        appBarState = AppBarState.Custom {
+        appBarState = AppBarState.Custom(key = "main") {
             MainAppBar(
                 state = state.profileState.toAppBarState(),
                 onAvatarClick = { onIntent(Intent.OnProfileClick) },

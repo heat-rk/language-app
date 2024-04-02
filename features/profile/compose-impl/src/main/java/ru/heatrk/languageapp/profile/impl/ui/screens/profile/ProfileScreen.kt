@@ -17,7 +17,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ru.heatrk.languageapp.common.utils.painterRes
-import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.AppButtonDefaults
@@ -26,11 +25,11 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControl
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.design.styles.isNightMode
 import ru.heatrk.languageapp.profile.impl.R
-import ru.heatrk.languageapp.profile.impl.ui.composables.ProfileHeader
-import ru.heatrk.languageapp.profile.impl.ui.composables.ProfileHeaderShimmer
-import ru.heatrk.languageapp.core.design.R as DesignR
-import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.State
+import ru.heatrk.languageapp.profile.impl.ui.composables.ProfileAppBar
+import ru.heatrk.languageapp.profile.impl.ui.composables.ProfileAppBarShimmer
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.Intent
+import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.State
+import ru.heatrk.languageapp.core.design.R as DesignR
 
 @Composable
 internal fun ProfileScreen(viewModel: ProfileViewModel) {
@@ -48,35 +47,33 @@ private fun ProfileScreen(
     onIntent: (Intent) -> Unit,
 ) {
     AppScaffoldControllerEffect(
-        appBarState = AppBarState.Default(
-            title = stringResource(R.string.profile_title),
-            titleGravity = AppBarTitleGravity.CENTER,
-            onGoBackClick = { onIntent(Intent.OnGoBackClick) },
-        )
+        appBarState = AppBarState.Custom(key = "profile") {
+            when (state) {
+                is State.Loaded -> {
+                    ProfileAppBar(
+                        fullName = state.fullName,
+                        avatar = state.avatar,
+                        onGoBackClick = { onIntent(Intent.OnGoBackClick) },
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                    )
+                }
+                State.Loading -> {
+                    ProfileAppBarShimmer(
+                        onGoBackClick = { onIntent(Intent.OnGoBackClick) },
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                    )
+                }
+            }
+        }
     )
 
     Column(
-        verticalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.Bottom,
         modifier = Modifier
             .fillMaxSize()
     ) {
-        when (state) {
-            is State.Loaded -> {
-                ProfileHeader(
-                    fullName = state.fullName,
-                    avatar = state.avatar,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                )
-            }
-            State.Loading -> {
-                ProfileHeaderShimmer(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                )
-            }
-        }
-
         ProfileSettingsBlock(
             onIntent = onIntent,
             modifier = Modifier

@@ -75,7 +75,7 @@ private fun appScaffoldTopBar(
     {
         SlideInVerticallyAnimatedContent(
             targetState = appBarState,
-            contentKey = { state -> state::class },
+            contentKey = AppBarState::key,
             label = "AppBarStateAnimation"
         ) { state ->
             when (state) {
@@ -102,16 +102,24 @@ private fun appScaffoldTopBar(
 }
 
 sealed interface AppBarState {
-    data object Hidden : AppBarState
+
+    val key: String
+
+    data object Hidden : AppBarState {
+        override val key = this::class.java.simpleName
+    }
 
     data class Default(
         val title: String,
         val titleGravity: AppBarTitleGravity = AppBarTitleGravity.START,
         val actions: List<AppBarActionItem> = emptyList(),
         val onGoBackClick: (() -> Unit)? = null,
-    ) : AppBarState
+    ) : AppBarState {
+        override val key = this::class.java.simpleName
+    }
 
     data class Custom(
+        override val key: String,
         val content: @Composable () -> Unit
     ) : AppBarState
 }

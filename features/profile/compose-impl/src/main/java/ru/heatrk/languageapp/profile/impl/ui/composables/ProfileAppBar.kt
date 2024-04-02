@@ -21,20 +21,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.heatrk.languageapp.core.design.R as DesignR
 import ru.heatrk.languageapp.common.utils.PainterResource
 import ru.heatrk.languageapp.common.utils.Size
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.painterRes
+import ru.heatrk.languageapp.core.design.composables.AppBar
+import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.profile.impl.R
 import kotlin.math.roundToInt
+import ru.heatrk.languageapp.core.design.R as DesignR
 
 @Composable
-fun ProfileHeader(
+fun ProfileAppBar(
     fullName: String?,
     avatar: PainterResource?,
     modifier: Modifier = Modifier,
+    onGoBackClick: () -> Unit,
 ) {
     ProfileHeaderLayout(
         avatarContent = {
@@ -44,6 +48,7 @@ fun ProfileHeader(
                     ?: painterResource(DesignR.drawable.ic_avatar_placeholder),
                 contentDescription = stringResource(DesignR.string.accessibility_go_to_profile),
                 modifier = Modifier
+                    .padding(horizontal = 24.dp)
                     .size(ProfileAvatarSize)
                     .clip(CircleShape)
             )
@@ -53,15 +58,19 @@ fun ProfileHeader(
                 text = fullName ?: "-",
                 color = AppTheme.colors.onPrimary,
                 style = AppTheme.typography.titleLarge,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
             )
         },
+        onGoBackClick = onGoBackClick,
         modifier = modifier,
     )
 }
 
 @Composable
-fun ProfileHeaderShimmer(
+fun ProfileAppBarShimmer(
+    onGoBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val shimmerBackgroundColor = AppTheme.colors.shimmerBackground
@@ -73,6 +82,7 @@ fun ProfileHeaderShimmer(
         avatarContent = {
             Box(
                 modifier = Modifier
+                    .padding(horizontal = 24.dp)
                     .size(ProfileAvatarSize)
                     .clip(CircleShape)
                     .shimmerEffect(
@@ -84,6 +94,7 @@ fun ProfileHeaderShimmer(
         nameContent = {
             Box(
                 modifier = Modifier
+                    .padding(horizontal = 24.dp)
                     .size(
                         width = 150.dp,
                         height = 22.dp,
@@ -95,6 +106,7 @@ fun ProfileHeaderShimmer(
                     )
             )
         },
+        onGoBackClick = onGoBackClick,
         modifier = modifier
     )
 }
@@ -103,13 +115,19 @@ fun ProfileHeaderShimmer(
 private fun ProfileHeaderLayout(
     avatarContent: @Composable () -> Unit,
     nameContent: @Composable () -> Unit,
+    onGoBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
             .background(AppTheme.colors.primary)
-            .padding(horizontal = 24.dp)
     ) {
+        AppBar(
+            title = stringResource(R.string.profile_title),
+            titleGravity = AppBarTitleGravity.CENTER,
+            onGoBackClick = onGoBackClick,
+        )
+
         avatarContent()
 
         Spacer(modifier = Modifier.height(5.dp))
@@ -130,7 +148,8 @@ private fun ProfileHeaderPreview() {
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            ProfileHeaderShimmer(
+            ProfileAppBarShimmer(
+                onGoBackClick = {},
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
@@ -138,9 +157,10 @@ private fun ProfileHeaderPreview() {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            ProfileHeader(
+            ProfileAppBar(
                 fullName = "Ivan Ivanov",
                 avatar = painterRes(DesignR.drawable.ic_avatar_placeholder),
+                onGoBackClick = {},
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
