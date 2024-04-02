@@ -1,5 +1,11 @@
 package ru.heatrk.languageapp.core.navigation.api
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -40,12 +46,24 @@ fun NavHost(
     navController: NavHostController,
     startDestination: Route,
     modifier: Modifier = Modifier,
+    enterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) =
+        { fadeIn(animationSpec = tween(DEFAULT_NAVIGATION_ANIMATION_DURATION)) },
+    exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) =
+        { fadeOut(animationSpec = tween(DEFAULT_NAVIGATION_ANIMATION_DURATION)) },
+    popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) =
+        enterTransition,
+    popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) =
+        exitTransition,
     builder: NavGraphBuilder.() -> Unit,
 ) {
     androidx.navigation.compose.NavHost(
         navController = navController,
         startDestination = startDestination.path,
         modifier = modifier,
+        enterTransition = enterTransition,
+        exitTransition = exitTransition,
+        popEnterTransition = popEnterTransition,
+        popExitTransition = popExitTransition,
         builder = { applyLibraryBuilder(navController, builder) },
     )
 }
@@ -55,9 +73,21 @@ fun NavHost(
     navController: NavHostController,
     graph: Route.Graph,
     modifier: Modifier = Modifier,
+    enterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) =
+        { fadeIn(animationSpec = tween(DEFAULT_NAVIGATION_ANIMATION_DURATION)) },
+    exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) =
+        { fadeOut(animationSpec = tween(DEFAULT_NAVIGATION_ANIMATION_DURATION)) },
+    popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) =
+        enterTransition,
+    popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) =
+        exitTransition,
 ) {
     androidx.navigation.compose.NavHost(
         navController = navController,
+        enterTransition = enterTransition,
+        exitTransition = exitTransition,
+        popEnterTransition = popEnterTransition,
+        popExitTransition = popExitTransition,
         graph = androidx.navigation.NavGraphBuilder(
             provider = navController.navigatorProvider,
             route = graph.path,
@@ -81,3 +111,6 @@ inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
 
     return viewModel(viewModelStoreOwner = parentEntry, factory = factory)
 }
+
+
+private const val DEFAULT_NAVIGATION_ANIMATION_DURATION = 700

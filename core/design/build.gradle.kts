@@ -65,6 +65,7 @@ dependencies {
         AppDependencies.Compose.bom,
         AppDependencies.Compose.material,
         AppDependencies.Compose.preview,
+        AppDependencies.Compose.navigation,
     )
 
     debugDependencies(

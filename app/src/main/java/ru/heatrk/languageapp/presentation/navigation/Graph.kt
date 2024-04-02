@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import ru.heatrk.languageapp.auth.impl.ui.navigation.AuthGraphRoute
+import ru.heatrk.languageapp.core.design.navigation.NavigationTransitions
 import ru.heatrk.languageapp.core.navigation.api.NavGraphBuilder
 import ru.heatrk.languageapp.core.navigation.api.NavHost
 import ru.heatrk.languageapp.core.navigation.api.route
@@ -30,6 +31,10 @@ fun AppNavHost(
     NavHost(
         navController = navController,
         startDestination = SplashScreenRoute,
+        enterTransition = NavigationTransitions.enter,
+        exitTransition = NavigationTransitions.exit,
+        popEnterTransition = NavigationTransitions.popEnter,
+        popExitTransition = NavigationTransitions.popExit,
         builder = NavGraphBuilder::buildGraph,
         modifier = modifier,
     )
