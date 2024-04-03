@@ -8,13 +8,13 @@ import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import ru.heatrk.languageapp.core.navigation.compose_impl.Route
-import ru.heatrk.languageapp.profile.api.ui.navigation.SELECT_LANGUAGE_SCREEN_ROUTE
+import ru.heatrk.languageapp.profile.api.ui.navigation.SELECT_LANGUAGE_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.profile.api.ui.navigation.SelectLanguageScreenArguments
 import ru.heatrk.languageapp.profile.impl.di.ProfileComponent
 import ru.heatrk.languageapp.profile.impl.ui.screens.select_language.SelectLanguageScreen
 
 object SelectLanguageScreenRoute : Route.Screen(
-    path = SELECT_LANGUAGE_SCREEN_ROUTE,
+    path = SELECT_LANGUAGE_SCREEN_ROUTE_PATH,
     namedNavArguments = listOf(
         navArgument(SelectLanguageScreenArguments.CAN_GO_BACK) {
             type = NavType.BoolType

@@ -199,15 +199,14 @@ sealed interface AppBarState {
     }
 
     data class Default(
+        override val key: String,
         val title: String,
         val titleGravity: AppBarTitleGravity = AppBarTitleGravity.START,
         val containerColor: Color? = null,
         val contentColor: Color? = null,
         val actions: ImmutableList<AppBarActionItem> = persistentListOf(),
         val onGoBackClick: (() -> Unit)? = null,
-    ) : AppBarState {
-        override val key: String = this::class.java.simpleName
-    }
+    ) : AppBarState
 
     data class Custom(
         override val key: String,
@@ -221,6 +220,7 @@ private fun AppScaffoldPreview() {
     AppTheme {
         AppScaffold(
             appBarState = AppBarState.Default(
+                key = "Preview",
                 title = "Toolbar Title",
                 titleGravity = AppBarTitleGravity.CENTER,
                 onGoBackClick = {}

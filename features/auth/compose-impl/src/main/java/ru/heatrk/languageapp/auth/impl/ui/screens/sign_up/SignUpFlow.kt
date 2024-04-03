@@ -41,6 +41,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.di.AuthComponent
+import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_up.SIGN_UP_GRAPH_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_up.SignUpGraphRoute
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.SideEffect
@@ -72,6 +73,7 @@ fun SignUpFlow(viewModel: SignUpViewModel) {
 
     AppScaffoldControllerEffect(
         appBarState = AppBarState.Default(
+            key = SIGN_UP_GRAPH_ROUTE_PATH,
             title = appBarTitle,
             titleGravity = AppBarTitleGravity.CENTER,
             onGoBackClick = { viewModel.processIntent(Intent.OnGoBackClick) },

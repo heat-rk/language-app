@@ -61,6 +61,8 @@ dependencies {
     )
 
     dependencies(
+        AppDependencies.Compose.bom,
         AppDependencies.Compose.navigation,
+        AppDependencies.Compose.material,
     )
 }

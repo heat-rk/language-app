@@ -45,6 +45,7 @@ import kotlinx.coroutines.flow.onEach
 import ru.heatrk.languageapp.auth.impl.BuildConfig
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
+import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_in.SIGN_IN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.SideEffect
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.State
@@ -89,6 +90,7 @@ private fun SignInScreen(
 
     AppScaffoldControllerEffect(
         appBarState = AppBarState.Default(
+            key = SIGN_IN_SCREEN_ROUTE_PATH,
             title = appBarTitle,
             titleGravity = AppBarTitleGravity.CENTER,
         )

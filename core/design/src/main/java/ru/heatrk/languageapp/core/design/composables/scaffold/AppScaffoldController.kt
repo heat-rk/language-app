@@ -8,14 +8,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 
-typealias OnBackPressedDispatcher = () -> Unit
-
 @Stable
 class AppScaffoldController(
     val snackbarHostState: SnackbarHostState,
 ) {
     val appBarStates = mutableStateListOf<AppBarState>()
-    val onBackPressedDispatchers = mutableStateListOf<OnBackPressedDispatcher>()
 }
 
 @Composable

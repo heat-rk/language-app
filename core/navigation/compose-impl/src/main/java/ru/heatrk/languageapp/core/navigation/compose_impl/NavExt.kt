@@ -1,14 +1,22 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package ru.heatrk.languageapp.core.navigation.compose_impl
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -17,6 +25,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import ru.heatrk.languageapp.common.utils.consumeClicks
 
 fun NavGraphBuilder.route(route: Route) {
     when (route) {
@@ -34,6 +43,14 @@ fun NavGraphBuilder.route(route: Route) {
                 content = { navBackStackEntry ->
                     with(route) {
                         Content(navController, navBackStackEntry)
+                    }
+
+                    if (transition.isRunning) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .consumeClicks()
+                        )
                     }
                 },
             )

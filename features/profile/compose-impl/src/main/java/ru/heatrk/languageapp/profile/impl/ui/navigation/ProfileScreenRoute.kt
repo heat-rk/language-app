@@ -10,7 +10,7 @@ import ru.heatrk.languageapp.profile.impl.di.ProfileComponent
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileScreen
 
 internal object ProfileScreenRoute : Route.Screen(
-    path = PROFILE_SCREEN_ROUTE
+    path = PROFILE_SCREEN_ROUTE_PATH
 ) {
     @Composable
     override fun AnimatedContentScope.Content(
@@ -26,4 +26,4 @@ internal object ProfileScreenRoute : Route.Screen(
     }
 }
 
-internal const val PROFILE_SCREEN_ROUTE = "profile"
+internal const val PROFILE_SCREEN_ROUTE_PATH = "profile"

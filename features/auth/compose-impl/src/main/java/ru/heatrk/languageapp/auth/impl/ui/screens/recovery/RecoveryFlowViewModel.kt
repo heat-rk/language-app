@@ -112,16 +112,8 @@ class RecoveryFlowViewModel(
 
     private suspend fun onGoBackClick() {
         when {
-            recoveryRouter.currentRoute == RECOVERY_CHOOSE_PASSWORD_SCREEN_ROUTE_PATH &&
-            recoveryRouter.previousRoute != null ->
-                recoveryRouter.navigateBack()
-            recoveryRouter.currentRoute == RECOVERY_SUCCESS_SCREEN_ROUTE_PATH &&
-            recoveryRouter.previousRoute != null ->
-                recoveryRouter.navigateBack()
-            recoveryRouter.previousRoute == null ->
-                router.navigateBack()
-            else ->
-                recoveryRouter.navigateBack()
+            recoveryRouter.previousRoute == null -> router.navigateBack()
+            else -> recoveryRouter.navigateBack()
         }
     }
 

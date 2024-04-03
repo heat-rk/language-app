@@ -54,6 +54,7 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControl
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.profile.api.ui.navigation.SELECT_LANGUAGE_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.profile.impl.R
 import ru.heatrk.languageapp.profile.impl.ui.screens.select_language.SelectLanguageContract.Intent
 import ru.heatrk.languageapp.profile.impl.ui.screens.select_language.SelectLanguageContract.SideEffect
@@ -80,6 +81,7 @@ private fun SelectLanguageScreen(
 ) {
     AppScaffoldControllerEffect(
         appBarState = AppBarState.Default(
+            key = SELECT_LANGUAGE_SCREEN_ROUTE_PATH,
             title = stringResource(R.string.language_select_title),
             titleGravity = AppBarTitleGravity.CENTER,
             onGoBackClick = if (state.canGoBack) {

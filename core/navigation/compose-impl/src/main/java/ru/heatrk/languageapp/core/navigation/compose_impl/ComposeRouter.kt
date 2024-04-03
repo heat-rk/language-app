@@ -11,12 +11,15 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import ru.heatrk.languageapp.common.utils.currentRoute
 import ru.heatrk.languageapp.common.utils.previousRoute
 import ru.heatrk.languageapp.core.navigation.api.Router
+import ru.heatrk.languageapp.core.navigation.api.RoutingBackReceiver
 import ru.heatrk.languageapp.core.navigation.api.RoutingOption
 
-class ComposeRouter : Router {
+class ComposeRouter : Router, RoutingBackReceiver {
 
     private val _actions = Channel<RoutingAction>(Channel.BUFFERED)
     private val actions = _actions.receiveAsFlow()
+
+    private var routingBackReceivers = listOf<RoutingBackReceiver>()
 
     private var navController: NavController? = null
 
@@ -25,6 +28,26 @@ class ComposeRouter : Router {
 
     override val previousRoute: String?
         get() = navController?.previousRoute
+
+    override fun registerRoutingBackReceiver(receiver: RoutingBackReceiver) {
+        routingBackReceivers += receiver
+    }
+
+    override fun unregisterRoutingBackReceiver(receiver: RoutingBackReceiver) {
+        routingBackReceivers -= receiver
+    }
+
+    override fun onRoutingBackReceived(): Boolean {
+        var isRoutingBackHandled = false
+
+        routingBackReceivers.forEach { routingBackReceiver ->
+            if (routingBackReceiver.onRoutingBackReceived()) {
+                isRoutingBackHandled = true
+            }
+        }
+
+        return isRoutingBackHandled
+    }
 
     override suspend fun navigate(
         routePath: String,

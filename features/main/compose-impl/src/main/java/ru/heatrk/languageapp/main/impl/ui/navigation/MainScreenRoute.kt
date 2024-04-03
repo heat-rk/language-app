@@ -11,7 +11,7 @@ import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreen
 
 internal class MainScreenRoute(
     private val viewModelFactory: ViewModelProvider.Factory
-) : ru.heatrk.languageapp.core.navigation.compose_impl.Route.Screen(
+) : Route.Screen(
     path = MAIN_SCREEN_ROUTE_PATH
 ) {
     @Composable

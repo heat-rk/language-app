@@ -46,6 +46,7 @@ import ru.heatrk.languageapp.main.impl.R
 import ru.heatrk.languageapp.main.impl.ui.composables.app_bar.MainAppBar
 import ru.heatrk.languageapp.main.impl.ui.composables.app_bar.MainAppBarState
 import ru.heatrk.languageapp.main.impl.ui.composables.app_bar.rememberAppBarSnapScrollConnection
+import ru.heatrk.languageapp.main.impl.ui.navigation.MAIN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.Intent
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.SideEffect
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.State
@@ -80,7 +81,7 @@ private fun MainScreen(
     val pullToRefreshState = rememberPullToRefreshState()
 
     AppScaffoldControllerEffect(
-        appBarState = AppBarState.Custom(key = "main") {
+        appBarState = AppBarState.Custom(key = MAIN_SCREEN_ROUTE_PATH) {
             MainAppBar(
                 state = state.profileState.toAppBarState(),
                 onAvatarClick = { onIntent(Intent.OnProfileClick) },

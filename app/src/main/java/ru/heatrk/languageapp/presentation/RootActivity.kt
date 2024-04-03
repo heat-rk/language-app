@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -20,6 +21,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.launch
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
@@ -71,6 +73,12 @@ class RootActivity : ComponentActivity() {
         router: ComposeRouter = AppComponent.router,
     ) {
         val coroutineScope = rememberCoroutineScope()
+
+        BackHandler {
+            if (!router.onRoutingBackReceived()) {
+                coroutineScope.launch { router.navigateBack() }
+            }
+        }
 
         DisposableEffect(navController, router) {
             router.attachNavController(

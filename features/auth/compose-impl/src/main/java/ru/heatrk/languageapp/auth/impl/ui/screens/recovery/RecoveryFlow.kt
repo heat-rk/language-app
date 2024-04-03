@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.di.AuthComponent
+import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_FLOW_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RecoveryGraphRoute
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.SideEffect
@@ -58,6 +59,7 @@ fun RecoveryFlow(viewModel: RecoveryFlowViewModel) {
 
     AppScaffoldControllerEffect(
         appBarState = AppBarState.Default(
+            key = RECOVERY_FLOW_ROUTE_PATH,
             title = appBarTitle,
             titleGravity = AppBarTitleGravity.CENTER,
             onGoBackClick = { viewModel.processIntent(Intent.OnGoBackClick) },

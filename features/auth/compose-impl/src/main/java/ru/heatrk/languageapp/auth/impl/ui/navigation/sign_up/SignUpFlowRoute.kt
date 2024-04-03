@@ -12,7 +12,7 @@ import ru.heatrk.languageapp.core.navigation.compose_impl.Route
 internal class SignUpFlowRoute(
     private val signUpViewModelFactory: ViewModelProvider.Factory
 ) : Route.Screen(
-    path = SIGN_UP_SCREEN_ROUTE_PATH
+    path = SIGN_UP_FLOW_ROUTE_PATH
 ) {
     @Composable
     override fun AnimatedContentScope.Content(
@@ -23,4 +23,4 @@ internal class SignUpFlowRoute(
     }
 }
 
-internal const val SIGN_UP_SCREEN_ROUTE_PATH = "sign_up"
+internal const val SIGN_UP_FLOW_ROUTE_PATH = "sign_up"

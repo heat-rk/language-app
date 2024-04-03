@@ -27,6 +27,7 @@ import ru.heatrk.languageapp.core.design.styles.isNightMode
 import ru.heatrk.languageapp.profile.impl.R
 import ru.heatrk.languageapp.profile.impl.ui.composables.ProfileAppBar
 import ru.heatrk.languageapp.profile.impl.ui.composables.ProfileAppBarShimmer
+import ru.heatrk.languageapp.profile.impl.ui.navigation.PROFILE_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.Intent
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.State
 import ru.heatrk.languageapp.core.design.R as DesignR
@@ -47,7 +48,7 @@ private fun ProfileScreen(
     onIntent: (Intent) -> Unit,
 ) {
     AppScaffoldControllerEffect(
-        appBarState = AppBarState.Custom(key = "profile") {
+        appBarState = AppBarState.Custom(key = PROFILE_SCREEN_ROUTE_PATH) {
             when (state) {
                 is State.Loaded -> {
                     ProfileAppBar(

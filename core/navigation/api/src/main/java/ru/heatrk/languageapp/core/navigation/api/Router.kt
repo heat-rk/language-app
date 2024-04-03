@@ -5,6 +5,10 @@ interface Router {
 
     val currentRoute: String?
 
+    fun registerRoutingBackReceiver(receiver: RoutingBackReceiver)
+
+    fun unregisterRoutingBackReceiver(receiver: RoutingBackReceiver)
+
     suspend fun navigate(
         routePath: String,
         options: List<RoutingOption> = emptyList(),
