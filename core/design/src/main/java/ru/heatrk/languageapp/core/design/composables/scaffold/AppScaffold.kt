@@ -1,13 +1,17 @@
 package ru.heatrk.languageapp.core.design.composables.scaffold
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.LinearEasing
-import androidx.compose.foundation.background
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -22,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.ImmutableList
@@ -31,15 +34,11 @@ import ru.heatrk.languageapp.core.design.composables.AppBar
 import ru.heatrk.languageapp.core.design.composables.AppBarActionItem
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.AppSnackbarHost
-import ru.heatrk.languageapp.core.design.composables.animation.SlideInVerticallyAnimatedContent
 import ru.heatrk.languageapp.core.design.styles.AppTheme
-import kotlin.math.min
 
 @Composable
 fun AppScaffold(
     modifier: Modifier = Modifier,
-    appBarContainerColor: Color = AppTheme.colors.primary,
-    appBarContentColor: Color = AppTheme.colors.onPrimary,
     appBarState: AppBarState = AppBarState.Hidden,
     snackbarHostState: SnackbarHostState = SnackbarHostState(),
     content: @Composable BoxScope.() -> Unit,
@@ -53,19 +52,9 @@ fun AppScaffold(
         },
         topBar = if (isInInspectionMode) {
             // Workaround to properly top bar showing in preview
-            appScaffoldTopBarInspectionMode(
-                containerColor = appBarContainerColor,
-                contentColor = appBarContentColor,
-                appBarState = appBarState,
-            )
+            appScaffoldTopBarInspectionMode(appBarState)
         } else {
-            {
-                AppScaffoldTopBar(
-                    containerColor = appBarContainerColor,
-                    contentColor = appBarContentColor,
-                    appBarState = appBarState,
-                )
-            }
+            { AppScaffoldTopBar(appBarState) }
         },
         modifier = modifier
             .fillMaxSize()
@@ -81,40 +70,31 @@ fun AppScaffold(
 
 @Composable
 private fun AppScaffoldTopBar(
-    containerColor: Color,
-    contentColor: Color,
     appBarState: AppBarState,
 ) {
-    val density = LocalDensity.current
-
-    var previousContainerColor by remember { mutableStateOf(containerColor) }
-    val backgroundColor = previousContainerColor
-    previousContainerColor = containerColor
-
     var currentTopBarBottom by remember { mutableFloatStateOf(0f) }
-    var previousTopBarBottom by remember {mutableFloatStateOf(0f) }
-    var backgroundHeightPx by remember { mutableFloatStateOf(0f) }
-    val backgroundHeight = remember(backgroundHeightPx) { with(density) { backgroundHeightPx.toDp() } }
+    var previousTopBarBottom by remember { mutableFloatStateOf(0f) }
+    var enterImmediately by remember { mutableStateOf(false) }
+    var exitDelayed by remember { mutableStateOf(false) }
 
     LaunchedEffect(currentTopBarBottom) {
         if (currentTopBarBottom != previousTopBarBottom) {
-            backgroundHeightPx = min(previousTopBarBottom, currentTopBarBottom)
+            if (currentTopBarBottom < previousTopBarBottom) {
+                enterImmediately = true
+                exitDelayed = false
+            } else {
+                enterImmediately = false
+                exitDelayed = true
+            }
+
             previousTopBarBottom = currentTopBarBottom
         }
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .requiredHeight(backgroundHeight)
-            .background(backgroundColor)
-    )
-
-    SlideInVerticallyAnimatedContent(
+    AppBarAnimatedContent(
         targetState = appBarState,
-        easing = LinearEasing,
-        contentKey = AppBarState::key,
-        label = "AppBarStateAnimation",
+        enterImmediately = enterImmediately,
+        exitDelayed = exitDelayed,
     ) { state ->
         when (state) {
             AppBarState.Hidden -> {
@@ -125,8 +105,10 @@ private fun AppScaffoldTopBar(
                     title = state.title,
                     titleGravity = state.titleGravity,
                     actions = state.actions,
-                    containerColor = containerColor,
-                    contentColor = contentColor,
+                    containerColor = state.containerColor
+                        ?: AppTheme.colors.primary,
+                    contentColor = state.contentColor
+                        ?: AppTheme.colors.onPrimary,
                     onGoBackClick = state.onGoBackClick,
                     modifier = Modifier
                         .onGloballyPositioned { coordinates ->
@@ -149,8 +131,6 @@ private fun AppScaffoldTopBar(
 }
 
 private fun appScaffoldTopBarInspectionMode(
-    containerColor: Color,
-    contentColor: Color,
     appBarState: AppBarState,
 ): @Composable () -> Unit  = {
     when (appBarState) {
@@ -161,20 +141,53 @@ private fun appScaffoldTopBarInspectionMode(
                 titleGravity = appBarState.titleGravity,
                 actions = appBarState.actions,
                 onGoBackClick = appBarState.onGoBackClick,
-                containerColor = containerColor,
-                contentColor = contentColor,
+                containerColor = appBarState.containerColor
+                    ?: AppTheme.colors.primary,
+                contentColor = appBarState.contentColor
+                    ?: AppTheme.colors.onPrimary,
             )
         }
         is AppBarState.Custom -> {
-            Box(
-                modifier = Modifier
-                    .background(containerColor)
-            ) {
-                appBarState.content()
-            }
+            appBarState.content()
         }
     }
 }
+
+@Composable
+private fun AppBarAnimatedContent(
+    targetState: AppBarState,
+    enterImmediately: Boolean = false,
+    exitDelayed: Boolean = false,
+    content: @Composable AnimatedContentScope.(targetState: AppBarState) -> Unit,
+) {
+    AnimatedContent(
+        targetState = targetState,
+        contentKey = AppBarState::key,
+        label = "AppBarStateAnimation",
+        transitionSpec = {
+            ContentTransform(
+                targetContentEnter = slideInVertically(
+                    animationSpec = tween(
+                        durationMillis = if (enterImmediately) 0 else APP_BAR_ANIMATION_DURATION_MILLIS,
+                        easing = LinearEasing,
+                    ),
+                    initialOffsetY = { fullHeight -> -fullHeight  }
+                ),
+                initialContentExit = slideOutVertically(
+                    animationSpec = tween(
+                        durationMillis = APP_BAR_ANIMATION_DURATION_MILLIS,
+                        delayMillis = if (exitDelayed) APP_BAR_ANIMATION_DURATION_MILLIS else 0,
+                        easing = LinearEasing,
+                    ),
+                    targetOffsetY = { fullHeight -> -fullHeight }
+                )
+            )
+        },
+        content = content,
+    )
+}
+
+private const val APP_BAR_ANIMATION_DURATION_MILLIS = 200
 
 @Immutable
 sealed interface AppBarState {
@@ -188,6 +201,8 @@ sealed interface AppBarState {
     data class Default(
         val title: String,
         val titleGravity: AppBarTitleGravity = AppBarTitleGravity.START,
+        val containerColor: Color? = null,
+        val contentColor: Color? = null,
         val actions: ImmutableList<AppBarActionItem> = persistentListOf(),
         val onGoBackClick: (() -> Unit)? = null,
     ) : AppBarState {

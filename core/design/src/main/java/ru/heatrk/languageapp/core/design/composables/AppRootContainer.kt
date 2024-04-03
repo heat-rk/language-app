@@ -15,14 +15,10 @@ fun AppRootContainer(
 ) {
     val appScaffoldController = rememberAppScaffoldController(
         snackbarHostState = SnackbarHostState(),
-        initialAppBarContainerColor = AppTheme.colors.primary,
-        initialAppBarContentColor = AppTheme.colors.onPrimary,
     )
 
     AppTheme { isDarkTheme ->
         AppScaffold(
-            appBarContainerColor = appScaffoldController.appBarContainerColor,
-            appBarContentColor = appScaffoldController.appBarContentColor,
             snackbarHostState = appScaffoldController.snackbarHostState,
             appBarState = appScaffoldController.appBarState,
         ) {
