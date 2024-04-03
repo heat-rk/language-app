@@ -6,7 +6,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowViewModel
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.choose_password.RecoveryChoosePasswordScreen
-import ru.heatrk.languageapp.core.navigation.api.Route
+import ru.heatrk.languageapp.core.navigation.compose_impl.Route
 
 internal class RecoveryChoosePasswordScreenRoute(
     private val recoveryViewModelProvider: () -> RecoveryFlowViewModel,

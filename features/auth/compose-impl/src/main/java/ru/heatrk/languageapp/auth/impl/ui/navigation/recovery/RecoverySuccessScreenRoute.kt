@@ -6,7 +6,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowViewModel
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.success.RecoverySuccessScreen
-import ru.heatrk.languageapp.core.navigation.api.Route
+import ru.heatrk.languageapp.core.navigation.compose_impl.Route
 
 internal class RecoverySuccessScreenRoute(
     private val recoveryViewModelProvider: () -> RecoveryFlowViewModel,

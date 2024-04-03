@@ -44,11 +44,6 @@ android {
 
     buildFeatures {
         buildConfig = true
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = AppConfig.composeKotlinCompilerExtensionVersion
     }
 }
 
@@ -56,6 +51,5 @@ dependencies {
     dependencies(
         AppDependencies.Coroutines.core,
         AppDependencies.Coroutines.android,
-        AppDependencies.Compose.navigation,
     )
 }

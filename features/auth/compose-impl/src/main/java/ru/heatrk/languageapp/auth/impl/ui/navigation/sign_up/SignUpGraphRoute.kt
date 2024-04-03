@@ -1,8 +1,8 @@
 package ru.heatrk.languageapp.auth.impl.ui.navigation.sign_up
 
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpViewModel
-import ru.heatrk.languageapp.core.navigation.api.Route
-import ru.heatrk.languageapp.core.navigation.api.route
+import ru.heatrk.languageapp.core.navigation.compose_impl.Route
+import ru.heatrk.languageapp.core.navigation.compose_impl.route
 
 internal class SignUpGraphRoute(
     private val signUpViewModelProvider: () -> SignUpViewModel,

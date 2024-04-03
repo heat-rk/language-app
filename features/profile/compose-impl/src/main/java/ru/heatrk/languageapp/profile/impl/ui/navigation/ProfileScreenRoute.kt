@@ -4,8 +4,8 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import ru.heatrk.languageapp.core.navigation.api.Route
-import ru.heatrk.languageapp.core.navigation.api.sharedViewModel
+import ru.heatrk.languageapp.core.navigation.compose_impl.Route
+import ru.heatrk.languageapp.core.navigation.compose_impl.sharedViewModel
 import ru.heatrk.languageapp.profile.impl.di.ProfileComponent
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileScreen
 

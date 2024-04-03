@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.core.navigation.api
+package ru.heatrk.languageapp.core.navigation.compose_impl
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition

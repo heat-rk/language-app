@@ -57,6 +57,7 @@ dependencies {
         ":features:main:api",
         ":features:profile:api",
         ":core:navigation:api",
+        ":core:navigation:compose-impl",
         ":core:design",
         ":core:data:profiles:api",
         ":common:utils",

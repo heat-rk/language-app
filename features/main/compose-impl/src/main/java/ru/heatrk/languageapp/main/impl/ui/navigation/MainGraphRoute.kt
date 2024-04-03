@@ -1,7 +1,7 @@
 package ru.heatrk.languageapp.main.impl.ui.navigation
 
-import ru.heatrk.languageapp.core.navigation.api.Route
-import ru.heatrk.languageapp.core.navigation.api.route
+import ru.heatrk.languageapp.core.navigation.compose_impl.Route
+import ru.heatrk.languageapp.core.navigation.compose_impl.route
 import ru.heatrk.languageapp.main.api.ui.navigation.MAIN_GRAPH_ROUTE_PATH
 import ru.heatrk.languageapp.main.impl.di.MainComponent
 

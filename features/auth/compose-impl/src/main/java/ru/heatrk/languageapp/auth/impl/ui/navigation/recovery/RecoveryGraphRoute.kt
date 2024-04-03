@@ -1,8 +1,8 @@
 package ru.heatrk.languageapp.auth.impl.ui.navigation.recovery
 
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowViewModel
-import ru.heatrk.languageapp.core.navigation.api.Route
-import ru.heatrk.languageapp.core.navigation.api.route
+import ru.heatrk.languageapp.core.navigation.compose_impl.Route
+import ru.heatrk.languageapp.core.navigation.compose_impl.route
 
 internal class RecoveryGraphRoute(
     private val recoveryViewModelProvider: () -> RecoveryFlowViewModel,

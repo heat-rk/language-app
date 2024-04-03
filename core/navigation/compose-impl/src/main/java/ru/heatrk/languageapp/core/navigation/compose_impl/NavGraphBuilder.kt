@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.core.navigation.api
+package ru.heatrk.languageapp.core.navigation.compose_impl
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -10,7 +10,7 @@ data class NavGraphBuilder(
 
 fun NavGraphBuilder.applyLibraryBuilder(
     navController: NavController,
-    builder: ru.heatrk.languageapp.core.navigation.api.NavGraphBuilder.() -> Unit,
+    builder: ru.heatrk.languageapp.core.navigation.compose_impl.NavGraphBuilder.() -> Unit,
 ) {
     builder(
         NavGraphBuilder(

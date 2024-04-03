@@ -6,7 +6,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpViewModel
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.general_info.SignUpGeneralInfoScreen
-import ru.heatrk.languageapp.core.navigation.api.Route
+import ru.heatrk.languageapp.core.navigation.compose_impl.Route
 
 internal class SignUpGeneralInfoScreenRoute(
     private val signUpViewModelProvider: () -> SignUpViewModel,

@@ -57,6 +57,7 @@ dependencies {
         ":features:onboarding:api",
         ":features:auth:api",
         ":core:navigation:api",
+        ":core:navigation:compose-impl",
         ":core:design",
         ":core:coroutines:dispatchers",
         ":common:utils",

@@ -5,9 +5,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import ru.heatrk.languageapp.auth.impl.ui.navigation.AuthGraphRoute
 import ru.heatrk.languageapp.core.design.navigation.NavigationTransitions
-import ru.heatrk.languageapp.core.navigation.api.NavGraphBuilder
-import ru.heatrk.languageapp.core.navigation.api.NavHost
-import ru.heatrk.languageapp.core.navigation.api.route
+import ru.heatrk.languageapp.core.navigation.compose_impl.NavGraphBuilder
+import ru.heatrk.languageapp.core.navigation.compose_impl.NavHost
+import ru.heatrk.languageapp.core.navigation.compose_impl.route
 import ru.heatrk.languageapp.features.splash.impl.ui.navigation.SplashScreenRoute
 import ru.heatrk.languageapp.main.impl.ui.navigation.MainGraphRoute
 import ru.heatrk.languageapp.onboarding.impl.ui.navigation.OnboardingScreenRoute

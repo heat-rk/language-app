@@ -7,7 +7,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreen
-import ru.heatrk.languageapp.core.navigation.api.Route
+import ru.heatrk.languageapp.core.navigation.compose_impl.Route
 
 internal class SignInScreenRoute(
     private val signInViewModelFactory: ViewModelProvider.Factory

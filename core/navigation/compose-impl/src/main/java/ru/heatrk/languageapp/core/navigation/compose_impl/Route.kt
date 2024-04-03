@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.core.navigation.api
+package ru.heatrk.languageapp.core.navigation.compose_impl
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable
@@ -36,7 +36,7 @@ sealed class Route(
     abstract class Graph(
         path: String,
         val startDestination: String,
-        val builder: NavGraphBuilder.() -> Unit,
+        val builder: ru.heatrk.languageapp.core.navigation.compose_impl.NavGraphBuilder.() -> Unit,
     ) : Route(path)
 }
 
