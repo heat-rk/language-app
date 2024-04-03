@@ -48,7 +48,7 @@ class MainAppBarSnapNestedScrollConnection(
     private val scrollableState: ScrollableState,
 ) : MainAppBarNestedScrollConnection(
     density = density,
-    appBarMaxHeight = MainAppBarHeight,
+    appBarMaxHeight = MainAppBarExpandedHeight,
 ) {
     private var scrollOffset by mutableFloatStateOf(0f)
 

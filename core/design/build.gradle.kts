@@ -58,6 +58,7 @@ dependencies {
     )
 
     dependencies(
+        AppDependencies.immutableCollections,
         AppDependencies.AndroidX.appCompat,
         AppDependencies.Ktx.core,
         AppDependencies.Splash.core,

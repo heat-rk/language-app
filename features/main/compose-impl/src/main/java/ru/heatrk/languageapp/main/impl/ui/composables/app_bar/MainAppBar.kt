@@ -174,7 +174,7 @@ private fun MainAppBarLayout(
 
     val appBarHeight by remember {
         derivedStateOf {
-            MainAppBarCollapsedHeight + (MainAppBarHeight - MainAppBarCollapsedHeight) * scrollProgress
+            MainAppBarCollapsedHeight + (MainAppBarExpandedHeight - MainAppBarCollapsedHeight) * scrollProgress
         }
     }
 
@@ -277,7 +277,7 @@ sealed interface MainAppBarState {
 }
 
 val MainAppBarCollapsedHeight = 102.dp
-val MainAppBarHeight = 175.dp
+val MainAppBarExpandedHeight = 175.dp
 val AvatarSize = 54.dp
 
 private class MainAppBarPreviewStateProvider : PreviewParameterProvider<MainAppBarState> {

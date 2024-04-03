@@ -67,6 +67,7 @@ dependencies {
     )
 
     dependencies(
+        AppDependencies.immutableCollections,
         AppDependencies.kotlinXSerialization,
         AppDependencies.Scout.core,
         AppDependencies.Orbit.viewModel,

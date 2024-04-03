@@ -14,11 +14,15 @@ fun AppRootContainer(
     content: @Composable BoxScope.(isDarkTheme: Boolean) -> Unit,
 ) {
     val appScaffoldController = rememberAppScaffoldController(
-        snackbarHostState = SnackbarHostState()
+        snackbarHostState = SnackbarHostState(),
+        initialAppBarContainerColor = AppTheme.colors.primary,
+        initialAppBarContentColor = AppTheme.colors.onPrimary,
     )
 
     AppTheme { isDarkTheme ->
         AppScaffold(
+            appBarContainerColor = appScaffoldController.appBarContainerColor,
+            appBarContentColor = appScaffoldController.appBarContentColor,
             snackbarHostState = appScaffoldController.snackbarHostState,
             appBarState = appScaffoldController.appBarState,
         ) {
