@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package ru.heatrk.languageapp.profile.impl.ui.screens.profile
 
 import android.content.res.Configuration
@@ -7,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -17,6 +20,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ru.heatrk.languageapp.common.utils.painterRes
+import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.AppButtonDefaults
@@ -137,7 +141,7 @@ private class ProfileScreenPreviewStateProvider : PreviewParameterProvider<State
     override val values = sequenceOf(
         State.Loading,
         State.Loaded(
-            fullName = "Ivan Ivanov",
+            fullName = strRes("Ivan Ivanov"),
             avatar = painterRes(DesignR.drawable.ic_avatar_placeholder),
         )
     )

@@ -64,7 +64,7 @@ fun MainLeaderboardItem(
         Spacer(modifier = Modifier.width(24.dp))
 
         Text(
-            text = leader.fullName?.extract() ?: stringResource(R.string.main_leader_name_unknown),
+            text = leader.fullName?.extract() ?: stringResource(DesignR.string.profile_name_unknown),
             style = AppTheme.typography.bodyLarge,
             fontSize = 17.sp,
             fontWeight = FontWeight.Medium,

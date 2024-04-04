@@ -44,7 +44,8 @@ private fun Registry.useProfileScreenBeans() {
             viewModelFactory {
                 initializer {
                     ProfileViewModel(
-                        router = get()
+                        router = get(),
+                        profilesRepository = get(),
                     )
                 }
             }

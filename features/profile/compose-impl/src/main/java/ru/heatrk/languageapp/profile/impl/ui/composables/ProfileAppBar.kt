@@ -23,8 +23,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.heatrk.languageapp.common.utils.PainterResource
 import ru.heatrk.languageapp.common.utils.Size
+import ru.heatrk.languageapp.common.utils.StringResource
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.painterRes
+import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.design.composables.AppBar
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
@@ -35,7 +37,7 @@ import ru.heatrk.languageapp.core.design.R as DesignR
 
 @Composable
 fun ProfileAppBar(
-    fullName: String?,
+    fullName: StringResource?,
     avatar: PainterResource?,
     modifier: Modifier = Modifier,
     onGoBackClick: () -> Unit,
@@ -55,7 +57,7 @@ fun ProfileAppBar(
         },
         nameContent = {
             Text(
-                text = fullName ?: "-",
+                text = fullName?.extract() ?: stringResource(DesignR.string.profile_name_unknown),
                 color = AppTheme.colors.onPrimary,
                 style = AppTheme.typography.titleLarge,
                 fontWeight = FontWeight.Medium,
@@ -158,7 +160,7 @@ private fun ProfileHeaderPreview() {
             Spacer(modifier = Modifier.height(12.dp))
 
             ProfileAppBar(
-                fullName = "Ivan Ivanov",
+                fullName = strRes("Ivan Ivanov"),
                 avatar = painterRes(DesignR.drawable.ic_avatar_placeholder),
                 onGoBackClick = {},
                 modifier = Modifier

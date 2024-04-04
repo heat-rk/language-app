@@ -11,6 +11,5 @@
     <string name="main_audition">Прослушивание</string>
     <string name="main_game">Игра</string>
 
-    <string name="main_leader_name_unknown">Неизвестен</string>
     <string name="main_points_formatted">%1$d очков</string>
 </resources>
