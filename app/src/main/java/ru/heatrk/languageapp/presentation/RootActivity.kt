@@ -74,7 +74,7 @@ class RootActivity : ComponentActivity() {
     ) {
         val coroutineScope = rememberCoroutineScope()
 
-        BackHandler {
+        BackHandler(enabled = router.previousRoute != null) {
             if (!router.onRoutingBackReceived()) {
                 coroutineScope.launch { router.navigateBack() }
             }
