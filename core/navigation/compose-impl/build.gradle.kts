@@ -58,6 +58,7 @@ dependencies {
     modules(
         ":common:utils",
         ":core:navigation:api",
+        ":core:design",
     )
 
     dependencies(
