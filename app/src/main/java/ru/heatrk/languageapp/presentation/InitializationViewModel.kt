@@ -22,7 +22,7 @@ import ru.heatrk.languageapp.main.api.ui.navigation.MAIN_GRAPH_ROUTE_PATH
 import ru.heatrk.languageapp.onboarding.api.domain.OnboardingRepository
 import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_ROUTE_PATH
 
-class RootViewModel(
+class InitializationViewModel(
     private val onboardingRepository: OnboardingRepository,
     private val authRepository: AuthRepository,
     private val router: Router,

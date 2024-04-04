@@ -15,6 +15,8 @@ import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.design.utils.formatFullName
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.profiles.api.domain.ProfilesRepository
+import ru.heatrk.languageapp.profile.api.domain.ForcedTheme
+import ru.heatrk.languageapp.profile.api.domain.SettingsRepository
 import ru.heatrk.languageapp.profile.api.ui.navigation.SELECT_LANGUAGE_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.profile.api.ui.navigation.SelectLanguageScreenArguments
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.Intent
@@ -27,6 +29,7 @@ private typealias IntentBody = SimpleSyntax<State, SideEffect>
 class ProfileViewModel(
     private val router: Router,
     private val profilesRepository: ProfilesRepository,
+    private val settingsRepository: SettingsRepository,
 ) : ViewModel(), ContainerHost<State, SideEffect> {
     override val container = container<State, SideEffect>(
         initialState = State.Loading
@@ -46,8 +49,8 @@ class ProfileViewModel(
                 onChangeLanguageButtonClick()
             Intent.OnLogoutButtonClick ->
                 onLogoutButtonClick()
-            Intent.OnSwitchUiModeButtonClick ->
-                onSwitchUiModeButtonClick()
+            is Intent.OnSwitchUiModeButtonClick ->
+                onSwitchUiModeButtonClick(intent.toDarkTheme)
         }
     }
 
@@ -101,7 +104,13 @@ class ProfileViewModel(
         // TODO
     }
 
-    private suspend fun onSwitchUiModeButtonClick() {
-        // TODO
+    private suspend fun onSwitchUiModeButtonClick(toDarkTheme: Boolean) {
+        settingsRepository.forceTheme(
+            if (toDarkTheme) {
+                ForcedTheme.DARK
+            } else {
+                ForcedTheme.LIGHT
+            }
+        )
     }
 }

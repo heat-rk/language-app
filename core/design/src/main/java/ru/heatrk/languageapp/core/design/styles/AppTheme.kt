@@ -1,17 +1,18 @@
 package ru.heatrk.languageapp.core.design.styles
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.platform.LocalInspectionMode
 
 @Composable
 fun AppTheme(
-    isDarkTheme: Boolean = isNightMode(),
-    content: @Composable (isDarkTheme: Boolean) -> Unit
+    isDarkTheme: Boolean = isAppInDarkTheme(),
+    content: @Composable () -> Unit
 ) {
     val appColors = if (isDarkTheme) {
         darkAppColors
@@ -25,17 +26,24 @@ fun AppTheme(
             shapes = appShapes,
             typography = appTypography,
             content = {
-                content(isDarkTheme)
+                content()
             }
         )
     }
 }
 
+val LocalAppUiMode = staticCompositionLocalOf<AppUiMode> {
+    throw IllegalStateException("No app ui mode provider")
+}
+
 @Composable
-fun isNightMode() = when (AppCompatDelegate.getDefaultNightMode()) {
-    AppCompatDelegate.MODE_NIGHT_NO -> false
-    AppCompatDelegate.MODE_NIGHT_YES -> true
-    else -> isSystemInDarkTheme()
+fun isAppInDarkTheme(): Boolean {
+    return if (LocalInspectionMode.current) {
+        isSystemInDarkTheme()
+    } else {
+        val appUiMode = LocalAppUiMode.current
+        appUiMode == AppUiMode.DARK
+    }
 }
 
 object AppTheme {

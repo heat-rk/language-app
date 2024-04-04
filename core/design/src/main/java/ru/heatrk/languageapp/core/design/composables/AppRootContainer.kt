@@ -13,9 +13,11 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffold
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
 import ru.heatrk.languageapp.core.design.composables.scaffold.rememberAppScaffoldController
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.design.styles.isAppInDarkTheme
 
 @Composable
 fun AppRootContainer(
+    isDarkTheme: Boolean = isAppInDarkTheme(),
     content: @Composable BoxScope.(isDarkTheme: Boolean) -> Unit,
 ) {
     val appScaffoldController = rememberAppScaffoldController(
@@ -25,7 +27,7 @@ fun AppRootContainer(
     val currentAppBarState = appScaffoldController.appBarStates.lastOrNull()
         ?: AppBarState.Hidden
 
-    AppTheme { isDarkTheme ->
+    AppTheme(isDarkTheme = isDarkTheme) {
         AppScaffold(
             snackbarHostState = appScaffoldController.snackbarHostState,
             appBarState = currentAppBarState,

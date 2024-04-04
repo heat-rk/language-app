@@ -6,6 +6,8 @@ import android.app.LocaleManager
 import android.content.Context
 import android.os.Build
 import android.os.LocaleList
+import kotlinx.coroutines.flow.Flow
+import ru.heatrk.languageapp.profile.api.domain.ForcedTheme
 import ru.heatrk.languageapp.profile.api.domain.Language
 import ru.heatrk.languageapp.profile.api.domain.SettingsRepository
 import java.util.Locale
@@ -36,5 +38,13 @@ internal class SettingsRepositoryImpl(
 
     override suspend fun isLanguageAlreadySelected(): Boolean {
         return settingsStorage.getSavedLanguage() != null
+    }
+
+    override fun getForcedThemeFlow(): Flow<ForcedTheme?> {
+        return settingsStorage.getForcedThemeFlow()
+    }
+
+    override suspend fun forceTheme(theme: ForcedTheme) {
+        settingsStorage.saveForcedTheme(theme)
     }
 }

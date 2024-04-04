@@ -9,11 +9,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
@@ -24,19 +27,26 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.design.styles.AppUiMode
+import ru.heatrk.languageapp.core.design.styles.LocalAppUiMode
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
 import ru.heatrk.languageapp.di.AppComponent
 import ru.heatrk.languageapp.presentation.navigation.AppNavHost
+import ru.heatrk.languageapp.profile.api.domain.ForcedTheme
 
 class RootActivity : ComponentActivity() {
 
-    private val viewModel: RootViewModel by viewModels(
+    private val initializationViewModel: InitializationViewModel by viewModels(
         factoryProducer = { AppComponent.getRootViewModelFactory(intent) }
+    )
+
+    private val themeViewModel: ThemeViewModel by viewModels(
+        factoryProducer = { AppComponent.getThemeViewModelFactory() }
     )
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        viewModel.onNewIntent(intent)
+        initializationViewModel.onNewIntent(intent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,24 +55,40 @@ class RootActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            AppRootContainer { isDarkTheme ->
-                val isInitializationFinished by viewModel.isInitializationFinished.collectAsStateWithLifecycle()
+            val forcedTheme by themeViewModel.forcedTheme.collectAsStateWithLifecycle()
+            val isSystemInDarkTheme = isSystemInDarkTheme()
 
-                val navController = rememberNavController()
+            val appUiMode = remember(forcedTheme) {
+                when {
+                    forcedTheme == ForcedTheme.DARK -> AppUiMode.DARK
+                    forcedTheme == ForcedTheme.LIGHT -> AppUiMode.LIGHT
+                    isSystemInDarkTheme -> AppUiMode.DARK
+                    else -> AppUiMode.LIGHT
+                }
+            }
 
-                SystemBarsThemeEffect(
-                    isDarkTheme = isDarkTheme,
-                    forceSplashTheme = !isInitializationFinished
-                )
+            CompositionLocalProvider(LocalAppUiMode provides appUiMode) {
+                AppRootContainer { isDarkTheme ->
+                    val isInitializationFinished by initializationViewModel
+                        .isInitializationFinished
+                        .collectAsStateWithLifecycle()
 
-                AppNavHost(
-                    navController = navController,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(AppTheme.colors.background),
-                )
+                    val navController = rememberNavController()
 
-                LaunchedRouterEffect(navController = navController)
+                    SystemBarsThemeEffect(
+                        isDarkTheme = isDarkTheme,
+                        forceSplashTheme = !isInitializationFinished
+                    )
+
+                    AppNavHost(
+                        navController = navController,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(AppTheme.colors.background),
+                    )
+
+                    LaunchedRouterEffect(navController = navController)
+                }
             }
         }
     }

@@ -14,7 +14,7 @@ object ProfileContract {
     }
 
     sealed interface Intent {
-        data object OnSwitchUiModeButtonClick : Intent
+        data class OnSwitchUiModeButtonClick(val toDarkTheme: Boolean) : Intent
         data object OnChangeLanguageButtonClick : Intent
         data object OnChangeAvatarButtonClick : Intent
         data object OnLogoutButtonClick : Intent

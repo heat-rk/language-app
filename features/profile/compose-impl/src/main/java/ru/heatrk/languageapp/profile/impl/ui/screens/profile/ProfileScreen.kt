@@ -27,7 +27,7 @@ import ru.heatrk.languageapp.core.design.composables.button.AppButtonDefaults
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
-import ru.heatrk.languageapp.core.design.styles.isNightMode
+import ru.heatrk.languageapp.core.design.styles.isAppInDarkTheme
 import ru.heatrk.languageapp.profile.impl.R
 import ru.heatrk.languageapp.profile.impl.ui.composables.ProfileAppBar
 import ru.heatrk.languageapp.profile.impl.ui.composables.ProfileAppBarShimmer
@@ -93,6 +93,8 @@ private fun ProfileSettingsBlock(
     onIntent: (Intent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val isAppInDarkTheme = isAppInDarkTheme()
+
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier
@@ -100,13 +102,19 @@ private fun ProfileSettingsBlock(
     ) {
         AppButton(
             text = stringResource(
-                if (isNightMode()) {
+                if (isAppInDarkTheme) {
                     R.string.profile_switch_to_light
                 } else {
                     R.string.profile_switch_to_dark
                 }
             ),
-            onClick = { onIntent(Intent.OnSwitchUiModeButtonClick) },
+            onClick = {
+                onIntent(
+                    Intent.OnSwitchUiModeButtonClick(
+                        toDarkTheme = !isAppInDarkTheme
+                    )
+                )
+            },
             modifier = Modifier
                 .fillMaxWidth()
         )
