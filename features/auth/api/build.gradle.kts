@@ -1,3 +1,5 @@
+import dependencies.AppDependencies
+
 plugins {
     id(AppPlugins.androidLibrary)
     id(AppPlugins.androidKotlin)
@@ -34,5 +36,9 @@ android {
 dependencies {
     modules(
         ":core:navigation:api",
+    )
+
+    dependencies(
+        AppDependencies.Coroutines.core,
     )
 }

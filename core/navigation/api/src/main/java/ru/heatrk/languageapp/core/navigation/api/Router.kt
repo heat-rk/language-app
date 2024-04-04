@@ -5,6 +5,8 @@ interface Router {
 
     val currentRoute: String?
 
+    val parentRoute: ParentRoute?
+
     fun registerRoutingBackReceiver(receiver: RoutingBackReceiver)
 
     fun unregisterRoutingBackReceiver(receiver: RoutingBackReceiver)

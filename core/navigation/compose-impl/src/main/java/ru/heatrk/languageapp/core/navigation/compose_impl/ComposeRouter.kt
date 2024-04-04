@@ -9,7 +9,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import ru.heatrk.languageapp.common.utils.currentRoute
+import ru.heatrk.languageapp.common.utils.parentNavGraph
 import ru.heatrk.languageapp.common.utils.previousRoute
+import ru.heatrk.languageapp.core.navigation.api.ParentRoute
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingBackReceiver
 import ru.heatrk.languageapp.core.navigation.api.RoutingOption
@@ -28,6 +30,14 @@ class ComposeRouter : Router, RoutingBackReceiver {
 
     override val previousRoute: String?
         get() = navController?.previousRoute
+
+    override val parentRoute: ParentRoute?
+        get() = navController?.parentNavGraph?.let { parent ->
+            ParentRoute(
+                path = parent.route,
+                startDestination = parent.startDestinationRoute,
+            )
+        }
 
     override fun registerRoutingBackReceiver(receiver: RoutingBackReceiver) {
         routingBackReceivers += receiver
@@ -109,6 +119,11 @@ class ComposeRouter : Router, RoutingBackReceiver {
                     is RoutingOption.PopUpTo -> {
                         popUpTo(option.routePath) {
                             inclusive = option.inclusive
+                        }
+                    }
+                    is RoutingOption.ClearStack -> {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
                         }
                     }
                 }

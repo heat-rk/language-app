@@ -5,6 +5,7 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
+import ru.heatrk.languageapp.presentation.AuthEventListenerViewModel
 import ru.heatrk.languageapp.presentation.InitializationViewModel
 import ru.heatrk.languageapp.presentation.ThemeViewModel
 import scout.Component
@@ -31,6 +32,16 @@ object AppComponent : Component(appScope) {
             initializer {
                 ThemeViewModel(
                     settingsRepository = get(),
+                )
+            }
+        }
+
+    fun getAuthEventListenerViewModelFactory() =
+        viewModelFactory {
+            initializer {
+                AuthEventListenerViewModel(
+                    authRepository = get(),
+                    router = get(),
                 )
             }
         }

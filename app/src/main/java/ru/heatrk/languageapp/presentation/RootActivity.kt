@@ -25,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
+import ru.heatrk.languageapp.common.utils.initializeViewModel
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.design.styles.AppUiMode
@@ -53,6 +54,8 @@ class RootActivity : ComponentActivity() {
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
+
+        initPassiveViewModels()
 
         setContent {
             val forcedTheme by themeViewModel.forcedTheme.collectAsStateWithLifecycle()
@@ -91,6 +94,12 @@ class RootActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun initPassiveViewModels() {
+        initializeViewModel<AuthEventListenerViewModel>(
+            factoryProducer = { AppComponent.getAuthEventListenerViewModelFactory() }
+        )
     }
 
     @Composable

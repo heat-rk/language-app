@@ -2,16 +2,20 @@ package ru.heatrk.languageapp.auth.impl.data
 
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.exceptions.RestException
+import io.github.jan.supabase.gotrue.SessionStatus
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.gotrue.providers.Google
 import io.github.jan.supabase.gotrue.providers.builtin.Email
 import io.github.jan.supabase.gotrue.providers.builtin.IDToken
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
+import ru.heatrk.languageapp.auth.api.domain.AuthEvent
 import ru.heatrk.languageapp.auth.api.domain.User
 import ru.heatrk.languageapp.auth.impl.BuildConfig
 
@@ -21,6 +25,18 @@ class AuthRepositoryImpl(
     private val json: Json,
     private val supabaseDispatcher: CoroutineDispatcher,
 ) : AuthRepository {
+
+    override val authEvents =
+        supabaseClient.auth.sessionStatus
+            .map { sessionStatus ->
+                when (sessionStatus) {
+                    is SessionStatus.Authenticated, SessionStatus.LoadingFromStorage ->
+                        AuthEvent.Authenticated
+                    else ->
+                        AuthEvent.NotAuthenticated
+                }
+            }
+            .distinctUntilChanged()
 
     override suspend fun awaitInitialization() {
         supabaseClient.auth.awaitInitialization()
@@ -175,6 +191,11 @@ class AuthRepositoryImpl(
             supabaseClient.auth.modifyUser {
                 this.password = password
             }
+        }
+
+    override suspend fun signOut(): Unit =
+        withContext(supabaseDispatcher) {
+            supabaseClient.auth.signOut()
         }
 
     companion object {

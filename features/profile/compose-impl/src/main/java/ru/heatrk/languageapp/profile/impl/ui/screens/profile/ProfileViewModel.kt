@@ -4,11 +4,11 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import org.orbitmvi.orbit.ContainerHost
-import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.common.utils.strRes
@@ -24,12 +24,11 @@ import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.Sid
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.State
 import ru.heatrk.languageapp.core.design.R as DesignR
 
-private typealias IntentBody = SimpleSyntax<State, SideEffect>
-
 class ProfileViewModel(
     private val router: Router,
     private val profilesRepository: ProfilesRepository,
     private val settingsRepository: SettingsRepository,
+    private val authRepository: AuthRepository,
 ) : ViewModel(), ContainerHost<State, SideEffect> {
     override val container = container<State, SideEffect>(
         initialState = State.Loading
@@ -101,7 +100,7 @@ class ProfileViewModel(
     }
 
     private suspend fun onLogoutButtonClick() {
-        // TODO
+        authRepository.signOut()
     }
 
     private suspend fun onSwitchUiModeButtonClick(toDarkTheme: Boolean) {

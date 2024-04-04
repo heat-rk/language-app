@@ -47,6 +47,7 @@ private fun Registry.useProfileScreenBeans() {
                         router = get(),
                         profilesRepository = get(),
                         settingsRepository = get(),
+                        authRepository = get(),
                     )
                 }
             }

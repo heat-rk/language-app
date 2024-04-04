@@ -9,6 +9,9 @@ val NavController.currentRoute
 val NavController.previousRoute
     get() = previousBackStackEntry?.destination?.route
 
+val NavController.parentNavGraph
+    get() = currentBackStackEntry?.destination?.parent
+
 fun NavBackStackEntry.requireLongArg(key: String) = requireNotNull(arguments?.getLong(key))
 
 fun NavBackStackEntry.requireStringArg(key: String) = requireNotNull(arguments?.getString(key))

@@ -1,6 +1,10 @@
 package ru.heatrk.languageapp.auth.api.domain
 
+import kotlinx.coroutines.flow.Flow
+
 interface AuthRepository {
+
+    val authEvents: Flow<AuthEvent>
 
     suspend fun awaitInitialization()
 
@@ -33,4 +37,6 @@ interface AuthRepository {
     suspend fun applyRecoveryCode(code: String)
 
     suspend fun changePassword(password: String)
+
+    suspend fun signOut()
 }

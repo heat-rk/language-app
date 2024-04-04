@@ -55,6 +55,7 @@ android {
 dependencies {
     modules(
         ":features:profile:api",
+        ":features:auth:api",
         ":core:navigation:api",
         ":core:navigation:compose-impl",
         ":core:design",
