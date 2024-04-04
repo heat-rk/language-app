@@ -5,6 +5,8 @@ import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.viewmodel.container
 import ru.heatrk.languageapp.core.navigation.api.Router
+import ru.heatrk.languageapp.profile.api.ui.navigation.SELECT_LANGUAGE_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.profile.api.ui.navigation.SelectLanguageScreenArguments
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.State
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.Intent
 
@@ -39,7 +41,12 @@ class ProfileViewModel(
     }
 
     private suspend fun onChangeLanguageButtonClick() {
-        // TODO
+        router.navigate(
+            routePath = SELECT_LANGUAGE_SCREEN_ROUTE_PATH,
+            arguments = mapOf(
+                SelectLanguageScreenArguments.CAN_GO_BACK to true
+            )
+        )
     }
 
     private suspend fun onLogoutButtonClick() {

@@ -9,5 +9,6 @@ object ProfileGraphRoute : Route.Graph(
     startDestination = PROFILE_SCREEN_ROUTE_PATH,
     builder = {
         route(ProfileScreenRoute)
+        route(SelectLanguageScreenRoute)
     },
 )
