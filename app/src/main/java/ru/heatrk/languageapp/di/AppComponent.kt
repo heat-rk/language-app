@@ -1,6 +1,7 @@
 package ru.heatrk.languageapp.di
 
 import android.content.Intent
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
@@ -18,6 +19,7 @@ object AppComponent : Component(appScope) {
                     authRepository = get(),
                     router = get(),
                     deepLinkRouters = collect(),
+                    savedStateHandle = createSavedStateHandle(),
                     intent = intent,
                 )
             }

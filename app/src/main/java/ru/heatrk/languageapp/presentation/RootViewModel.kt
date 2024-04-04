@@ -1,12 +1,15 @@
 package ru.heatrk.languageapp.presentation
 
 import android.content.Intent
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
@@ -24,12 +27,38 @@ class RootViewModel(
     private val authRepository: AuthRepository,
     private val router: Router,
     private val deepLinkRouters: List<DeepLinkRouter>,
+    private val savedStateHandle: SavedStateHandle,
     intent: Intent,
 ) : ViewModel() {
-    private val _isInitializationFinished = MutableStateFlow(false)
+    private val _isInitializationFinished = MutableStateFlow(
+        savedStateHandle.get<Boolean>(HANDLE_INITIALIZATION_FINISHED_KEY) == true
+    )
+
     val isInitializationFinished = _isInitializationFinished.asStateFlow()
 
     init {
+        init(intent)
+
+        isInitializationFinished
+            .onEach { isFinished ->
+                savedStateHandle[HANDLE_INITIALIZATION_FINISHED_KEY] = isFinished
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun onNewIntent(intent: Intent?) {
+        if (intent != null) {
+            viewModelScope.launch {
+                handleDeepLinks(intent)
+            }
+        }
+    }
+
+    private fun init(intent: Intent) {
+        if (isInitializationFinished.value) {
+            return
+        }
+
         viewModelScope.launch {
             val delayJob = launch {
                 delay(INITIALIZATION_DELAY_MILLIS)
@@ -74,19 +103,12 @@ class RootViewModel(
         }
     }
 
-    fun onNewIntent(intent: Intent?) {
-        if (intent != null) {
-            viewModelScope.launch {
-                handleDeepLinks(intent)
-            }
-        }
-    }
-
     private suspend fun handleDeepLinks(intent: Intent) {
         deepLinkRouters.any { router -> router.handle(intent) }
     }
 
     companion object {
         private const val INITIALIZATION_DELAY_MILLIS = 2000L
+        private const val HANDLE_INITIALIZATION_FINISHED_KEY = "initialization_finished"
     }
 }
