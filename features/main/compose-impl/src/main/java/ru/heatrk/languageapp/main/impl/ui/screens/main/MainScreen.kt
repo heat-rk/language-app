@@ -30,19 +30,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.heatrk.languageapp.common.utils.extract
+import ru.heatrk.languageapp.common.utils.painterRes
+import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.main.impl.R
+import ru.heatrk.languageapp.core.design.R as DesignR
 import ru.heatrk.languageapp.main.impl.ui.composables.app_bar.MainAppBar
 import ru.heatrk.languageapp.main.impl.ui.composables.app_bar.MainAppBarState
 import ru.heatrk.languageapp.main.impl.ui.composables.app_bar.rememberAppBarSnapScrollConnection
@@ -294,11 +300,42 @@ private fun State.Profile.toAppBarState() = when (this) {
         )
 }
 
+private class MainScreenPreviewStateProvider : PreviewParameterProvider<State> {
+    override val values = sequenceOf(
+        State(
+            profileState = State.Profile.Loading,
+            leaderboard = State.Leaderboard.Loading,
+        ),
+        State(
+            profileState = State.Profile.Loaded(
+                firstName = "Ivan",
+                avatar = painterRes(DesignR.drawable.ic_avatar_placeholder)
+            ),
+            leaderboard = State.Leaderboard.Loaded(
+                items = persistentListOf(
+                    State.Leaderboard.Item(
+                        id = "1",
+                        fullName = strRes("Petr Petrov"),
+                        avatar = painterRes(DesignR.drawable.ic_avatar_placeholder),
+                        totalScore = 12,
+                    ),
+                    State.Leaderboard.Item(
+                        id = "2",
+                        fullName = strRes("Ivan Ivanov"),
+                        avatar = painterRes(DesignR.drawable.ic_avatar_placeholder),
+                        totalScore = 10,
+                    ),
+                )
+            ),
+        )
+    )
+}
+
 @Composable
-private fun MainScreenPreview() {
+private fun MainScreenPreview(state: State) {
     AppRootContainer {
         MainScreen(
-            state = State(),
+            state = state,
             onIntent = {}
         )
     }
@@ -306,12 +343,16 @@ private fun MainScreenPreview() {
 
 @Composable
 @Preview(showBackground = true)
-private fun MainScreenPreviewLight() {
-    MainScreenPreview()
+private fun MainScreenPreviewLight(
+    @PreviewParameter(MainScreenPreviewStateProvider::class) state: State
+) {
+    MainScreenPreview(state = state)
 }
 
 @Composable
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-private fun MainScreenPreviewDark() {
-    MainScreenPreview()
+private fun MainScreenPreviewDark(
+    @PreviewParameter(MainScreenPreviewStateProvider::class) state: State
+) {
+    MainScreenPreview(state = state)
 }
