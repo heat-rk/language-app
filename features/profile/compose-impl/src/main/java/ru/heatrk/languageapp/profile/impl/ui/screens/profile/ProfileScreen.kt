@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package ru.heatrk.languageapp.profile.impl.ui.screens.profile
 
 import android.content.res.Configuration
@@ -9,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -24,6 +21,7 @@ import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.AppButtonDefaults
+import ru.heatrk.languageapp.core.design.composables.button.AppButtonState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
@@ -53,17 +51,17 @@ private fun ProfileScreen(
 ) {
     AppScaffoldControllerEffect(
         appBarState = AppBarState.Custom(key = PROFILE_SCREEN_ROUTE_PATH) {
-            when (state) {
-                is State.Loaded -> {
+            when (state.profileState) {
+                is State.Profile.Loaded -> {
                     ProfileAppBar(
-                        fullName = state.fullName,
-                        avatar = state.avatar,
+                        fullName = state.profileState.fullName,
+                        avatar = state.profileState.avatar,
                         onGoBackClick = { onIntent(Intent.OnGoBackClick) },
                         modifier = Modifier
                             .fillMaxWidth(),
                     )
                 }
-                State.Loading -> {
+                State.Profile.Loading -> {
                     ProfileAppBarShimmer(
                         onGoBackClick = { onIntent(Intent.OnGoBackClick) },
                         modifier = Modifier
@@ -80,6 +78,7 @@ private fun ProfileScreen(
             .fillMaxSize()
     ) {
         ProfileSettingsBlock(
+            state = state,
             onIntent = onIntent,
             modifier = Modifier
                 .fillMaxWidth()
@@ -90,10 +89,19 @@ private fun ProfileScreen(
 
 @Composable
 private fun ProfileSettingsBlock(
+    state: State,
     onIntent: (Intent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val isAppInDarkTheme = isAppInDarkTheme()
+
+    val buttonsState =
+        if (state.isSignOutInProcess) AppButtonState.Disabled
+        else AppButtonState.Idle
+
+    val signOutButtonState =
+        if (state.isSignOutInProcess) AppButtonState.Loading
+        else AppButtonState.Idle
 
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -108,6 +116,7 @@ private fun ProfileSettingsBlock(
                     R.string.profile_switch_to_dark
                 }
             ),
+            buttonState = buttonsState,
             onClick = {
                 onIntent(
                     Intent.OnSwitchUiModeButtonClick(
@@ -121,6 +130,7 @@ private fun ProfileSettingsBlock(
 
         AppButton(
             text = stringResource(R.string.profile_change_mother_language),
+            buttonState = buttonsState,
             onClick = { onIntent(Intent.OnChangeLanguageButtonClick) },
             modifier = Modifier
                 .fillMaxWidth()
@@ -128,6 +138,7 @@ private fun ProfileSettingsBlock(
 
         AppButton(
             text = stringResource(R.string.profile_change_image),
+            buttonState = buttonsState,
             onClick = { onIntent(Intent.OnChangeAvatarButtonClick) },
             modifier = Modifier
                 .fillMaxWidth()
@@ -135,6 +146,7 @@ private fun ProfileSettingsBlock(
 
         AppButton(
             text = stringResource(R.string.profile_change_logout),
+            buttonState = signOutButtonState,
             buttonColors = AppButtonDefaults.colors(
                 idleColor = AppTheme.colors.error
             ),
@@ -147,10 +159,19 @@ private fun ProfileSettingsBlock(
 
 private class ProfileScreenPreviewStateProvider : PreviewParameterProvider<State> {
     override val values = sequenceOf(
-        State.Loading,
-        State.Loaded(
-            fullName = strRes("Ivan Ivanov"),
-            avatar = painterRes(DesignR.drawable.ic_avatar_placeholder),
+        State(profileState = State.Profile.Loading),
+        State(
+            profileState = State.Profile.Loaded(
+                fullName = strRes("Ivan Ivanov"),
+                avatar = painterRes(DesignR.drawable.ic_avatar_placeholder),
+            )
+        ),
+        State(
+            profileState = State.Profile.Loaded(
+                fullName = strRes("Ivan Ivanov"),
+                avatar = painterRes(DesignR.drawable.ic_avatar_placeholder),
+            ),
+            isSignOutInProcess = true
         )
     )
 }

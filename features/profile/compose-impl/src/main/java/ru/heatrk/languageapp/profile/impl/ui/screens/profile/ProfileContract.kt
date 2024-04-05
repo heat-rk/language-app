@@ -4,13 +4,19 @@ import ru.heatrk.languageapp.common.utils.PainterResource
 import ru.heatrk.languageapp.common.utils.StringResource
 
 object ProfileContract {
-    sealed interface State {
-        data object Loading : State
 
-        data class Loaded(
-            val fullName: StringResource?,
-            val avatar: PainterResource?
-        ) : State
+    data class State(
+        val profileState: Profile = Profile.Loading,
+        val isSignOutInProcess: Boolean = false,
+    ) {
+        sealed interface Profile {
+            data object Loading : Profile
+
+            data class Loaded(
+                val fullName: StringResource?,
+                val avatar: PainterResource?
+            ) : Profile
+        }
     }
 
     sealed interface Intent {

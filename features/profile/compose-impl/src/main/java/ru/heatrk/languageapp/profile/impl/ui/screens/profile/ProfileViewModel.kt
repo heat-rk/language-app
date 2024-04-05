@@ -31,7 +31,7 @@ class ProfileViewModel(
     private val authRepository: AuthRepository,
 ) : ViewModel(), ContainerHost<State, SideEffect> {
     override val container = container<State, SideEffect>(
-        initialState = State.Loading
+        initialState = State()
     )
 
     init {
@@ -60,19 +60,21 @@ class ProfileViewModel(
     private fun loadProfileData() = intent {
         viewModelScope.launchSafe(
             block = {
-                reduce { State.Loading }
+                reduce { state.copy(profileState = State.Profile.Loading) }
 
                 val user = profilesRepository.getCurrentProfile()
 
                 reduce {
-                    State.Loaded(
-                        fullName = formatFullName(
-                            firstName = user.firstName,
-                            lastName = user.lastName,
-                        ),
-                        avatar = user.avatarUrl?.let { url ->
-                            painterRes(Uri.parse(url))
-                        },
+                    state.copy(
+                        profileState = State.Profile.Loaded(
+                            fullName = formatFullName(
+                                firstName = user.firstName,
+                                lastName = user.lastName,
+                            ),
+                            avatar = user.avatarUrl?.let { url ->
+                                painterRes(Uri.parse(url))
+                            },
+                        )
                     )
                 }
             },
@@ -99,8 +101,19 @@ class ProfileViewModel(
         )
     }
 
-    private suspend fun onLogoutButtonClick() {
-        authRepository.signOut()
+    private suspend fun onLogoutButtonClick() = intent {
+        viewModelScope.launchSafe(
+            block = {
+                reduce { state.copy(isSignOutInProcess = true) }
+
+                authRepository.signOut()
+
+                reduce { state.copy(isSignOutInProcess = false) }
+            },
+            onError = {
+                postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
+            }
+        )
     }
 
     private suspend fun onSwitchUiModeButtonClick(toDarkTheme: Boolean) {
