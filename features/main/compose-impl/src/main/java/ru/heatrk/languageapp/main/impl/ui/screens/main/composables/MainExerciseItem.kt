@@ -1,18 +1,18 @@
 package ru.heatrk.languageapp.main.impl.ui.screens.main.composables
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -31,14 +31,18 @@ fun MainExerciseItem(
     backgroundColor: Color,
     modifier: Modifier = Modifier,
     includeSpacer: Boolean = false,
+    isEnabled: Boolean = true,
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Card(
+        onClick = onClick,
+        enabled = isEnabled,
+        shape = AppTheme.shapes.extraLarge,
+        colors = CardDefaults.cardColors(
+            containerColor = backgroundColor,
+        ),
         modifier = modifier
             .padding(bottom = if (includeSpacer) 17.dp else 0.dp)
-            .clip(AppTheme.shapes.extraLarge)
-            .background(backgroundColor)
-            .clickable(onClick = onClick)
+            .alpha(if (isEnabled) ENABLED_ALPHA else DISABLED_ALPHA)
     ) {
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -47,6 +51,7 @@ fun MainExerciseItem(
             contentDescription = title,
             modifier = Modifier
                 .size(ExerciseImageSize)
+                .align(Alignment.CenterHorizontally)
         )
 
         Spacer(modifier = Modifier.height(5.dp))
@@ -57,6 +62,7 @@ fun MainExerciseItem(
             fontWeight = FontWeight.Normal,
             color = AppTheme.colors.onPrimary,
             modifier = Modifier
+                .align(Alignment.CenterHorizontally)
         )
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -64,6 +70,8 @@ fun MainExerciseItem(
 }
 
 private val ExerciseImageSize = 90.dp
+private const val ENABLED_ALPHA = 1f
+private const val DISABLED_ALPHA = 0.4f
 
 @Composable
 @Preview(showBackground = true)
@@ -74,7 +82,9 @@ private fun MainExerciseItemPreview() {
             image = painterResource(R.drawable.word),
             title = stringResource(R.string.main_word_practice),
             backgroundColor = AppTheme.colors.exerciseWordPractice,
-            includeSpacer = true,
+            includeSpacer = false,
+            modifier = Modifier
+                .width(150.dp),
         )
     }
 }

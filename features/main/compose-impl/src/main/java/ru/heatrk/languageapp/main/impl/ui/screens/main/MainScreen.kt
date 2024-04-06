@@ -207,6 +207,7 @@ private fun LazyGridScope.exercisesItems(
             title = stringResource(R.string.main_word_practice),
             backgroundColor = AppTheme.colors.exerciseWordPractice,
             includeSpacer = true,
+            isEnabled = false,
         )
     }
 
@@ -216,6 +217,7 @@ private fun LazyGridScope.exercisesItems(
             image = painterResource(R.drawable.audition),
             title = stringResource(R.string.main_audition),
             backgroundColor = AppTheme.colors.exerciseAudition,
+            isEnabled = false,
         )
     }
 
@@ -225,6 +227,7 @@ private fun LazyGridScope.exercisesItems(
             image = painterResource(R.drawable.game),
             title = stringResource(R.string.main_game),
             backgroundColor = AppTheme.colors.exerciseGame,
+            isEnabled = false,
         )
     }
 }
