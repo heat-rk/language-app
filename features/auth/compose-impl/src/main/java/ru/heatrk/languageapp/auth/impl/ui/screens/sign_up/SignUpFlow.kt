@@ -47,17 +47,18 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.I
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.SideEffect
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.State
 import ru.heatrk.languageapp.common.utils.extract
+import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.AppLinkedText
 import ru.heatrk.languageapp.core.design.composables.AppLinkedTextUnit
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
-import ru.heatrk.languageapp.core.design.composables.button.AppButtonState
+import ru.heatrk.languageapp.core.design.composables.button.toButtonState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
 import ru.heatrk.languageapp.core.design.styles.AppTheme
-import ru.heatrk.languageapp.core.navigation.compose_impl.NavHost
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
+import ru.heatrk.languageapp.core.navigation.compose_impl.NavHost
 
 @Composable
 fun SignUpFlow(viewModel: SignUpViewModel) {
@@ -150,7 +151,7 @@ private fun ColumnScope.SignUpButtons(
             linkSpanStyle = SpanStyle(
                 color = AppTheme.colors.secondary,
             ),
-            isEnabled = state.registrationState == State.Registration.None,
+            isEnabled = state.registrationState == ProcessingState.None,
             modifier = Modifier
                 .padding(horizontal = 24.dp)
                 .align(Alignment.CenterHorizontally)
@@ -227,13 +228,6 @@ private suspend fun handleMessageSideEffect(
         ?: return
 
     snackbarHostState.showSnackbar(message)
-}
-
-private fun State.Registration.toButtonState() = when (this) {
-    State.Registration.None -> AppButtonState.Idle
-    State.Registration.InProgress -> AppButtonState.Loading
-    State.Registration.Success -> AppButtonState.Success
-    State.Registration.Error -> AppButtonState.Error
 }
 
 internal class SignUpButtonsController {

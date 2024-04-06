@@ -11,7 +11,6 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import ru.heatrk.languageapp.auth.impl.R
-import ru.heatrk.languageapp.core.design.R as DesignR
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.InvalidSignInFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
@@ -23,10 +22,12 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.I
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.SideEffect
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.State
 import ru.heatrk.languageapp.common.utils.launchSafe
+import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingOption
 import ru.heatrk.languageapp.main.api.ui.navigation.MAIN_GRAPH_ROUTE_PATH
+import ru.heatrk.languageapp.core.design.R as DesignR
 
 typealias IntentBody = SimpleSyntax<State, SideEffect>
 
@@ -120,7 +121,7 @@ class SignInViewModel(
     ) {
         viewModelScope.launchSafe(
             block = {
-                reduce { state.copy(authorizingState = State.Authorizing.InProgress) }
+                reduce { state.copy(authorizingState = ProcessingState.InProgress) }
 
                 signInWithGoogle(
                     rawNonce = rawNonce,
@@ -130,7 +131,7 @@ class SignInViewModel(
                     lastName = lastName,
                 )
 
-                reduce { state.copy(authorizingState = State.Authorizing.Success) }
+                reduce { state.copy(authorizingState = ProcessingState.Success) }
 
                 delay(AUTHORIZING_STATE_DELAY_MILLIS)
 
@@ -157,14 +158,14 @@ class SignInViewModel(
     private suspend fun IntentBody.onLoginButtonClick() {
         viewModelScope.launchSafe(
             block = {
-                reduce { state.copy(authorizingState = State.Authorizing.InProgress) }
+                reduce { state.copy(authorizingState = ProcessingState.InProgress) }
 
                 signIn(
                     email = state.email,
                     password = state.password
                 )
 
-                reduce { state.copy(authorizingState = State.Authorizing.Success) }
+                reduce { state.copy(authorizingState = ProcessingState.Success) }
 
                 delay(AUTHORIZING_STATE_DELAY_MILLIS)
 
@@ -179,7 +180,7 @@ class SignInViewModel(
                 )
             },
             onError = { throwable ->
-                reduce { state.copy(authorizingState = State.Authorizing.Error) }
+                reduce { state.copy(authorizingState = ProcessingState.Error) }
 
                 when (throwable) {
                     is InvalidSignInFieldsValuesException -> {
@@ -202,7 +203,7 @@ class SignInViewModel(
 
                 delay(AUTHORIZING_STATE_DELAY_MILLIS)
 
-                reduce { state.copy(authorizingState = State.Authorizing.None) }
+                reduce { state.copy(authorizingState = ProcessingState.None) }
             }
         )
     }

@@ -21,6 +21,7 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.I
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.SideEffect
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.State
 import ru.heatrk.languageapp.common.utils.launchSafe
+import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingOption
@@ -158,7 +159,7 @@ class SignUpViewModel(
                 signUpRouter.navigate(routePath = SIGN_UP_PASSWORD_SCREEN_ROUTE_PATH)
             },
             onError = { throwable ->
-                reduce { state.copy(registrationState = State.Registration.Error) }
+                reduce { state.copy(registrationState = ProcessingState.Error) }
 
                 when (throwable) {
                     is InvalidSignUpFieldsValuesException -> {
@@ -171,7 +172,7 @@ class SignUpViewModel(
 
                 delay(REGISTRATION_STATE_DELAY_MILLIS)
 
-                reduce { state.copy(registrationState = State.Registration.None) }
+                reduce { state.copy(registrationState = ProcessingState.None) }
             }
         )
     }
@@ -180,7 +181,7 @@ class SignUpViewModel(
         viewModelScope.launchSafe(
             block = {
                 reduce {
-                    state.copy(registrationState = State.Registration.InProgress)
+                    state.copy(registrationState = ProcessingState.InProgress)
                 }
 
                 signUp(
@@ -191,16 +192,16 @@ class SignUpViewModel(
                     confirmedPassword = state.confirmedPassword,
                 )
 
-                reduce { state.copy(registrationState = State.Registration.Success) }
+                reduce { state.copy(registrationState = ProcessingState.Success) }
 
                 delay(REGISTRATION_STATE_DELAY_MILLIS)
 
-                reduce { state.copy(registrationState = State.Registration.None) }
+                reduce { state.copy(registrationState = ProcessingState.None) }
 
                 signUpRouter.navigate(routePath = SIGN_UP_EMAIL_CONFIRM_SCREEN_ROUTE_PATH)
             },
             onError = { throwable ->
-                reduce { state.copy(registrationState = State.Registration.Error) }
+                reduce { state.copy(registrationState = ProcessingState.Error) }
 
                 when (throwable) {
                     is InvalidSignUpFieldsValuesException -> {
@@ -218,7 +219,7 @@ class SignUpViewModel(
 
                 delay(REGISTRATION_STATE_DELAY_MILLIS)
 
-                reduce { state.copy(registrationState = State.Registration.None) }
+                reduce { state.copy(registrationState = ProcessingState.None) }
             }
         )
     }

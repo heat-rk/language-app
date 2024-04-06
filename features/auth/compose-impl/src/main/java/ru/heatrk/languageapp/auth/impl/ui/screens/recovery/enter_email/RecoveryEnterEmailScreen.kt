@@ -28,6 +28,7 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.State
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowViewModel
 import ru.heatrk.languageapp.common.utils.extract
+import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 import ru.heatrk.languageapp.core.design.styles.AppTheme
@@ -74,7 +75,7 @@ private fun RecoveryEnterEmailScreen(
 
         AppTextField(
             value = state.email,
-            isEnabled = state.recoveringState == State.Recovering.None,
+            isEnabled = state.recoveringState == ProcessingState.None,
             label = stringResource(R.string.email_address),
             placeholder = stringResource(R.string.email),
             keyboardOptions = KeyboardOptions(

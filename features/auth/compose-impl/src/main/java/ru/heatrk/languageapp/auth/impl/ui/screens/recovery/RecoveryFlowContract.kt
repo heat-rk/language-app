@@ -1,6 +1,7 @@
 package ru.heatrk.languageapp.auth.impl.ui.screens.recovery
 
 import ru.heatrk.languageapp.common.utils.StringResource
+import ru.heatrk.languageapp.common.utils.states.ProcessingState
 
 object RecoveryFlowContract {
     data class State(
@@ -12,12 +13,8 @@ object RecoveryFlowContract {
         val confirmedPasswordErrorMessage: StringResource? = null,
         val isPasswordVisible: Boolean = false,
         val isConfirmedPasswordVisible: Boolean = false,
-        val recoveringState: Recovering = Recovering.None,
-    ) {
-        enum class Recovering {
-            None, InProgress, Success, Error
-        }
-    }
+        val recoveringState: ProcessingState = ProcessingState.None,
+    )
 
     sealed interface Intent {
         data object OnGoBackClick : Intent

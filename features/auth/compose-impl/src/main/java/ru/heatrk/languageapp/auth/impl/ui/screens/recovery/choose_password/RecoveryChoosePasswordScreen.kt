@@ -19,6 +19,7 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryButtonsContro
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.State
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowViewModel
+import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 
 @Composable
@@ -55,7 +56,7 @@ private fun RecoveryChoosePasswordScreen(
                 confirmedPasswordErrorMessage = state.confirmedPasswordErrorMessage,
                 isPasswordVisible = state.isPasswordVisible,
                 isConfirmedPasswordVisible = state.isConfirmedPasswordVisible,
-                isEnabled = state.recoveringState == State.Recovering.None,
+                isEnabled = state.recoveringState == ProcessingState.None,
             ),
             onIntent = { intent ->
                 when (intent) {

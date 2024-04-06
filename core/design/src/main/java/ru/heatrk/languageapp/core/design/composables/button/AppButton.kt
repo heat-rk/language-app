@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.core.design.R
 import ru.heatrk.languageapp.core.design.composables.animation.FadeInAnimatedContent
 import ru.heatrk.languageapp.core.design.styles.AppTheme
@@ -203,6 +204,13 @@ private fun AppButton(
             }
         }
     }
+}
+
+fun ProcessingState.toButtonState() = when (this) {
+    ProcessingState.None -> AppButtonState.Idle
+    ProcessingState.InProgress -> AppButtonState.Loading
+    ProcessingState.Success -> AppButtonState.Success
+    ProcessingState.Error -> AppButtonState.Error
 }
 
 private const val BUTTON_BLUR_ALPHA = 0.2f

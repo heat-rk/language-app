@@ -18,6 +18,7 @@ import ru.heatrk.languageapp.auth.impl.ui.composables.choose_password.ChoosePass
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpButtonsControllerEffect
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpViewModel
+import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 
 @Composable
@@ -55,7 +56,7 @@ private fun SignUpPasswordScreen(
                 confirmedPasswordErrorMessage = state.confirmedPasswordErrorMessage,
                 isPasswordVisible = state.isPasswordVisible,
                 isConfirmedPasswordVisible = state.isConfirmedPasswordVisible,
-                isEnabled = state.registrationState == SignUpScreenContract.State.Registration.None,
+                isEnabled = state.registrationState == ProcessingState.None,
             ),
             onIntent = { intent ->
                 when (intent) {

@@ -51,6 +51,7 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.S
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.State
 import ru.heatrk.languageapp.auth.impl.ui.utils.isFatal
 import ru.heatrk.languageapp.common.utils.extract
+import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.AppLinkedText
 import ru.heatrk.languageapp.core.design.composables.AppLinkedTextUnit
@@ -58,6 +59,7 @@ import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.AppButtonState
 import ru.heatrk.languageapp.core.design.composables.button.AppTextButton
+import ru.heatrk.languageapp.core.design.composables.button.toButtonState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
@@ -125,7 +127,7 @@ private fun SignInScreen(
         SignInEmailPasswordBlock(
             email = state.email,
             password = state.password,
-            isInputEnabled = state.authorizingState == State.Authorizing.None,
+            isInputEnabled = state.authorizingState == ProcessingState.None,
             emailErrorMessage = state.emailErrorMessage?.extract(),
             passwordErrorMessage = state.passwordErrorMessage?.extract(),
             isPasswordVisible = state.isPasswordVisible,
@@ -136,7 +138,7 @@ private fun SignInScreen(
 
         SignInButtonsBlock(
             loginButtonState = state.authorizingState.toButtonState(),
-            isLinkedTextEnabled = state.authorizingState == State.Authorizing.None,
+            isLinkedTextEnabled = state.authorizingState == ProcessingState.None,
             onIntent = onIntent,
         )
     }
@@ -368,13 +370,6 @@ private suspend fun requestGoogleCredentials(
             onIntent(Intent.OnGoogleCredentialsReceiveFailed)
         }
     }
-}
-
-private fun State.Authorizing.toButtonState() = when (this) {
-    State.Authorizing.None -> AppButtonState.Idle
-    State.Authorizing.InProgress -> AppButtonState.Loading
-    State.Authorizing.Success -> AppButtonState.Success
-    State.Authorizing.Error -> AppButtonState.Error
 }
 
 @Composable

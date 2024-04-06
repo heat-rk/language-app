@@ -2,6 +2,7 @@ package ru.heatrk.languageapp.auth.impl.ui.screens.sign_in
 
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
 import ru.heatrk.languageapp.common.utils.StringResource
+import ru.heatrk.languageapp.common.utils.states.ProcessingState
 
 object SignInScreenContract {
     data class State(
@@ -10,12 +11,8 @@ object SignInScreenContract {
         val password: String = "",
         val passwordErrorMessage: StringResource? = null,
         val isPasswordVisible: Boolean = false,
-        val authorizingState: Authorizing = Authorizing.None,
-    ) {
-        enum class Authorizing {
-            None, InProgress, Success, Error
-        }
-    }
+        val authorizingState: ProcessingState = ProcessingState.None,
+    )
 
     sealed interface Intent {
         data class OnEmailTextChanged(val text: String) : Intent

@@ -1,6 +1,7 @@
 package ru.heatrk.languageapp.auth.impl.ui.screens.sign_up
 
 import ru.heatrk.languageapp.common.utils.StringResource
+import ru.heatrk.languageapp.common.utils.states.ProcessingState
 
 object SignUpScreenContract {
     data class State(
@@ -16,12 +17,8 @@ object SignUpScreenContract {
         val confirmedPasswordErrorMessage: StringResource? = null,
         val isPasswordVisible: Boolean = false,
         val isConfirmedPasswordVisible: Boolean = false,
-        val registrationState: Registration = Registration.None,
-    ) {
-        enum class Registration {
-            None, InProgress, Success, Error
-        }
-    }
+        val registrationState: ProcessingState = ProcessingState.None,
+    )
 
     sealed interface Intent {
         data class OnFirstNameChanged(val text: String) : Intent

@@ -36,16 +36,15 @@ import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_FLOW_ROUT
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RecoveryGraphRoute
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.SideEffect
-import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.State
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
-import ru.heatrk.languageapp.core.design.composables.button.AppButtonState
+import ru.heatrk.languageapp.core.design.composables.button.toButtonState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
-import ru.heatrk.languageapp.core.navigation.compose_impl.NavHost
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
+import ru.heatrk.languageapp.core.navigation.compose_impl.NavHost
 
 @Composable
 fun RecoveryFlow(viewModel: RecoveryFlowViewModel) {
@@ -179,11 +178,4 @@ internal fun RecoveryButtonsControllerEffect(
         recoveryButtonsController.text = text
         recoveryButtonsController.onClick = onClick
     }
-}
-
-private fun State.Recovering.toButtonState() = when (this) {
-    State.Recovering.None -> AppButtonState.Idle
-    State.Recovering.InProgress -> AppButtonState.Loading
-    State.Recovering.Success -> AppButtonState.Success
-    State.Recovering.Error -> AppButtonState.Error
 }

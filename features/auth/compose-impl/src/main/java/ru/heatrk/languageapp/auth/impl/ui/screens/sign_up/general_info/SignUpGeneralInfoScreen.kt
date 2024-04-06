@@ -24,6 +24,7 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpTitle
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpViewModel
 import ru.heatrk.languageapp.common.utils.extract
+import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 
@@ -86,7 +87,7 @@ private fun SignUpGeneralInfoFirstNameField(
 ) {
     AppTextField(
         value = state.firstName,
-        isEnabled = state.registrationState == SignUpScreenContract.State.Registration.None,
+        isEnabled = state.registrationState == ProcessingState.None,
         placeholder = stringResource(R.string.your_first_name),
         label = stringResource(R.string.first_name),
         singleLine = true,
@@ -108,7 +109,7 @@ private fun SignUpGeneralInfoLastNameField(
 ) {
     AppTextField(
         value = state.lastName,
-        isEnabled = state.registrationState == SignUpScreenContract.State.Registration.None,
+        isEnabled = state.registrationState == ProcessingState.None,
         placeholder = stringResource(R.string.your_last_name),
         label = stringResource(R.string.last_name),
         singleLine = true,
@@ -130,7 +131,7 @@ private fun SignUpGeneralInfoEmailField(
 ) {
     AppTextField(
         value = state.email,
-        isEnabled = state.registrationState == SignUpScreenContract.State.Registration.None,
+        isEnabled = state.registrationState == ProcessingState.None,
         placeholder = stringResource(R.string.email),
         label = stringResource(R.string.email_address),
         singleLine = true,
