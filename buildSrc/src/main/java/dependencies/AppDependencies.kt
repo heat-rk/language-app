@@ -36,6 +36,10 @@ object AppDependencies {
         val postgrest = Dependency(
             notation = "io.github.jan-tennert.supabase:postgrest-kt"
         )
+
+        val storage = Dependency(
+            notation = "io.github.jan-tennert.supabase:storage-kt"
+        )
     }
 
     object Ktor {

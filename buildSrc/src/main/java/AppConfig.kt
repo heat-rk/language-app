@@ -14,11 +14,18 @@ object AppConfig {
 
         val supaBaseAnonKey = properties.getProperty("supabase.anon.key")
         val supaBaseUrl = properties.getProperty("supabase.url")
+        val supaBasePathStorage = properties.getProperty("supabase.path.storage")
         val supaBaseRedirectScheme = properties.getProperty("supabase.redirect.scheme")
         val supaBaseRedirectHost = properties.getProperty("supabase.redirect.host")
         val googleServerClientId = properties.getProperty("google.server.client_id")
 
         return arrayOf(
+            BuildConfigField(
+                type = "String",
+                name = "APPLICATION_ID",
+                releaseValue = applicationId,
+                debugValue = applicationId,
+            ),
             BuildConfigField(
                 type = "String",
                 name = "SUPABASE_ANON_KEY",
@@ -30,6 +37,12 @@ object AppConfig {
                 name = "SUPABASE_URL",
                 releaseValue = supaBaseUrl,
                 debugValue = supaBaseUrl,
+            ),
+            BuildConfigField(
+                type = "String",
+                name = "SUPABASE_STORAGE_URL",
+                releaseValue = "$supaBaseUrl/$supaBasePathStorage",
+                debugValue = "$supaBaseUrl/$supaBasePathStorage",
             ),
             BuildConfigField(
                 type = "String",

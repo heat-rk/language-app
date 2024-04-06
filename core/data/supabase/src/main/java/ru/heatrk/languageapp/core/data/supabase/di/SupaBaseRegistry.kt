@@ -6,6 +6,7 @@ import io.github.jan.supabase.gotrue.Auth
 import io.github.jan.supabase.gotrue.FlowType
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.serializer.KotlinXSerializer
+import io.github.jan.supabase.storage.Storage
 import ru.heatrk.languageapp.core.data.supabase.BuildConfig
 import scout.definition.Registry
 
@@ -24,6 +25,7 @@ fun Registry.useSupaBaseBeans() {
             }
 
             install(Postgrest)
+            install(Storage)
         }
     }
 }

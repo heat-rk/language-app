@@ -2,10 +2,14 @@ package ru.heatrk.languageapp.profile.impl.di
 
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import ru.heatrk.languageapp.core.coroutines.dispatchers.DefaultCoroutineDispatcher
 import ru.heatrk.languageapp.core.coroutines.dispatchers.IoCoroutineDispatcher
 import ru.heatrk.languageapp.profile.api.domain.SettingsRepository
+import ru.heatrk.languageapp.profile.impl.data.AvatarCropperImpl
 import ru.heatrk.languageapp.profile.impl.data.SettingsRepositoryImpl
 import ru.heatrk.languageapp.profile.impl.data.SettingsStorage
+import ru.heatrk.languageapp.profile.impl.domain.AvatarCropper
+import ru.heatrk.languageapp.profile.impl.domain.CroppedAvatarUploadUseCase
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileViewModel
 import scout.Scope
 import scout.definition.Registry
@@ -19,6 +23,7 @@ fun Scope.includeProfileScope() {
     _profileScope = scope("profile_scope") {
         dependsOn(this@includeProfileScope)
         useProfileScreenBeans()
+        useAvatarCropperBeans()
     }
 }
 
@@ -51,6 +56,22 @@ private fun Registry.useProfileScreenBeans() {
                     )
                 }
             }
+        )
+    }
+}
+
+private fun Registry.useAvatarCropperBeans() {
+    reusable<AvatarCropper> {
+        AvatarCropperImpl(
+            cropperDispatcher = get<DefaultCoroutineDispatcher>().instance,
+            applicationContext = get(),
+        )
+    }
+
+    reusable<CroppedAvatarUploadUseCase> {
+        CroppedAvatarUploadUseCase(
+            profilesRepository = get(),
+            avatarCropper = get(),
         )
     }
 }

@@ -10,5 +10,6 @@ object ProfileGraphRoute : Route.Graph(
     builder = {
         route(ProfileScreenRoute)
         route(SelectLanguageScreenRoute)
+        route(AvatarCropScreenRoute)
     },
 )

@@ -26,6 +26,9 @@ data class AppColors(
     val exerciseWordPractice: Color,
     val exerciseAudition: Color,
     val exerciseGame: Color,
+    val onImageCropperBackground: Color,
+    val imageCropperBackground: Color,
+    val imageCropperTransparentBackground: Color,
 ) {
     val primary = materialColors.primary
     val onPrimary = materialColors.onPrimary
@@ -60,6 +63,9 @@ val darkAppColors = AppColors(
     exerciseWordPractice = Color(0xFFAF144D),
     exerciseAudition = Color(0xFFC55000),
     exerciseGame = Color(0xFF50927E),
+    imageCropperBackground = Color(0xFF1B1815),
+    onImageCropperBackground = Color(0xFFFFFFFF),
+    imageCropperTransparentBackground = Color(0x80000000),
     materialColors = darkColorScheme(
         primary = Color(0xFF410FA3),
         onPrimary = Color(0xFFFFFFFF),
@@ -75,8 +81,8 @@ val darkAppColors = AppColors(
         onErrorContainer = Color(0xFFFFFFFF),
         background = Color(0xFF080E1E),
         onBackground = Color(0xFFFFFFFF),
-        surface = Color(0x14FFFFFF),
-        onSurface = Color(0xFF000000),
+        surface = Color(0xFF23252A),
+        onSurface = Color(0xFFFFFFFF),
         surfaceVariant = Color(0xFFFFF6EB),
         onSurfaceVariant = Color(0xFF000000),
         scrim = Color(0x00000000),
@@ -98,6 +104,9 @@ val lightAppColors = AppColors(
     exerciseWordPractice = Color(0xFFD6185D),
     exerciseAudition = Color(0xFFF76400),
     exerciseGame = Color(0xFF5BA890),
+    imageCropperBackground = Color(0xFF1B1815),
+    onImageCropperBackground = Color(0xFFFFFFFF),
+    imageCropperTransparentBackground = Color(0x80000000),
     materialColors = lightColorScheme(
         primary = Color(0xFF410FA3),
         onPrimary = Color(0xFFFFFFFF),
@@ -113,7 +122,7 @@ val lightAppColors = AppColors(
         onErrorContainer = Color(0xFFFFFFFF),
         background = Color(0xFFFFFFFF),
         onBackground = Color(0xFF080E1E),
-        surface = Color(0x14000000),
+        surface = Color(0xFFE2E2E2),
         onSurface = Color(0xFF000000),
         surfaceVariant = Color(0xFFFFF6EB),
         onSurfaceVariant = Color(0xFF000000),

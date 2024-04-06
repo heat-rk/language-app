@@ -15,21 +15,35 @@ android {
         testInstrumentationRunner = AppConfig.testInstrumentationRunner
     }
 
+    val buildConfigFields = AppConfig.buildConfigFields(project)
+
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("debug")
 
-            AppConfig.buildConfigFields(project).forEach { field ->
+            buildConfigFields.forEach { field ->
                 buildConfigField(field.type, field.name, "\"${field.releaseValue}\"")
             }
+
+            manifestPlaceholders.putAll(
+                buildConfigFields.associate { field ->
+                    field.name to field.releaseValue
+                }
+            )
         }
 
         debug {
-            AppConfig.buildConfigFields(project).forEach { field ->
+            buildConfigFields.forEach { field ->
                 buildConfigField(field.type, field.name, "\"${field.debugValue}\"")
             }
+
+            manifestPlaceholders.putAll(
+                buildConfigFields.associate { field ->
+                    field.name to field.debugValue
+                }
+            )
         }
     }
 
@@ -59,6 +73,7 @@ dependencies {
         ":core:navigation:api",
         ":core:navigation:compose-impl",
         ":core:design",
+        ":core:data:supabase",
         ":core:data:profiles:api",
         ":core:coroutines:dispatchers",
         ":common:utils",
@@ -79,6 +94,7 @@ dependencies {
         AppDependencies.Compose.navigation,
         AppDependencies.Compose.lifeCycleRuntime,
         AppDependencies.Compose.preview,
+        AppDependencies.Accompanist.permissions,
     )
 
     debugDependencies(

@@ -4,8 +4,10 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Order
+import io.github.jan.supabase.storage.storage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import ru.heatrk.languageapp.core.data.profiles.impl.BuildConfig
 import ru.heatrk.languageapp.core.profiles.api.domain.Profile
 import ru.heatrk.languageapp.core.profiles.api.domain.ProfilesRepository
 import ru.heatrk.languageapp.core.profiles.impl.mappers.toData
@@ -56,5 +58,33 @@ internal class ProfilesRepositoryImpl(
                 .decodeList<ProfileData>()
 
             leaderboardData.map(ProfileData::toDomain)
+        }
+
+    override suspend fun updateCurrentProfileAvatar(
+        avatarBytes: ByteArray,
+        extension: String,
+    ): Unit =
+        withContext(dispatcher) {
+            val profile = getCurrentProfile()
+
+            val path = supabaseClient.storage.from("avatars")
+                .upload(
+                    path = "${profile.id}/avatar.${extension}",
+                    data = avatarBytes,
+                    upsert = true,
+                )
+
+            val avatarUrl = "${BuildConfig.SUPABASE_STORAGE_URL}/$path"
+
+            supabaseClient.postgrest.from("profiles")
+                .update(
+                    value = profile
+                        .copy(avatarUrl = avatarUrl)
+                        .toData()
+                ) {
+                    filter {
+                        eq("id", profile.id)
+                    }
+                }
         }
 }

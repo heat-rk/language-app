@@ -1,29 +1,53 @@
+@file:OptIn(ExperimentalPermissionsApi::class)
+
 package ru.heatrk.languageapp.profile.impl.ui.screens.profile
 
+import android.Manifest
+import android.content.Context
 import android.content.res.Configuration
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.heatrk.languageapp.common.utils.createTempPictureUri
+import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
+import ru.heatrk.languageapp.core.design.composables.AppSingleSelectBottomSheet
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.AppButtonDefaults
 import ru.heatrk.languageapp.core.design.composables.button.AppButtonState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
+import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.design.styles.isAppInDarkTheme
 import ru.heatrk.languageapp.profile.impl.R
@@ -31,12 +55,19 @@ import ru.heatrk.languageapp.profile.impl.ui.composables.ProfileAppBar
 import ru.heatrk.languageapp.profile.impl.ui.composables.ProfileAppBarShimmer
 import ru.heatrk.languageapp.profile.impl.ui.navigation.PROFILE_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.Intent
+import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.SideEffect
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.State
 import ru.heatrk.languageapp.core.design.R as DesignR
 
 @Composable
 internal fun ProfileScreen(viewModel: ProfileViewModel) {
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+    val sideEffects = viewModel.container.sideEffectFlow
+
+    ScreenSideEffects(
+        sideEffects = sideEffects,
+        onIntent = viewModel::processIntent
+    )
 
     ProfileScreen(
         state = state,
@@ -72,6 +103,11 @@ private fun ProfileScreen(
         }
     )
 
+    AvatarSourceBottomSheet(
+        state = state,
+        onIntent = onIntent
+    )
+
     Column(
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier
@@ -85,6 +121,28 @@ private fun ProfileScreen(
                 .wrapContentHeight()
         )
     }
+}
+
+@Composable
+private fun AvatarSourceBottomSheet(
+    state: State,
+    onIntent: (Intent) -> Unit,
+) {
+    AppSingleSelectBottomSheet(
+        title = stringResource(R.string.profile_change_image_dialog_title),
+        isShown = state.isAvatarSourceBottomSheetShown,
+        items = AvatarSourceButton.entries
+            .map { button -> stringResource(button.textRes) }
+            .toImmutableList(),
+        onClick = { index ->
+            onIntent(
+                Intent.OnAvatarSourceButtonClick(
+                    AvatarSourceButton.entries[index]
+                )
+            )
+        },
+        onDismissRequest = { onIntent(Intent.OnAvatarSourceRequestDismiss) }
+    )
 }
 
 @Composable
@@ -155,6 +213,79 @@ private fun ProfileSettingsBlock(
                 .fillMaxWidth()
         )
     }
+}
+
+@Composable
+private fun ScreenSideEffects(
+    sideEffects: Flow<SideEffect>,
+    onIntent: (Intent) -> Unit,
+) {
+    val context = LocalContext.current
+    val snackbarHostState = LocalAppScaffoldController.current.snackbarHostState
+    var takePhotoUri by remember { mutableStateOf(value = Uri.EMPTY) }
+
+    val photoPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        if (uri != null) {
+            onIntent(Intent.OnAvatarUriReceived(uri))
+        }
+    }
+
+    val takePhoto = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { isSuccess ->
+        if (isSuccess && takePhotoUri != Uri.EMPTY) {
+            onIntent(Intent.OnAvatarUriReceived(takePhotoUri))
+        }
+    }
+
+    val cameraPermissionLauncher = rememberPermissionState(
+        permission = Manifest.permission.CAMERA,
+        onPermissionResult = { granted ->
+            if (granted) {
+                takePhotoUri = context.createTempPictureUri()
+                takePhoto.launch(takePhotoUri)
+            }
+        }
+    )
+
+    LaunchedEffect(sideEffects, context) {
+        sideEffects
+            .onEach { sideEffect ->
+                when (sideEffect) {
+                    is SideEffect.Message -> {
+                        handleMessageSideEffect(
+                            sideEffect = sideEffect,
+                            snackbarHostState = snackbarHostState,
+                            context = context,
+                        )
+                    }
+                    SideEffect.PickPhotoFromGallery -> {
+                        photoPicker.launch(
+                            PickVisualMediaRequest(
+                                ActivityResultContracts.PickVisualMedia.ImageOnly
+                            )
+                        )
+                    }
+                    SideEffect.TakePhoto -> {
+                        cameraPermissionLauncher.launchPermissionRequest()
+                    }
+                }
+            }
+            .launchIn(this)
+    }
+}
+
+private suspend fun handleMessageSideEffect(
+    sideEffect: SideEffect.Message,
+    snackbarHostState: SnackbarHostState,
+    context: Context,
+) {
+    val message = sideEffect.text.extract(context)
+        ?: return
+
+    snackbarHostState.showSnackbar(message)
 }
 
 private class ProfileScreenPreviewStateProvider : PreviewParameterProvider<State> {

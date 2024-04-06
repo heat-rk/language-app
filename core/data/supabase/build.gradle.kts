@@ -57,5 +57,6 @@ dependencies {
         AppDependencies.Supabase.auth,
         AppDependencies.Supabase.composeAuth,
         AppDependencies.Supabase.postgrest,
+        AppDependencies.Supabase.storage,
     )
 }

@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -19,10 +20,14 @@ import ru.heatrk.languageapp.profile.api.domain.ForcedTheme
 import ru.heatrk.languageapp.profile.api.domain.SettingsRepository
 import ru.heatrk.languageapp.profile.api.ui.navigation.SELECT_LANGUAGE_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.profile.api.ui.navigation.SelectLanguageScreenArguments
+import ru.heatrk.languageapp.profile.impl.ui.navigation.AVATAR_CROP_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.profile.impl.ui.navigation.AvatarCropScreenArguments
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.Intent
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.SideEffect
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileContract.State
 import ru.heatrk.languageapp.core.design.R as DesignR
+
+private typealias IntentBody = SimpleSyntax<State, SideEffect>
 
 class ProfileViewModel(
     private val router: Router,
@@ -44,12 +49,18 @@ class ProfileViewModel(
                 onGoBackClick()
             Intent.OnChangeAvatarButtonClick ->
                 onChangeAvatarButtonClick()
+            Intent.OnAvatarSourceRequestDismiss ->
+                onAvatarSourceRequestDismiss()
             Intent.OnChangeLanguageButtonClick ->
                 onChangeLanguageButtonClick()
             Intent.OnLogoutButtonClick ->
                 onLogoutButtonClick()
             is Intent.OnSwitchUiModeButtonClick ->
                 onSwitchUiModeButtonClick(intent.toDarkTheme)
+            is Intent.OnAvatarSourceButtonClick ->
+                onAvatarSourceButtonClick(intent.button)
+            is Intent.OnAvatarUriReceived ->
+                onAvatarUriReceived(intent.uri)
         }
     }
 
@@ -88,8 +99,20 @@ class ProfileViewModel(
         router.navigateBack()
     }
 
-    private suspend fun onChangeAvatarButtonClick() {
-        // TODO
+    private suspend fun IntentBody.onChangeAvatarButtonClick() {
+        reduce {
+            state.copy(
+                isAvatarSourceBottomSheetShown = true
+            )
+        }
+    }
+
+    private suspend fun IntentBody.onAvatarSourceRequestDismiss() {
+        reduce {
+            state.copy(
+                isAvatarSourceBottomSheetShown = false
+            )
+        }
     }
 
     private suspend fun onChangeLanguageButtonClick() {
@@ -123,6 +146,26 @@ class ProfileViewModel(
             } else {
                 ForcedTheme.LIGHT
             }
+        )
+    }
+
+    private suspend fun IntentBody.onAvatarSourceButtonClick(button: AvatarSourceButton) {
+        reduce { state.copy(isAvatarSourceBottomSheetShown = false) }
+
+        when (button) {
+            AvatarSourceButton.Gallery ->
+                postSideEffect(SideEffect.PickPhotoFromGallery)
+            AvatarSourceButton.Camera ->
+                postSideEffect(SideEffect.TakePhoto)
+        }
+    }
+
+    private suspend fun onAvatarUriReceived(uri: Uri) {
+        router.navigate(
+            routePath = AVATAR_CROP_SCREEN_ROUTE_PATH,
+            arguments = mapOf(
+                AvatarCropScreenArguments.PHOTO_URI to uri.toString()
+            )
         )
     }
 }

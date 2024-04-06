@@ -89,7 +89,8 @@ fun AppButton(
 
     FadeInAnimatedContent(
         targetState = buttonState,
-        label = "AppButtonAnimation"
+        label = "AppButtonAnimation",
+        modifier = modifier
     ) { state ->
         AppButton(
             text = text,
@@ -99,7 +100,7 @@ fun AppButton(
             buttonColors = buttonColors,
             blurPath = blurPath,
             blurPaint = blurPaint,
-            modifier = modifier
+            modifier = Modifier
                 .onGloballyPositioned { coordinates ->
                     buttonWidth = coordinates.size.width.toFloat()
                 }
