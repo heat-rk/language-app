@@ -3,6 +3,9 @@ package ru.heatrk.languageapp.profile.impl.ui.screens.profile
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -39,6 +42,8 @@ class ProfileViewModel(
         initialState = State()
     )
 
+    private var observeCurrentProfileJob: Job? = null
+
     init {
         loadData()
     }
@@ -65,32 +70,46 @@ class ProfileViewModel(
     }
 
     private fun loadData() {
-        loadProfileData()
+        observeProfileData()
     }
 
-    private fun loadProfileData() = intent {
+    private fun observeProfileData() = intent {
         viewModelScope.launchSafe(
             block = {
                 reduce { state.copy(profileState = State.Profile.Loading) }
 
-                val user = profilesRepository.getCurrentProfile()
+                observeCurrentProfileJob?.cancel()
+                observeCurrentProfileJob = null
+
+                observeCurrentProfileJob = profilesRepository.observeCurrentProfile()
+                    .onEach { profile ->
+                        reduce {
+                            state.copy(
+                                profileState = State.Profile.Loaded(
+                                    fullName = formatFullName(
+                                        firstName = profile.firstName,
+                                        lastName = profile.lastName,
+                                    ),
+                                    avatar = profile.avatarUrl?.let { url ->
+                                        painterRes(Uri.parse(url))
+                                    },
+                                )
+                            )
+                        }
+                    }
+                    .launchIn(this)
+            },
+            onError = {
+                postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
 
                 reduce {
                     state.copy(
                         profileState = State.Profile.Loaded(
-                            fullName = formatFullName(
-                                firstName = user.firstName,
-                                lastName = user.lastName,
-                            ),
-                            avatar = user.avatarUrl?.let { url ->
-                                painterRes(Uri.parse(url))
-                            },
+                            fullName = null,
+                            avatar = null,
                         )
                     )
                 }
-            },
-            onError = {
-                postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
             }
         )
     }

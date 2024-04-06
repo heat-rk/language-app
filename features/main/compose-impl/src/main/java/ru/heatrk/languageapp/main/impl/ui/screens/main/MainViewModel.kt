@@ -5,14 +5,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.joinAll
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.painterRes
+import ru.heatrk.languageapp.common.utils.strRes
+import ru.heatrk.languageapp.core.design.R
 import ru.heatrk.languageapp.core.design.utils.formatFullName
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.profiles.api.domain.Profile
@@ -35,6 +41,8 @@ class MainViewModel(
     override val container = container<State, SideEffect>(
         initialState = State()
     )
+
+    private var observeCurrentProfileJob: Job? = null
 
     init {
         loadData()
@@ -59,7 +67,7 @@ class MainViewModel(
 
     private fun loadData() {
         checkSavedLanguage()
-        loadUserData()
+        observeUserData(reload = false)
         loadLeaderboard()
     }
 
@@ -77,25 +85,34 @@ class MainViewModel(
         ).join()
     }
 
-    private fun loadUserData() = intent {
+    private fun observeUserData(reload: Boolean) = intent {
         viewModelScope.launchSafe(
             block = {
                 reduce { state.copy(profileState = State.Profile.Loading) }
 
-                val user = profilesRepository.getCurrentProfile()
+                observeCurrentProfileJob?.cancel()
+                observeCurrentProfileJob = null
 
-                reduce {
-                    state.copy(
-                        profileState = State.Profile.Loaded(
-                            firstName = user.firstName,
-                            avatar = user.avatarUrl?.let { url ->
-                                painterRes(Uri.parse(url))
-                            },
-                        )
-                    )
-                }
+                observeCurrentProfileJob = profilesRepository.observeCurrentProfile(
+                    reload = reload
+                )
+                    .onEach { profile ->
+                        reduce {
+                            state.copy(
+                                profileState = State.Profile.Loaded(
+                                    firstName = profile.firstName,
+                                    avatar = profile.avatarUrl?.let { url ->
+                                        painterRes(Uri.parse(url))
+                                    },
+                                )
+                            )
+                        }
+                    }
+                    .launchIn(this)
             },
             onError = {
+                postSideEffect(SideEffect.Message(strRes(R.string.error_smth_went_wrong)))
+
                 reduce {
                     state.copy(
                         profileState = State.Profile.Loaded(
@@ -105,7 +122,7 @@ class MainViewModel(
                     )
                 }
             }
-        ).join()
+        )
     }
 
     private fun loadLeaderboard() = intent {
@@ -160,7 +177,7 @@ class MainViewModel(
     private suspend fun IntentBody.onPulledToRefresh() {
         reduce { state.copy(isRefreshing = true) }
 
-        joinAll(loadUserData(), loadLeaderboard())
+        joinAll(observeUserData(reload = true), loadLeaderboard())
 
         reduce { state.copy(isRefreshing = false) }
     }

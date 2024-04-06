@@ -6,7 +6,10 @@ import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Order
 import io.github.jan.supabase.storage.storage
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
+import ru.heatrk.languageapp.core.data.cache.InMemoryCacheContainer
 import ru.heatrk.languageapp.core.data.profiles.impl.BuildConfig
 import ru.heatrk.languageapp.core.profiles.api.domain.Profile
 import ru.heatrk.languageapp.core.profiles.api.domain.ProfilesRepository
@@ -16,6 +19,7 @@ import ru.heatrk.languageapp.core.profiles.impl.mappers.toDomain
 internal class ProfilesRepositoryImpl(
     private val dispatcher: CoroutineDispatcher,
     private val supabaseClient: SupabaseClient,
+    private val inMemoryUserProfileCacheContainer: InMemoryCacheContainer<Profile>,
 ) : ProfilesRepository {
     override suspend fun createProfile(profile: Profile): Unit =
         withContext(dispatcher) {
@@ -27,7 +31,7 @@ internal class ProfilesRepositoryImpl(
                 )
         }
 
-    override suspend fun getCurrentProfile(): Profile =
+    override suspend fun fetchCurrentProfile(): Profile =
         withContext(dispatcher) {
             val currentUserInfo = supabaseClient.auth.currentUserOrNull()
                 ?: throw IllegalStateException("No current user found")
@@ -42,6 +46,16 @@ internal class ProfilesRepositoryImpl(
 
             profileData.toDomain()
         }
+
+    override suspend fun observeCurrentProfile(reload: Boolean): Flow<Profile> {
+        if (reload) {
+            inMemoryUserProfileCacheContainer.value = fetchCurrentProfile()
+        }
+
+        return inMemoryUserProfileCacheContainer.valueFlow(
+            defaultDataProvider = { fetchCurrentProfile() }
+        )
+    }
 
     override suspend fun getLeaderboard(count: Long): List<Profile> =
         withContext(dispatcher) {
@@ -65,26 +79,39 @@ internal class ProfilesRepositoryImpl(
         extension: String,
     ): Unit =
         withContext(dispatcher) {
-            val profile = getCurrentProfile()
+            val profile = fetchCurrentProfile()
+
+            supabaseClient.storage
+                .from("avatars")
+                .list(profile.id)
+                .forEach { file ->
+                    supabaseClient.storage.from("avatars")
+                        .delete("${profile.id}/${file.name}")
+                }
+
+            val avatarFileName =
+                "avatar_${Clock.System.now().toEpochMilliseconds()}.${extension}"
 
             val path = supabaseClient.storage.from("avatars")
                 .upload(
-                    path = "${profile.id}/avatar.${extension}",
+                    path = "${profile.id}/$avatarFileName",
                     data = avatarBytes,
                     upsert = true,
                 )
 
             val avatarUrl = "${BuildConfig.SUPABASE_STORAGE_URL}/$path"
 
+            val updatedProfile = profile.copy(avatarUrl = avatarUrl)
+
             supabaseClient.postgrest.from("profiles")
                 .update(
-                    value = profile
-                        .copy(avatarUrl = avatarUrl)
-                        .toData()
+                    value = updatedProfile.toData()
                 ) {
                     filter {
                         eq("id", profile.id)
                     }
                 }
+
+            inMemoryUserProfileCacheContainer.value = updatedProfile
         }
 }

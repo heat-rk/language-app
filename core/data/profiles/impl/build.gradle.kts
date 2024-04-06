@@ -53,6 +53,7 @@ dependencies {
         ":core:coroutines:dispatchers",
         ":core:data:serialization",
         ":core:data:supabase",
+        ":core:data:cache",
         ":core:data:profiles:api",
     )
 

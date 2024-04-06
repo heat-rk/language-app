@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.heatrk.languageapp.core.data.profiles.api"
+    namespace = "ru.heatrk.languageapp.core.data.cache"
 
     compileSdk = AppConfig.Sdk.compile
 
@@ -15,11 +15,23 @@ android {
         testInstrumentationRunner = AppConfig.testInstrumentationRunner
     }
 
+    val buildConfigFields = AppConfig.buildConfigFields(project)
+
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("debug")
+
+            buildConfigFields.forEach { field ->
+                buildConfigField(field.type, field.name, "\"${field.releaseValue}\"")
+            }
+        }
+
+        debug {
+            buildConfigFields.forEach { field ->
+                buildConfigField(field.type, field.name, "\"${field.debugValue}\"")
+            }
         }
     }
 
@@ -30,6 +42,10 @@ android {
 
     kotlinOptions {
         jvmTarget = AppConfig.jvmTarget
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 
