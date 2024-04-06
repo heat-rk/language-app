@@ -59,6 +59,7 @@ fun MainLeaderboardItem(
             contentDescription = null,
             modifier = Modifier
                 .size(LeaderAvatarSize)
+                .clip(AppTheme.shapes.small)
         )
 
         Spacer(modifier = Modifier.width(24.dp))
