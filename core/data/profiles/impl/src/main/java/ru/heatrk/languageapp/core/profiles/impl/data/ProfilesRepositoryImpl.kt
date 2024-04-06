@@ -53,7 +53,9 @@ internal class ProfilesRepositoryImpl(
         }
 
         return inMemoryUserProfileCacheContainer.valueFlow(
-            defaultDataProvider = { fetchCurrentProfile() }
+            defaultDataProvider = {
+                inMemoryUserProfileCacheContainer.getValueOrSave(fetchCurrentProfile())
+            }
         )
     }
 
