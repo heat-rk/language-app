@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -12,6 +13,7 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.painterRes
+import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.design.R as DesignR
 import ru.heatrk.languageapp.core.navigation.api.Router
@@ -63,19 +65,32 @@ internal class AvatarCropViewModel(
     private suspend fun IntentBody.onSaveClick() {
         viewModelScope.launchSafe(
             block = {
-                reduce { state.copy(isSaving = true) }
+                reduce { state.copy(savingState = ProcessingState.InProgress) }
 
                 croppedAvatarUpload(
                     avatarUri = photoUri,
                     avatarCrop = avatarCrop,
                 )
 
-                reduce { state.copy(isSaving = false) }
+                reduce { state.copy(savingState = ProcessingState.Success) }
+
+                delay(SAVING_STATE_DELAY_MILLIS)
+
+                router.navigateBack()
             },
             onError = {
-                reduce { state.copy(isSaving = false) }
                 postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
+
+                reduce { state.copy(savingState = ProcessingState.Error) }
+
+                delay(SAVING_STATE_DELAY_MILLIS)
+
+                reduce { state.copy(savingState = ProcessingState.None) }
             }
         )
+    }
+
+    companion object {
+        private const val SAVING_STATE_DELAY_MILLIS = 1000L
     }
 }

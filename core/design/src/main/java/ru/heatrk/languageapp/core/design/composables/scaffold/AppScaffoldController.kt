@@ -16,6 +16,7 @@ class AppScaffoldController(
     val snackbarHostState: SnackbarHostState,
 ) {
     val appBarStates = mutableStateListOf<AppBarState>()
+    val systemBarsColors = mutableStateListOf<AppSystemBarsColors>()
     var isNavigationTransitionRunning by mutableStateOf(false)
 }
 
@@ -31,15 +32,20 @@ fun rememberAppScaffoldController(
 @Composable
 fun AppScaffoldControllerEffect(
     appBarState: AppBarState = AppBarState.Hidden,
+    appSystemBarsColors: AppSystemBarsColors = AppSystemBarsColors.Default,
 ) {
     val appScaffoldController = LocalAppScaffoldController.current
 
     DisposableEffect(appScaffoldController) {
         appScaffoldController.appBarStates.add(appBarState)
+        appScaffoldController.systemBarsColors.add(appSystemBarsColors)
 
         onDispose {
             appScaffoldController.appBarStates
                 .removeIf { it.key == appBarState.key }
+
+            appScaffoldController.systemBarsColors
+                .removeIf { it.key == appSystemBarsColors.key }
         }
     }
 }

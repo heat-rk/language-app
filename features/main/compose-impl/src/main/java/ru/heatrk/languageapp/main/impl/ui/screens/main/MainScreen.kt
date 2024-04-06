@@ -333,7 +333,7 @@ private class MainScreenPreviewStateProvider : PreviewParameterProvider<State> {
 
 @Composable
 private fun MainScreenPreview(state: State) {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         MainScreen(
             state = state,
             onIntent = {}

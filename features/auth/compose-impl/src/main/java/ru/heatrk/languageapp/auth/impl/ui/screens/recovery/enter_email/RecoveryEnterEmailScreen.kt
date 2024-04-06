@@ -96,7 +96,7 @@ private fun RecoveryEnterEmailScreen(
 
 @Composable
 private fun RecoveryEnterEmailPreview() {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         RecoveryEnterEmailScreen(
             state = State(),
             onIntent = {}

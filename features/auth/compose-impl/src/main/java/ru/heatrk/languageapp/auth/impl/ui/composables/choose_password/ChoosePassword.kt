@@ -86,7 +86,7 @@ fun ChoosePassword(
 
 @Composable
 private fun ChoosePasswordPreview() {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         ChoosePassword(
             state = State(),
             onIntent = {}

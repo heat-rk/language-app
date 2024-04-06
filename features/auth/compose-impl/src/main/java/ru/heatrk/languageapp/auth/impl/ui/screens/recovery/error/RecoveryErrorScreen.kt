@@ -89,7 +89,7 @@ private fun RecoveryErrorScreen(
 
 @Composable
 private fun RecoveryErrorScreenPreview() {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         RecoveryErrorScreen(
             onIntent = {}
         )

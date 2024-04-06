@@ -60,7 +60,7 @@ fun SplashScreen() {
 @Composable
 @Preview
 private fun SplashScreenPreview() {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         SplashScreen()
     }
 }

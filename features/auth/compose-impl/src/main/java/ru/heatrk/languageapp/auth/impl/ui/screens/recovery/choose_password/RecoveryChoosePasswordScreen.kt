@@ -78,7 +78,7 @@ private fun RecoveryChoosePasswordScreen(
 
 @Composable
 private fun RecoveryChoosePasswordScreenPreview() {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         RecoveryChoosePasswordScreen(
             state = State(),
             onIntent = {}

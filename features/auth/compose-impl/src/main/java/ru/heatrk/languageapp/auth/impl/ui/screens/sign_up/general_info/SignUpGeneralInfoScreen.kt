@@ -152,7 +152,7 @@ private fun SignUpGeneralInfoEmailField(
 
 @Composable
 private fun SignUpGeneralInfoScreenPreview() {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         SignUpGeneralInfoScreen(
             state = SignUpScreenContract.State(),
             onIntent = {}

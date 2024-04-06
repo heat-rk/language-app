@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -71,7 +72,7 @@ class RootActivity : ComponentActivity() {
             }
 
             CompositionLocalProvider(LocalAppUiMode provides appUiMode) {
-                AppRootContainer { isDarkTheme ->
+                AppRootContainer { isDarkTheme, systemBarsColors ->
                     val isInitializationFinished by initializationViewModel
                         .isInitializationFinished
                         .collectAsStateWithLifecycle()
@@ -80,7 +81,9 @@ class RootActivity : ComponentActivity() {
 
                     SystemBarsThemeEffect(
                         isDarkTheme = isDarkTheme,
-                        forceSplashTheme = !isInitializationFinished
+                        forceSplashTheme = !isInitializationFinished,
+                        statusBarColor = systemBarsColors.statusBar(),
+                        navigationBarColor = systemBarsColors.navigationBar(),
                     )
 
                     AppNavHost(
@@ -128,21 +131,28 @@ class RootActivity : ComponentActivity() {
     @Composable
     private fun SystemBarsThemeEffect(
         isDarkTheme: Boolean,
-        forceSplashTheme: Boolean
+        forceSplashTheme: Boolean,
+        statusBarColor: Color,
+        navigationBarColor: Color,
     ) {
-        val statusBarColor = AppTheme.colors.primary.toArgb()
-        val navigationBarColor = AppTheme.colors.background.toArgb()
-        val splashSystemBarsColor = AppTheme.colors.primary.toArgb()
+        val statusBarColorArgb = statusBarColor.toArgb()
+        val navigationBarColorArgb = navigationBarColor.toArgb()
+        val splashSystemBarsColorArgb = AppTheme.colors.primary.toArgb()
 
-        LaunchedEffect(isDarkTheme, forceSplashTheme) {
+        LaunchedEffect(
+            isDarkTheme,
+            forceSplashTheme,
+            statusBarColorArgb,
+            navigationBarColorArgb,
+        ) {
             when {
                 forceSplashTheme -> {
                     enableEdgeToEdge(
                         statusBarStyle = SystemBarStyle.dark(
-                            scrim = splashSystemBarsColor
+                            scrim = splashSystemBarsColorArgb
                         ),
                         navigationBarStyle = SystemBarStyle.dark(
-                            scrim = splashSystemBarsColor
+                            scrim = splashSystemBarsColorArgb
                         ),
                     )
                 }
@@ -150,10 +160,10 @@ class RootActivity : ComponentActivity() {
                 isDarkTheme -> {
                     enableEdgeToEdge(
                         statusBarStyle = SystemBarStyle.dark(
-                            scrim = statusBarColor
+                            scrim = statusBarColorArgb
                         ),
                         navigationBarStyle = SystemBarStyle.dark(
-                            scrim = navigationBarColor
+                            scrim = navigationBarColorArgb
                         ),
                     )
                 }
@@ -161,10 +171,10 @@ class RootActivity : ComponentActivity() {
                 else -> {
                     enableEdgeToEdge(
                         statusBarStyle = SystemBarStyle.dark(
-                            scrim = statusBarColor
+                            scrim = statusBarColorArgb
                         ),
                         navigationBarStyle = SystemBarStyle.dark(
-                            scrim = navigationBarColor
+                            scrim = navigationBarColorArgb
                         ),
                     )
                 }

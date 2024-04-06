@@ -335,7 +335,7 @@ internal const val ONBOARDING_SHIMMER_TEST_TAG = "Onboarding:Shimmer"
 private fun OnboardingScreenPreview(
     state: State
 ) {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         OnboardingScreen(
             state = state,
             onIntent = {}

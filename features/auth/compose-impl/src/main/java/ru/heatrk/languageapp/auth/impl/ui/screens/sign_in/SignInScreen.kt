@@ -374,7 +374,7 @@ private suspend fun requestGoogleCredentials(
 
 @Composable
 private fun LoginScreenPreview() {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         SignInScreen(
             state = State(),
             onIntent = {}

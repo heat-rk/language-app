@@ -309,7 +309,7 @@ private class ProfileScreenPreviewStateProvider : PreviewParameterProvider<State
 
 @Composable
 private fun ProfileScreenPreview(state: State) {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         ProfileScreen(
             state = state,
             onIntent = {}

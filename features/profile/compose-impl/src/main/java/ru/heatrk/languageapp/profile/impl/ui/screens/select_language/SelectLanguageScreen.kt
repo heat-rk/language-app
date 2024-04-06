@@ -301,7 +301,7 @@ private class SelectLanguagePreviewStateProvider : PreviewParameterProvider<Stat
 private fun SelectLanguageScreenPreview(
     state: State
 ) {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         SelectLanguageScreen(
             state = state,
             onIntent = {}

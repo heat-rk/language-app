@@ -90,7 +90,7 @@ private fun RecoverySuccessScreen(
 
 @Composable
 private fun RecoverySuccessScreenPreview() {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         RecoverySuccessScreen(
             onIntent = {}
         )

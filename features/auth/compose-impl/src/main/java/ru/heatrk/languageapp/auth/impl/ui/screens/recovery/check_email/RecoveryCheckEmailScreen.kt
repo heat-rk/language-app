@@ -97,7 +97,7 @@ private fun RecoveryCheckEmailScreen(
 
 @Composable
 private fun RecoveryCheckEmailScreenPreview() {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         RecoveryCheckEmailScreen(
             state = State(
                 email = "example@email.com"

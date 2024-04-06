@@ -4,11 +4,12 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import ru.heatrk.languageapp.common.utils.PainterResource
 import ru.heatrk.languageapp.common.utils.StringResource
+import ru.heatrk.languageapp.common.utils.states.ProcessingState
 
 internal object AvatarCropContract {
     data class State(
         val avatar: PainterResource,
-        val isSaving: Boolean = false,
+        val savingState: ProcessingState = ProcessingState.None,
     )
 
     sealed interface Intent {

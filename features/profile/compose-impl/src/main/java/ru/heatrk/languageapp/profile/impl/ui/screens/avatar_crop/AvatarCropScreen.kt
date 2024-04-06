@@ -28,9 +28,10 @@ import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
-import ru.heatrk.languageapp.core.design.composables.button.AppButtonState
+import ru.heatrk.languageapp.core.design.composables.button.toButtonState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
+import ru.heatrk.languageapp.core.design.composables.scaffold.AppSystemBarsColors
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.profile.impl.R
@@ -64,6 +65,10 @@ private fun AvatarCropScreen(
             key = AVATAR_CROP_SCREEN_ROUTE_PATH,
             title = stringResource(R.string.avatar_crop_title),
             onGoBackClick = { onIntent(Intent.OnGoBackClick) }
+        ),
+        appSystemBarsColors = AppSystemBarsColors.Default.copy(
+            key = AVATAR_CROP_SCREEN_ROUTE_PATH,
+            navigationBar = { AppTheme.colors.imageCropperBackground }
         )
     )
 
@@ -95,11 +100,7 @@ private fun AvatarCropScreen(
 
         AppButton(
             text = stringResource(DesignR.string.choose),
-            buttonState = if (state.isSaving) {
-                AppButtonState.Loading
-            } else {
-                AppButtonState.Idle
-            },
+            buttonState = state.savingState.toButtonState(),
             onClick = { onIntent(Intent.OnSaveClick) },
             modifier = Modifier
                 .fillMaxWidth()
@@ -146,7 +147,7 @@ private suspend fun handleMessageSideEffect(
 
 @Composable
 private fun AvatarCropScreenPreview() {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         AvatarCropScreen(
             state = State(
                 avatar = painterRes(DesignR.drawable.ic_avatar_placeholder)

@@ -90,7 +90,7 @@ private fun SignUpEmailConfirmScreen(
 
 @Composable
 private fun SignUpEmailConfirmScreenPreview() {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         SignUpEmailConfirmScreen(
             onIntent = {}
         )

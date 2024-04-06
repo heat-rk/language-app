@@ -78,7 +78,7 @@ private fun SignUpPasswordScreen(
 
 @Composable
 private fun SignUpPasswordScreenPreview() {
-    AppRootContainer {
+    AppRootContainer { _, _ ->
         SignUpPasswordScreen(
             state = SignUpScreenContract.State(),
             onIntent = {}
