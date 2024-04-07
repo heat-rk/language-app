@@ -36,14 +36,25 @@ fun AppScaffoldControllerEffect(
 ) {
     val appScaffoldController = LocalAppScaffoldController.current
 
-    DisposableEffect(appScaffoldController) {
+    DisposableEffect(
+        appScaffoldController,
+        appBarState.key,
+    ) {
         appScaffoldController.appBarStates.add(appBarState)
-        appScaffoldController.systemBarsColors.add(appSystemBarsColors)
 
         onDispose {
             appScaffoldController.appBarStates
                 .removeIf { it.key == appBarState.key }
+        }
+    }
 
+    DisposableEffect(
+        appScaffoldController,
+        appSystemBarsColors.key
+    ) {
+        appScaffoldController.systemBarsColors.add(appSystemBarsColors)
+
+        onDispose {
             appScaffoldController.systemBarsColors
                 .removeIf { it.key == appSystemBarsColors.key }
         }

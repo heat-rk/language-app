@@ -91,8 +91,8 @@ private fun GuessAnimalScreen(
             )
         },
         appSystemBarsColors = AppSystemBarsColors.Default.copy(
-            key = GUESS_ANIMAL_SCREEN_ROUTE_PATH,
-            statusBar = { accentColor }
+            key = "$GUESS_ANIMAL_SCREEN_ROUTE_PATH/${state::class.simpleName}",
+            statusBar = accentColor
         )
     )
 

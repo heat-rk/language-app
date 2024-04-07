@@ -82,8 +82,8 @@ class RootActivity : ComponentActivity() {
                     SystemBarsThemeEffect(
                         isDarkTheme = isDarkTheme,
                         forceSplashTheme = !isInitializationFinished,
-                        statusBarColor = systemBarsColors.statusBar(),
-                        navigationBarColor = systemBarsColors.navigationBar(),
+                        statusBarColor = systemBarsColors.statusBar,
+                        navigationBarColor = systemBarsColors.navigationBar,
                     )
 
                     AppNavHost(

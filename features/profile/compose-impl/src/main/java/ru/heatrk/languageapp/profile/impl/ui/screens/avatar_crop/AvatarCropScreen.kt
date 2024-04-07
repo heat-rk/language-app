@@ -70,7 +70,7 @@ private fun AvatarCropScreen(
         },
         appSystemBarsColors = AppSystemBarsColors.Default.copy(
             key = AVATAR_CROP_SCREEN_ROUTE_PATH,
-            navigationBar = { AppTheme.colors.imageCropperBackground }
+            navigationBar = AppTheme.colors.imageCropperBackground
         )
     )
 
