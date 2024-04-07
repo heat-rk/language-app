@@ -31,19 +31,22 @@ fun PainterResource.extract(
     val isInInspectionMode = LocalInspectionMode.current
     
     return if (isInInspectionMode) {
-        inspectionModeExtract(size = size)
+        inspectionModeExtract(size = size, onState = onState)
     } else {
         defaultExtract(size = size, onState = onState)
     }
 }
 
 @Composable
-private fun PainterResource.inspectionModeExtract(size: ImagePainterSize) =
+private fun PainterResource.inspectionModeExtract(
+    size: ImagePainterSize,
+    onState: (ImagePainterState) -> Unit
+) =
     when {
         this is PainterResource.ByPainter -> painter
         this is PainterResource.ByData && data is Int -> painterResource(id = data)
         else -> defaultExtract(size = size, onState = {})
-    }
+    }.also { onState(ImagePainterState.Success) }
 
 @Composable
 private fun PainterResource.defaultExtract(
@@ -51,7 +54,9 @@ private fun PainterResource.defaultExtract(
     onState: (ImagePainterState) -> Unit,
 ) =
     when (this) {
-        is PainterResource.ByPainter -> painter
+        is PainterResource.ByPainter -> {
+            painter.also { onState(ImagePainterState.Success) }
+        }
         is PainterResource.ByData -> {
             val context = LocalContext.current
             val imageLoader = context.imageLoader
