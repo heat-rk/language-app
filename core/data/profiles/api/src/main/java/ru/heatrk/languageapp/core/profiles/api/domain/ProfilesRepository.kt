@@ -11,4 +11,5 @@ interface ProfilesRepository {
         avatarBytes: ByteArray,
         extension: String,
     )
+    suspend fun increaseProfileTotalPoints(points: Float)
 }

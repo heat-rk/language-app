@@ -16,5 +16,5 @@ internal data class ProfileData(
     @SerialName("avatar_url")
     val avatarUrl: String? = null,
     @SerialName("total_score")
-    val totalScore: Int = 0,
+    val totalScore: Float = 0f,
 )

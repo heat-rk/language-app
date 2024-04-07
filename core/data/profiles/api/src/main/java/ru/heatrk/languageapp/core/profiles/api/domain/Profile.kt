@@ -5,6 +5,6 @@ data class Profile(
     val email: String?,
     val firstName: String?,
     val lastName: String?,
-    val totalScore: Int,
+    val totalScore: Float,
     val avatarUrl: String?,
 )

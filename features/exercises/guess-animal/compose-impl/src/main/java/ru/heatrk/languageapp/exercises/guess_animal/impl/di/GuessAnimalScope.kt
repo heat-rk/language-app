@@ -27,7 +27,8 @@ fun Scope.includeGuessAnimalScope() {
 
         reusable<GuessAnimalUseCase> {
             GuessAnimalUseCase(
-                guessAnimalExercisesRepository = get()
+                guessAnimalExercisesRepository = get(),
+                profilesRepository = get(),
             )
         }
 

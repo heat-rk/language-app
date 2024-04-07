@@ -31,7 +31,7 @@ object MainScreenContract {
                 val id: String,
                 val fullName: StringResource?,
                 val avatar: PainterResource?,
-                val totalScore: Int,
+                val totalScore: Float,
             )
         }
     }

@@ -34,6 +34,7 @@ internal class GuessAnimalViewModel(
     )
 
     private var currentExercise: GuessAnimalExercise? = null
+    private var currentStreak = 0
 
     init {
         loadNextExercise()
@@ -97,16 +98,17 @@ internal class GuessAnimalViewModel(
                 }
 
                 val guessResult = guessAnimal(
+                    streak = currentStreak,
                     exerciseId = requireNotNull(currentExercise).id,
                     answer = (state as State.Resolving).answer,
                 )
 
-                reduce {
-                    if (guessResult.isCorrect) {
-                        State.CorrectAnswer
-                    } else {
-                        State.IncorrectAnswer(correctAnswer = guessResult.correctAnswer)
-                    }
+                if (guessResult.isCorrect) {
+                    currentStreak += 1
+                    reduce { State.CorrectAnswer }
+                } else {
+                    currentStreak = 0
+                    reduce { State.IncorrectAnswer(correctAnswer = guessResult.correctAnswer) }
                 }
             },
             onError = {

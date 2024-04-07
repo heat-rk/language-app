@@ -320,13 +320,13 @@ private class MainScreenPreviewStateProvider : PreviewParameterProvider<State> {
                         id = "1",
                         fullName = strRes("Petr Petrov"),
                         avatar = painterRes(DesignR.drawable.ic_avatar_placeholder),
-                        totalScore = 12,
+                        totalScore = 12f,
                     ),
                     State.Leaderboard.Item(
                         id = "2",
                         fullName = strRes("Ivan Ivanov"),
                         avatar = painterRes(DesignR.drawable.ic_avatar_placeholder),
-                        totalScore = 10,
+                        totalScore = 10f,
                     ),
                 )
             ),

@@ -60,6 +60,7 @@ dependencies {
         ":core:navigation:compose-impl",
         ":core:design",
         ":core:data:supabase",
+        ":core:data:profiles:api",
         ":core:coroutines:dispatchers",
         ":common:utils",
     )

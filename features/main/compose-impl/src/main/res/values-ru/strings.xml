@@ -11,5 +11,5 @@
     <string name="main_audition">Прослушивание</string>
     <string name="main_game">Игра</string>
 
-    <string name="main_points_formatted">%1$d очков</string>
+    <string name="main_points_formatted">%1$.1f очков</string>
 </resources>

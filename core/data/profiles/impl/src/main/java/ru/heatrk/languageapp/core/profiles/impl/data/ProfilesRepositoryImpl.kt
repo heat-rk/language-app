@@ -116,4 +116,21 @@ internal class ProfilesRepositoryImpl(
 
             inMemoryUserProfileCacheContainer.value = updatedProfile
         }
+
+    override suspend fun increaseProfileTotalPoints(points: Float) {
+        val profile = fetchCurrentProfile()
+
+        val updatedProfile = profile.copy(totalScore = profile.totalScore + points)
+
+        supabaseClient.postgrest.from("profiles")
+            .update(
+                value = updatedProfile.toData()
+            ) {
+                filter {
+                    eq("id", profile.id)
+                }
+            }
+
+        inMemoryUserProfileCacheContainer.value = updatedProfile
+    }
 }

@@ -152,7 +152,7 @@ private fun MainLeaderboardItemPreview() {
                     id = "1",
                     fullName = strRes("Ivanov Ivan"),
                     avatar = painterRes(DesignR.drawable.ic_avatar_placeholder),
-                    totalScore = 10
+                    totalScore = 10f
                 )
             )
         }

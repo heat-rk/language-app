@@ -11,5 +11,5 @@
     <string name="main_audition">Audition</string>
     <string name="main_game">Game</string>
 
-    <string name="main_points_formatted">%1$d points</string>
+    <string name="main_points_formatted">%1$.1f points</string>
 </resources>

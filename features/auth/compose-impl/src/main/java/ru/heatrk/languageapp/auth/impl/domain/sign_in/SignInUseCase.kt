@@ -39,7 +39,7 @@ class SignInUseCase(
                 firstName = user.firstName,
                 lastName = user.lastName,
                 email = email,
-                totalScore = 0,
+                totalScore = 0f,
             )
         )
 
