@@ -101,6 +101,8 @@ dependencies {
         ":features:profile:compose-impl",
         ":features:main:api",
         ":features:main:compose-impl",
+        ":features:exercises:guess-animal:api",
+        ":features:exercises:guess-animal:compose-impl",
     )
 
     dependencies(

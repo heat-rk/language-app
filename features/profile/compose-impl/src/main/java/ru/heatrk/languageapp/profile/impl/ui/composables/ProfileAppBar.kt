@@ -22,7 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.heatrk.languageapp.common.utils.PainterResource
-import ru.heatrk.languageapp.common.utils.Size
+import ru.heatrk.languageapp.common.utils.ImagePainterSize
 import ru.heatrk.languageapp.common.utils.StringResource
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.painterRes
@@ -46,7 +46,7 @@ fun ProfileAppBar(
         avatarContent = {
             Image(
                 painter = avatar
-                    ?.extract(size = Size(ProfileAvatarSize.value.roundToInt()))
+                    ?.extract(size = ImagePainterSize(ProfileAvatarSize.value.roundToInt()))
                     ?: painterResource(DesignR.drawable.ic_avatar_placeholder),
                 contentDescription = stringResource(DesignR.string.accessibility_go_to_profile),
                 modifier = Modifier

@@ -39,4 +39,6 @@ include(
     ":features:main:compose-impl",
     ":features:profile:api",
     ":features:profile:compose-impl",
+    ":features:exercises:guess-animal:api",
+    ":features:exercises:guess-animal:compose-impl",
 )

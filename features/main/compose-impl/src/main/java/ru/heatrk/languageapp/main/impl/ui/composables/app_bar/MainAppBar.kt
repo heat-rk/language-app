@@ -34,7 +34,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import ru.heatrk.languageapp.common.utils.PainterResource
-import ru.heatrk.languageapp.common.utils.Size
+import ru.heatrk.languageapp.common.utils.ImagePainterSize
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.core.design.composables.animation.FadeInAnimatedContent
@@ -79,7 +79,7 @@ private fun MainAppBarOk(
         avatarContent = {
             Image(
                 painter = state.avatar
-                    ?.extract(size = Size(AvatarSize.value.roundToInt()))
+                    ?.extract(size = ImagePainterSize(AvatarSize.value.roundToInt()))
                     ?: painterResource(DesignR.drawable.ic_avatar_placeholder),
                 contentDescription = stringResource(DesignR.string.accessibility_go_to_profile),
                 modifier = Modifier

@@ -3,10 +3,11 @@ import dependencies.AppDependencies
 plugins {
     id(AppPlugins.androidLibrary)
     id(AppPlugins.androidKotlin)
+    id(AppPlugins.serialization)
 }
 
 android {
-    namespace = "ru.heatrk.languageapp.main.impl"
+    namespace = "ru.heatrk.languageapp.exercises.guess_animal.impl"
 
     compileSdk = AppConfig.Sdk.compile
 
@@ -54,18 +55,18 @@ android {
 
 dependencies {
     modules(
-        ":features:main:api",
-        ":features:profile:api",
         ":features:exercises:guess-animal:api",
         ":core:navigation:api",
         ":core:navigation:compose-impl",
         ":core:design",
-        ":core:data:profiles:api",
+        ":core:data:supabase",
+        ":core:coroutines:dispatchers",
         ":common:utils",
     )
 
     dependencies(
         AppDependencies.immutableCollections,
+        AppDependencies.kotlinXSerialization,
         AppDependencies.Scout.core,
         AppDependencies.Orbit.viewModel,
         AppDependencies.Orbit.compose,

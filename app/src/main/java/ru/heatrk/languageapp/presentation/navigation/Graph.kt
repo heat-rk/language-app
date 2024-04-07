@@ -8,6 +8,7 @@ import ru.heatrk.languageapp.core.design.navigation.NavigationTransitions
 import ru.heatrk.languageapp.core.navigation.compose_impl.NavGraphBuilder
 import ru.heatrk.languageapp.core.navigation.compose_impl.NavHost
 import ru.heatrk.languageapp.core.navigation.compose_impl.route
+import ru.heatrk.languageapp.exercises.guess_animal.impl.ui.navigation.GuessAnimalScreenRoute
 import ru.heatrk.languageapp.features.splash.impl.ui.navigation.SplashScreenRoute
 import ru.heatrk.languageapp.main.impl.ui.navigation.MainGraphRoute
 import ru.heatrk.languageapp.onboarding.impl.ui.navigation.OnboardingScreenRoute
@@ -21,6 +22,7 @@ private fun NavGraphBuilder.buildGraph() {
     route(SelectLanguageScreenRoute)
     route(MainGraphRoute)
     route(ProfileGraphRoute)
+    route(GuessAnimalScreenRoute)
 }
 
 @Composable

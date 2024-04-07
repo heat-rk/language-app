@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.heatrk.languageapp.common.utils.Size
+import ru.heatrk.languageapp.common.utils.ImagePainterSize
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.common.utils.strRes
@@ -54,7 +54,7 @@ fun MainLeaderboardItem(
     ) {
         Image(
             painter = leader.avatar
-                ?.extract(size = Size(LeaderAvatarSize.value.roundToInt()))
+                ?.extract(size = ImagePainterSize(LeaderAvatarSize.value.roundToInt()))
                 ?: painterResource(DesignR.drawable.ic_avatar_placeholder),
             contentDescription = null,
             modifier = Modifier

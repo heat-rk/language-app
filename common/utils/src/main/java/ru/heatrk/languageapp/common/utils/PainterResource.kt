@@ -7,10 +7,11 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
+import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.imageLoader
 import coil.request.ImageRequest
-import coil.size.Size
+import coil.size.Dimension
 
 @Immutable
 sealed interface PainterResource {
@@ -23,26 +24,32 @@ fun painterRes(data: Any) = PainterResource.ByData(data)
 fun painterRes(painter: Painter) = PainterResource.ByPainter(painter)
 
 @Composable
-fun PainterResource.extract(size: Size = Size.ORIGINAL): Painter {
+fun PainterResource.extract(
+    size: ImagePainterSize = ImagePainterSize.Original,
+    onState: (ImagePainterState) -> Unit = {},
+): Painter {
     val isInInspectionMode = LocalInspectionMode.current
     
     return if (isInInspectionMode) {
         inspectionModeExtract(size = size)
     } else {
-        defaultExtract(size = size)
+        defaultExtract(size = size, onState = onState)
     }
 }
 
 @Composable
-private fun PainterResource.inspectionModeExtract(size: Size) = 
+private fun PainterResource.inspectionModeExtract(size: ImagePainterSize) =
     when {
         this is PainterResource.ByPainter -> painter
         this is PainterResource.ByData && data is Int -> painterResource(id = data)
-        else -> defaultExtract(size = size)
+        else -> defaultExtract(size = size, onState = {})
     }
 
 @Composable
-private fun PainterResource.defaultExtract(size: Size) = 
+private fun PainterResource.defaultExtract(
+    size: ImagePainterSize,
+    onState: (ImagePainterState) -> Unit,
+) =
     when (this) {
         is PainterResource.ByPainter -> painter
         is PainterResource.ByData -> {
@@ -52,11 +59,46 @@ private fun PainterResource.defaultExtract(size: Size) =
             rememberAsyncImagePainter(
                 model = ImageRequest.Builder(context)
                     .data(data)
-                    .apply { size(size) }
+                    .size(size.toCoilSize())
                     .build(),
+                onState = { state ->
+                    onState(
+                        when (state) {
+                            AsyncImagePainter.State.Empty ->
+                                ImagePainterState.Loading
+                            is AsyncImagePainter.State.Loading ->
+                                ImagePainterState.Loading
+                            is AsyncImagePainter.State.Error ->
+                                ImagePainterState.Error
+                            is AsyncImagePainter.State.Success ->
+                                ImagePainterState.Success
+                        }
+                    )
+                },
                 imageLoader = imageLoader,
             )
         }
     }
 
-fun Size(@Px size: Int) = Size(size, size)
+data class ImagePainterSize(
+    @Px val width: Int,
+    @Px val height: Int
+) {
+    constructor(size: Int): this(size, size)
+
+    companion object {
+        const val UNDEFINED = -1
+        val Original = ImagePainterSize(UNDEFINED)
+    }
+}
+
+enum class ImagePainterState {
+    Loading,
+    Success,
+    Error,
+}
+
+private fun ImagePainterSize.toCoilSize() = coil.size.Size(
+    width = if (width == ImagePainterSize.UNDEFINED) Dimension.Undefined else Dimension.Pixels(width),
+    height = if (height == ImagePainterSize.UNDEFINED) Dimension.Undefined else Dimension.Pixels(height),
+)
