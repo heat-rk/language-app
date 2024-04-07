@@ -37,6 +37,7 @@ import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RecoveryGraphRoute
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.SideEffect
 import ru.heatrk.languageapp.common.utils.extract
+import ru.heatrk.languageapp.core.design.composables.AppBar
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.toButtonState
@@ -57,12 +58,13 @@ fun RecoveryFlow(viewModel: RecoveryFlowViewModel) {
     RecoveryFlowSideEffects(sideEffects = viewModel.container.sideEffectFlow)
 
     AppScaffoldControllerEffect(
-        appBarState = AppBarState.Default(
-            key = RECOVERY_FLOW_ROUTE_PATH,
-            title = appBarTitle,
-            titleGravity = AppBarTitleGravity.CENTER,
-            onGoBackClick = { viewModel.processIntent(Intent.OnGoBackClick) },
-        )
+        appBarState = AppBarState.Custom(key = RECOVERY_FLOW_ROUTE_PATH) {
+            AppBar(
+                title = appBarTitle,
+                titleGravity = AppBarTitleGravity.CENTER,
+                onGoBackClick = { viewModel.processIntent(Intent.OnGoBackClick) },
+            )
+        }
     )
 
     Column(

@@ -38,6 +38,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.painterRes
+import ru.heatrk.languageapp.core.design.composables.AppBar
 import ru.heatrk.languageapp.core.design.composables.AppPainterWrapper
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.animation.RightToLeftAnimatedContent
@@ -82,12 +83,13 @@ private fun GuessAnimalScreen(
     }
 
     AppScaffoldControllerEffect(
-        appBarState = AppBarState.Default(
-            key = GUESS_ANIMAL_SCREEN_ROUTE_PATH,
-            title = stringResource(R.string.guess_animal_title),
-            containerColor = accentColor,
-            onGoBackClick = { onIntent(Intent.OnGoBackClick) }
-        ),
+        appBarState = AppBarState.Custom(key = GUESS_ANIMAL_SCREEN_ROUTE_PATH) {
+            AppBar(
+                title = stringResource(R.string.guess_animal_title),
+                containerColor = accentColor,
+                onGoBackClick = { onIntent(Intent.OnGoBackClick) }
+            )
+        },
         appSystemBarsColors = AppSystemBarsColors.Default.copy(
             key = GUESS_ANIMAL_SCREEN_ROUTE_PATH,
             statusBar = { accentColor }

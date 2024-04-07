@@ -45,6 +45,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.strRes
+import ru.heatrk.languageapp.core.design.composables.AppBar
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
@@ -80,16 +81,17 @@ private fun SelectLanguageScreen(
     onIntent: (Intent) -> Unit,
 ) {
     AppScaffoldControllerEffect(
-        appBarState = AppBarState.Default(
-            key = SELECT_LANGUAGE_SCREEN_ROUTE_PATH,
-            title = stringResource(R.string.language_select_title),
-            titleGravity = AppBarTitleGravity.CENTER,
-            onGoBackClick = if (state.canGoBack) {
-                { onIntent(Intent.OnGoBackClick) }
-            } else {
-                null
-            }
-        )
+        appBarState = AppBarState.Custom(key = SELECT_LANGUAGE_SCREEN_ROUTE_PATH) {
+            AppBar(
+                title = stringResource(R.string.language_select_title),
+                titleGravity = AppBarTitleGravity.CENTER,
+                onGoBackClick = if (state.canGoBack) {
+                    { onIntent(Intent.OnGoBackClick) }
+                } else {
+                    null
+                }
+            )
+        }
     )
 
     val density = LocalDensity.current

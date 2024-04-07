@@ -23,15 +23,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import ru.heatrk.languageapp.core.design.composables.AppBar
-import ru.heatrk.languageapp.core.design.composables.AppBarActionItem
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.AppSnackbarHost
 import ru.heatrk.languageapp.core.design.styles.AppTheme
@@ -100,22 +96,6 @@ private fun AppScaffoldTopBar(
             AppBarState.Hidden -> {
                 Box(modifier = Modifier.fillMaxWidth())
             }
-            is AppBarState.Default -> {
-                AppBar(
-                    title = state.title,
-                    titleGravity = state.titleGravity,
-                    actions = state.actions,
-                    containerColor = state.containerColor
-                        ?: AppTheme.colors.primary,
-                    contentColor = state.contentColor
-                        ?: AppTheme.colors.onPrimary,
-                    onGoBackClick = state.onGoBackClick,
-                    modifier = Modifier
-                        .onGloballyPositioned { coordinates ->
-                            currentTopBarBottom = coordinates.boundsInParent().bottom
-                        }
-                )
-            }
             is AppBarState.Custom -> {
                 Box(
                     modifier = Modifier
@@ -135,18 +115,6 @@ private fun appScaffoldTopBarInspectionMode(
 ): @Composable () -> Unit  = {
     when (appBarState) {
         AppBarState.Hidden -> Unit
-        is AppBarState.Default -> {
-            AppBar(
-                title = appBarState.title,
-                titleGravity = appBarState.titleGravity,
-                actions = appBarState.actions,
-                onGoBackClick = appBarState.onGoBackClick,
-                containerColor = appBarState.containerColor
-                    ?: AppTheme.colors.primary,
-                contentColor = appBarState.contentColor
-                    ?: AppTheme.colors.onPrimary,
-            )
-        }
         is AppBarState.Custom -> {
             appBarState.content()
         }
@@ -198,16 +166,6 @@ sealed interface AppBarState {
         override val key: String = this::class.java.simpleName
     }
 
-    data class Default(
-        override val key: String,
-        val title: String,
-        val titleGravity: AppBarTitleGravity = AppBarTitleGravity.START,
-        val containerColor: Color? = null,
-        val contentColor: Color? = null,
-        val actions: ImmutableList<AppBarActionItem> = persistentListOf(),
-        val onGoBackClick: (() -> Unit)? = null,
-    ) : AppBarState
-
     data class Custom(
         override val key: String,
         val content: @Composable () -> Unit
@@ -219,12 +177,13 @@ sealed interface AppBarState {
 private fun AppScaffoldPreview() {
     AppTheme {
         AppScaffold(
-            appBarState = AppBarState.Default(
-                key = "Preview",
-                title = "Toolbar Title",
-                titleGravity = AppBarTitleGravity.CENTER,
-                onGoBackClick = {}
-            )
+            appBarState = AppBarState.Custom(key = "Preview") {
+                AppBar(
+                    title = "Toolbar Title",
+                    titleGravity = AppBarTitleGravity.CENTER,
+                    onGoBackClick = {}
+                )
+            }
         ) {}
     }
 }

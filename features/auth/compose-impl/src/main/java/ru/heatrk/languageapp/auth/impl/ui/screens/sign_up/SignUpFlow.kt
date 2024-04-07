@@ -48,6 +48,7 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.S
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.State
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.states.ProcessingState
+import ru.heatrk.languageapp.core.design.composables.AppBar
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.AppLinkedText
 import ru.heatrk.languageapp.core.design.composables.AppLinkedTextUnit
@@ -73,12 +74,13 @@ fun SignUpFlow(viewModel: SignUpViewModel) {
     )
 
     AppScaffoldControllerEffect(
-        appBarState = AppBarState.Default(
-            key = SIGN_UP_GRAPH_ROUTE_PATH,
-            title = appBarTitle,
-            titleGravity = AppBarTitleGravity.CENTER,
-            onGoBackClick = { viewModel.processIntent(Intent.OnGoBackClick) },
-        )
+        appBarState = AppBarState.Custom(key = SIGN_UP_GRAPH_ROUTE_PATH) {
+            AppBar(
+                title = appBarTitle,
+                titleGravity = AppBarTitleGravity.CENTER,
+                onGoBackClick = { viewModel.processIntent(Intent.OnGoBackClick) },
+            )
+        }
     )
 
     Column(

@@ -52,6 +52,7 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.S
 import ru.heatrk.languageapp.auth.impl.ui.utils.isFatal
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.states.ProcessingState
+import ru.heatrk.languageapp.core.design.composables.AppBar
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.AppLinkedText
 import ru.heatrk.languageapp.core.design.composables.AppLinkedTextUnit
@@ -91,11 +92,12 @@ private fun SignInScreen(
     val appBarTitle = stringResource(R.string.login)
 
     AppScaffoldControllerEffect(
-        appBarState = AppBarState.Default(
-            key = SIGN_IN_SCREEN_ROUTE_PATH,
-            title = appBarTitle,
-            titleGravity = AppBarTitleGravity.CENTER,
-        )
+        appBarState = AppBarState.Custom(key = SIGN_IN_SCREEN_ROUTE_PATH) {
+            AppBar(
+                title = appBarTitle,
+                titleGravity = AppBarTitleGravity.CENTER,
+            )
+        }
     )
 
     Column(

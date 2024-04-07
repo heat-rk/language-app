@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.painterRes
+import ru.heatrk.languageapp.core.design.composables.AppBar
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.toButtonState
@@ -61,11 +62,12 @@ private fun AvatarCropScreen(
     onIntent: (Intent) -> Unit,
 ) {
     AppScaffoldControllerEffect(
-        appBarState = AppBarState.Default(
-            key = AVATAR_CROP_SCREEN_ROUTE_PATH,
-            title = stringResource(R.string.avatar_crop_title),
-            onGoBackClick = { onIntent(Intent.OnGoBackClick) }
-        ),
+        appBarState = AppBarState.Custom(key = AVATAR_CROP_SCREEN_ROUTE_PATH) {
+            AppBar(
+                title = stringResource(R.string.avatar_crop_title),
+                onGoBackClick = { onIntent(Intent.OnGoBackClick) },
+            )
+        },
         appSystemBarsColors = AppSystemBarsColors.Default.copy(
             key = AVATAR_CROP_SCREEN_ROUTE_PATH,
             navigationBar = { AppTheme.colors.imageCropperBackground }
