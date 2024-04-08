@@ -6,8 +6,10 @@ import ru.heatrk.languageapp.common.utils.states.ProcessingState
 
 internal object GuessAnimalContract {
     sealed interface State {
+        data object Loading : State
+
         data class Resolving(
-            val image: PainterResource? = null,
+            val image: PainterResource,
             val answer: String = "",
             val checkingAnswerState: ProcessingState = ProcessingState.None
         ) : State

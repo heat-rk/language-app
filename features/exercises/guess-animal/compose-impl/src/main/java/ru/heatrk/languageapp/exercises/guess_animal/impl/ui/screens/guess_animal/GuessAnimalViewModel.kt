@@ -30,7 +30,7 @@ internal class GuessAnimalViewModel(
     private val guessAnimal: GuessAnimalUseCase,
 ) : ViewModel(), ContainerHost<State, SideEffect> {
     override val container = container<State, SideEffect>(
-        initialState = State.Resolving()
+        initialState = State.Loading
     )
 
     private var currentExercise: GuessAnimalExercise? = null
@@ -59,7 +59,7 @@ internal class GuessAnimalViewModel(
     private fun loadNextExercise() = intent {
         viewModelScope.launchSafe(
             block = {
-                reduce { State.Resolving() }
+                reduce { State.Loading }
 
                 val exercise = guessAnimalExercisesRepository
                     .fetchRandomExercise()

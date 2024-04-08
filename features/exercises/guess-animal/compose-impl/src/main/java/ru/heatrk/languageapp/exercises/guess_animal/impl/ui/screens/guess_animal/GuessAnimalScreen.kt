@@ -98,10 +98,12 @@ private fun GuessAnimalScreen(
 
     RightToLeftAnimatedContent(
         targetState = state,
-        contentKey = { contentState -> contentState::class },
+        contentKey = State::animationKey,
         label = "GuessAnimalContentAnimation"
     ) { contentState ->
         when (contentState) {
+            State.Loading ->
+                ScreenShimmer()
             State.CorrectAnswer ->
                 ScreenCorrectAnswer(
                     onIntent = onIntent,
@@ -129,60 +131,54 @@ private fun ScreenResolving(
     state: State.Resolving,
     onIntent: (Intent) -> Unit,
 ) {
-    val image = state.image
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp)
+    ) {
+        AppPainterWrapper(
+            painterResource = state.image,
+            successContent = { painter ->
+                Image(
+                    painter = painter,
+                    contentScale = ContentScale.FillWidth,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .clip(AppTheme.shapes.medium),
+                )
+            },
+            loadingContent = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(328.dp)
+                        .clip(AppTheme.shapes.medium)
+                        .shimmerEffect()
+                )
+            }
+        )
 
-    if (image == null) {
-        ScreenShimmer()
-    } else {
-        Column(
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        AppTextField(
+            value = state.answer,
+            placeholder = stringResource(R.string.guess_animal_input_placeholder),
+            label = stringResource(R.string.guess_animal_input_label),
+            onValueChange = { onIntent(Intent.OnAnswerTextChange(it)) },
+        )
+
+        Spacer(modifier = Modifier.height(17.dp))
+
+        AppButton(
+            text = stringResource(DesignR.string.check),
+            buttonState = state.checkingAnswerState.toButtonState(),
+            onClick = { onIntent(Intent.OnCheckButtonClick) },
             modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp)
-        ) {
-            AppPainterWrapper(
-                painterResource = state.image,
-                successContent = { painter ->
-                    Image(
-                        painter = painter,
-                        contentScale = ContentScale.FillWidth,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .clip(AppTheme.shapes.medium),
-                    )
-                },
-                loadingContent = {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(328.dp)
-                            .clip(AppTheme.shapes.medium)
-                            .shimmerEffect()
-                    )
-                }
-            )
-
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            AppTextField(
-                value = state.answer,
-                placeholder = stringResource(R.string.guess_animal_input_placeholder),
-                label = stringResource(R.string.guess_animal_input_label),
-                onValueChange = { onIntent(Intent.OnAnswerTextChange(it)) },
-            )
-
-            Spacer(modifier = Modifier.height(17.dp))
-
-            AppButton(
-                text = stringResource(DesignR.string.check),
-                buttonState = state.checkingAnswerState.toButtonState(),
-                onClick = { onIntent(Intent.OnCheckButtonClick) },
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-        }
+                .fillMaxWidth()
+        )
     }
 }
 
@@ -408,9 +404,18 @@ private suspend fun handleMessageSideEffect(
     snackbarHostState.showSnackbar(message)
 }
 
+private val State.animationKey
+    get() = when (this) {
+        State.CorrectAnswer -> "correct_answer"
+        State.Error -> "error"
+        is State.IncorrectAnswer -> "incorrect_answer"
+        State.Loading -> "resolving"
+        is State.Resolving -> "resolving"
+    }
+
 private class PreviewStateProvider : PreviewParameterProvider<State> {
     override val values = sequenceOf(
-        State.Resolving(),
+        State.Loading,
         State.Resolving(
             image = painterRes(R.drawable.guess_animal_preview),
             answer = "",
