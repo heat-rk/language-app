@@ -108,7 +108,7 @@ class InitializationViewModel(
     }
 
     companion object {
-        private const val INITIALIZATION_DELAY_MILLIS = 2000L
+        private const val INITIALIZATION_DELAY_MILLIS = 1000L
         private const val HANDLE_INITIALIZATION_FINISHED_KEY = "initialization_finished"
     }
 }
