@@ -1,6 +1,5 @@
 package ru.heatrk.languageapp.exercises.guess_animal.impl.ui.screens.guess_animal
 
-import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -15,10 +14,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,9 +34,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import ru.heatrk.languageapp.common.utils.extract
+import ru.heatrk.languageapp.common.utils.compose.ScreenSideEffectsFlowHandler
+import ru.heatrk.languageapp.common.utils.compose.handleMessageSideEffect
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.core.design.composables.AppBar
 import ru.heatrk.languageapp.core.design.composables.AppPainterWrapper
@@ -382,36 +378,21 @@ private fun ScreenSideEffects(
     val snackbarHostState = LocalAppScaffoldController.current.snackbarHostState
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    LaunchedEffect(sideEffects, context) {
-        sideEffects
-            .onEach { sideEffect ->
-                when (sideEffect) {
-                    is SideEffect.Message -> {
-                        handleMessageSideEffect(
-                            sideEffect = sideEffect,
-                            snackbarHostState = snackbarHostState,
-                            context = context,
-                        )
-                    }
-
-                    SideEffect.CloseKeyboard -> {
-                        keyboardController?.hide()
-                    }
-                }
+    ScreenSideEffectsFlowHandler(sideEffects = sideEffects) { sideEffect ->
+        when (sideEffect) {
+            is SideEffect.Message -> {
+                handleMessageSideEffect(
+                    message = sideEffect.text,
+                    snackbarHostState = snackbarHostState,
+                    context = context,
+                )
             }
-            .launchIn(this)
+
+            SideEffect.CloseKeyboard -> {
+                keyboardController?.hide()
+            }
+        }
     }
-}
-
-private suspend fun handleMessageSideEffect(
-    sideEffect: SideEffect.Message,
-    snackbarHostState: SnackbarHostState,
-    context: Context,
-) {
-    val message = sideEffect.text.extract(context)
-        ?: return
-
-    snackbarHostState.showSnackbar(message)
 }
 
 private val State.animationKey

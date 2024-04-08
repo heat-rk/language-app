@@ -55,6 +55,7 @@ android {
 dependencies {
     dependencies(
         AppDependencies.Compose.bom,
+        AppDependencies.Compose.material,
         AppDependencies.Compose.navigation,
         AppDependencies.Ktx.core,
         AppDependencies.Coil.compose,

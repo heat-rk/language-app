@@ -1,13 +1,11 @@
 package ru.heatrk.languageapp.auth.impl.ui.screens.recovery
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -28,15 +26,14 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.di.AuthComponent
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_FLOW_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RecoveryGraphRoute
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.SideEffect
-import ru.heatrk.languageapp.common.utils.extract
+import ru.heatrk.languageapp.common.utils.compose.ScreenSideEffectsFlowHandler
+import ru.heatrk.languageapp.common.utils.compose.handleMessageSideEffect
 import ru.heatrk.languageapp.core.design.composables.AppBar
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
@@ -125,36 +122,21 @@ private fun RecoveryFlowSideEffects(
     val keyboardController = LocalSoftwareKeyboardController.current
     val snackbarHostState = LocalAppScaffoldController.current.snackbarHostState
 
-    LaunchedEffect(sideEffects, context) {
-        sideEffects
-            .onEach { sideEffect ->
-                when (sideEffect) {
-                    is SideEffect.Message -> {
-                        handleMessageSideEffect(
-                            sideEffect = sideEffect,
-                            snackbarHostState = snackbarHostState,
-                            context = context,
-                        )
-                    }
-
-                    is SideEffect.CloseKeyboard -> {
-                        keyboardController?.hide()
-                    }
-                }
+    ScreenSideEffectsFlowHandler(sideEffects = sideEffects) { sideEffect ->
+        when (sideEffect) {
+            is SideEffect.Message -> {
+                handleMessageSideEffect(
+                    message = sideEffect.text,
+                    snackbarHostState = snackbarHostState,
+                    context = context,
+                )
             }
-            .launchIn(this)
+
+            is SideEffect.CloseKeyboard -> {
+                keyboardController?.hide()
+            }
+        }
     }
-}
-
-private suspend fun handleMessageSideEffect(
-    sideEffect: SideEffect.Message,
-    snackbarHostState: SnackbarHostState,
-    context: Context,
-) {
-    val message = sideEffect.text.extract(context)
-        ?: return
-
-    snackbarHostState.showSnackbar(message)
 }
 
 internal class RecoveryButtonsController {

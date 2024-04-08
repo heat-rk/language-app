@@ -1,6 +1,5 @@
 package ru.heatrk.languageapp.profile.impl.ui.screens.select_language
 
-import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,10 +14,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -41,8 +38,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import ru.heatrk.languageapp.common.utils.compose.ScreenSideEffectsFlowHandler
+import ru.heatrk.languageapp.common.utils.compose.handleMessageSideEffect
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.design.composables.AppBar
@@ -248,32 +245,17 @@ private fun SelectLanguageSideEffects(
     val context = LocalContext.current
     val snackbarHostState = LocalAppScaffoldController.current.snackbarHostState
 
-    LaunchedEffect(sideEffects, context) {
-        sideEffects
-            .onEach { sideEffect ->
-                when (sideEffect) {
-                    is SideEffect.Message -> {
-                        handleMessageSideEffect(
-                            sideEffect = sideEffect,
-                            snackbarHostState = snackbarHostState,
-                            context = context,
-                        )
-                    }
-                }
+    ScreenSideEffectsFlowHandler(sideEffects = sideEffects) { sideEffect ->
+        when (sideEffect) {
+            is SideEffect.Message -> {
+                handleMessageSideEffect(
+                    message = sideEffect.text,
+                    snackbarHostState = snackbarHostState,
+                    context = context,
+                )
             }
-            .launchIn(this)
+        }
     }
-}
-
-private suspend fun handleMessageSideEffect(
-    sideEffect: SideEffect.Message,
-    snackbarHostState: SnackbarHostState,
-    context: Context,
-) {
-    val message = sideEffect.text.extract(context)
-        ?: return
-
-    snackbarHostState.showSnackbar(message)
 }
 
 private const val SELECT_LANGUAGE_SHIMMER_ITEMS_COUNT = 5

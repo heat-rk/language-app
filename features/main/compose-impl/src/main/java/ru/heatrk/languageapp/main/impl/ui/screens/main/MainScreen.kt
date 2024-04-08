@@ -2,7 +2,6 @@
 
 package ru.heatrk.languageapp.main.impl.ui.screens.main
 
-import android.content.Context
 import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +16,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
@@ -37,9 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import ru.heatrk.languageapp.common.utils.extract
+import ru.heatrk.languageapp.common.utils.compose.ScreenSideEffectsFlowHandler
+import ru.heatrk.languageapp.common.utils.compose.handleMessageSideEffect
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
@@ -264,32 +261,17 @@ private fun MainScreenSideEffects(
     val context = LocalContext.current
     val snackbarHostState = LocalAppScaffoldController.current.snackbarHostState
 
-    LaunchedEffect(sideEffects, context) {
-        sideEffects
-            .onEach { sideEffect ->
-                when (sideEffect) {
-                    is SideEffect.Message -> {
-                        handleMessageSideEffect(
-                            sideEffect = sideEffect,
-                            snackbarHostState = snackbarHostState,
-                            context = context,
-                        )
-                    }
-                }
+    ScreenSideEffectsFlowHandler(sideEffects = sideEffects) { sideEffect ->
+        when (sideEffect) {
+            is SideEffect.Message -> {
+                handleMessageSideEffect(
+                    message = sideEffect.text,
+                    snackbarHostState = snackbarHostState,
+                    context = context,
+                )
             }
-            .launchIn(this)
+        }
     }
-}
-
-private suspend fun handleMessageSideEffect(
-    sideEffect: SideEffect.Message,
-    snackbarHostState: SnackbarHostState,
-    context: Context,
-) {
-    val message = sideEffect.text.extract(context)
-        ?: return
-
-    snackbarHostState.showSnackbar(message)
 }
 
 private fun State.Profile.toAppBarState() = when (this) {

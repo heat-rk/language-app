@@ -14,10 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -40,8 +38,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import ru.heatrk.languageapp.auth.impl.BuildConfig
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
@@ -50,6 +46,8 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.I
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.SideEffect
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.State
 import ru.heatrk.languageapp.auth.impl.ui.utils.isFatal
+import ru.heatrk.languageapp.common.utils.compose.ScreenSideEffectsFlowHandler
+import ru.heatrk.languageapp.common.utils.compose.handleMessageSideEffect
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.core.design.composables.AppBar
@@ -294,45 +292,30 @@ private fun SignInScreenSideEffects(
         CredentialManager.create(context.applicationContext)
     }
 
-    LaunchedEffect(sideEffects, context) {
-        sideEffects
-            .onEach { sideEffect ->
-                when (sideEffect) {
-                    is SideEffect.Message -> {
-                        handleMessageSideEffect(
-                            sideEffect = sideEffect,
-                            snackbarHostState = snackbarHostState,
-                            context = context,
-                        )
-                    }
-
-                    is SideEffect.CloseKeyboard -> {
-                        keyboardController?.hide()
-                    }
-
-                    is SideEffect.RequestGoogleCredentials -> {
-                        requestGoogleCredentials(
-                            context = context,
-                            credentialManager = credentialManager,
-                            nonce = sideEffect.nonce,
-                            onIntent = onIntent,
-                        )
-                    }
-                }
+    ScreenSideEffectsFlowHandler(sideEffects = sideEffects) { sideEffect ->
+        when (sideEffect) {
+            is SideEffect.Message -> {
+                handleMessageSideEffect(
+                    message = sideEffect.text,
+                    snackbarHostState = snackbarHostState,
+                    context = context,
+                )
             }
-            .launchIn(this)
+
+            is SideEffect.CloseKeyboard -> {
+                keyboardController?.hide()
+            }
+
+            is SideEffect.RequestGoogleCredentials -> {
+                requestGoogleCredentials(
+                    context = context,
+                    credentialManager = credentialManager,
+                    nonce = sideEffect.nonce,
+                    onIntent = onIntent,
+                )
+            }
+        }
     }
-}
-
-private suspend fun handleMessageSideEffect(
-    sideEffect: SideEffect.Message,
-    snackbarHostState: SnackbarHostState,
-    context: Context,
-) {
-    val message = sideEffect.text.extract(context)
-        ?: return
-
-    snackbarHostState.showSnackbar(message)
 }
 
 private suspend fun requestGoogleCredentials(
