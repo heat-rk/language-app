@@ -97,6 +97,8 @@ internal class GuessAnimalViewModel(
                     )
                 }
 
+                postSideEffect(SideEffect.CloseKeyboard)
+
                 val guessResult = guessAnimal(
                     streak = currentStreak,
                     exerciseId = requireNotNull(currentExercise).id,
