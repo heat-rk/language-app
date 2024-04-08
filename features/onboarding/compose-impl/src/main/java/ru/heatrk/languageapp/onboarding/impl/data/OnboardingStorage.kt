@@ -1,12 +1,13 @@
 package ru.heatrk.languageapp.onboarding.impl.data
 
+import android.app.Application
 import android.content.Context
 import androidx.core.content.edit
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 class OnboardingStorage(
-    applicationContext: Context,
+    applicationContext: Application,
     private val dispatcher: CoroutineDispatcher
 ) {
     private val preferences = applicationContext.getSharedPreferences(

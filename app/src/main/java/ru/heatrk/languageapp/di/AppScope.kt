@@ -1,6 +1,6 @@
 package ru.heatrk.languageapp.di
 
-import android.content.Context
+import android.app.Application
 import ru.heatrk.languageapp.LanguageApplication
 import ru.heatrk.languageapp.auth.impl.di.includeAuthScope
 import ru.heatrk.languageapp.auth.impl.di.useAuthApiBeans
@@ -52,5 +52,5 @@ private fun Registry.useComposeNavigationBeans() {
 }
 
 private fun Registry.useApplicationBeans() {
-    singleton<Context> { LanguageApplication.instance }
+    singleton<Application> { LanguageApplication.instance }
 }

@@ -1,5 +1,6 @@
 package ru.heatrk.languageapp.profile.impl.data
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
@@ -13,7 +14,7 @@ import ru.heatrk.languageapp.profile.api.domain.ForcedTheme
 import ru.heatrk.languageapp.profile.api.domain.Language
 
 class SettingsStorage(
-    applicationContext: Context,
+    applicationContext: Application,
     private val storageDispatcher: CoroutineDispatcher,
 ) {
     private val preferences = applicationContext.getSharedPreferences(

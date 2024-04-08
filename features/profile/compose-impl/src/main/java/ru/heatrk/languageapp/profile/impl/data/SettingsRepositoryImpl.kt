@@ -2,8 +2,8 @@
 
 package ru.heatrk.languageapp.profile.impl.data
 
+import android.app.Application
 import android.app.LocaleManager
-import android.content.Context
 import android.os.Build
 import android.os.LocaleList
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +14,7 @@ import java.util.Locale
 
 internal class SettingsRepositoryImpl(
     private val settingsStorage: SettingsStorage,
-    private val applicationContext: Context,
+    private val applicationContext: Application,
 ) : SettingsRepository {
     override suspend fun getAvailableLanguages(): List<Language> {
         return Language.entries

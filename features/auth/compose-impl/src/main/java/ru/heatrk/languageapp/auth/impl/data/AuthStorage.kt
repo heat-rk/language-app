@@ -1,5 +1,6 @@
 package ru.heatrk.languageapp.auth.impl.data
 
+import android.app.Application
 import android.content.Context
 import androidx.core.content.edit
 import kotlinx.coroutines.CoroutineDispatcher
@@ -7,7 +8,7 @@ import kotlinx.coroutines.withContext
 
 class AuthStorage(
     private val storageDispatcher: CoroutineDispatcher,
-    private val applicationContext: Context,
+    applicationContext: Application,
 ) {
     private val preferences = applicationContext.getSharedPreferences(
         PREFS_NAME,

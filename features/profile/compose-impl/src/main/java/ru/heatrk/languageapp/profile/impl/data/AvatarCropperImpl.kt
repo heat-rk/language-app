@@ -1,6 +1,6 @@
 package ru.heatrk.languageapp.profile.impl.data
 
-import android.content.Context
+import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -13,7 +13,7 @@ import java.io.ByteArrayOutputStream
 
 class AvatarCropperImpl(
     private val cropperDispatcher: CoroutineDispatcher,
-    private val applicationContext: Context,
+    private val applicationContext: Application,
 ) : AvatarCropper {
     override suspend fun crop(avatarUri: String, avatarCrop: AvatarCrop): AvatarCropper.Result =
         withContext(cropperDispatcher) {
