@@ -47,12 +47,11 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.main.api.ui.navigation.MAIN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.main.impl.R
-import ru.heatrk.languageapp.core.design.R as DesignR
 import ru.heatrk.languageapp.main.impl.ui.composables.app_bar.MainAppBar
 import ru.heatrk.languageapp.main.impl.ui.composables.app_bar.MainAppBarState
 import ru.heatrk.languageapp.main.impl.ui.composables.app_bar.rememberAppBarSnapScrollConnection
-import ru.heatrk.languageapp.main.impl.ui.navigation.MAIN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.Intent
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.SideEffect
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.State
@@ -61,6 +60,7 @@ import ru.heatrk.languageapp.main.impl.ui.screens.main.composables.MainLeaderboa
 import ru.heatrk.languageapp.main.impl.ui.screens.main.composables.MainLeaderboardItemShimmer
 import ru.heatrk.languageapp.main.impl.ui.screens.main.composables.MainTitleItem
 import ru.heatrk.languageapp.main.impl.ui.screens.main.composables.MainTitleShimmerItem
+import ru.heatrk.languageapp.core.design.R as DesignR
 
 @Composable
 fun MainScreen(viewModel: MainViewModel) {

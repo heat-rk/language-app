@@ -11,7 +11,7 @@ import ru.heatrk.languageapp.core.navigation.compose_impl.route
 import ru.heatrk.languageapp.exercises.guess_animal.impl.ui.navigation.GuessAnimalScreenRoute
 import ru.heatrk.languageapp.exercises.word_practice.impl.ui.navigation.WordPracticeScreenRoute
 import ru.heatrk.languageapp.features.splash.impl.ui.navigation.SplashScreenRoute
-import ru.heatrk.languageapp.main.impl.ui.navigation.MainGraphRoute
+import ru.heatrk.languageapp.main.impl.ui.navigation.MainScreenRoute
 import ru.heatrk.languageapp.onboarding.impl.ui.navigation.OnboardingScreenRoute
 import ru.heatrk.languageapp.profile.impl.ui.navigation.ProfileGraphRoute
 import ru.heatrk.languageapp.profile.impl.ui.navigation.SelectLanguageScreenRoute
@@ -21,7 +21,7 @@ private fun NavGraphBuilder.buildGraph() {
     route(OnboardingScreenRoute)
     route(AuthGraphRoute)
     route(SelectLanguageScreenRoute)
-    route(MainGraphRoute)
+    route(MainScreenRoute)
     route(ProfileGraphRoute)
     route(GuessAnimalScreenRoute)
     route(WordPracticeScreenRoute)
