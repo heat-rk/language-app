@@ -14,6 +14,7 @@ import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.design.utils.withReturnToNone
 import ru.heatrk.languageapp.core.navigation.api.Router
+import ru.heatrk.languageapp.exercises.guess_animal.impl.domain.EmptyInputException
 import ru.heatrk.languageapp.exercises.guess_animal.impl.domain.GuessAnimalExercise
 import ru.heatrk.languageapp.exercises.guess_animal.impl.domain.GuessAnimalExercisesRepository
 import ru.heatrk.languageapp.exercises.guess_animal.impl.domain.GuessAnimalUseCase
@@ -113,15 +114,18 @@ internal class GuessAnimalViewModel(
                     reduce { State.IncorrectAnswer(correctAnswer = guessResult.correctAnswer) }
                 }
             },
-            onError = {
-                postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
-
+            onError = { throwable ->
                 withReturnToNone(startWith = ProcessingState.Error) { recoveringState ->
                     reduce {
                         (state as State.Resolving).copy(
                             checkingAnswerState = recoveringState
                         )
                     }
+                }
+
+                when (throwable) {
+                    is EmptyInputException -> Unit
+                    else -> postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
                 }
             }
         )

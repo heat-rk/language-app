@@ -11,6 +11,10 @@ internal class GuessAnimalUseCase(
         exerciseId: String,
         answer: String,
     ): Result {
+        if (answer.isBlank()) {
+            throw EmptyInputException()
+        }
+
         val correctAnswer = guessAnimalExercisesRepository
             .fetchAnswer(exerciseId)
 
