@@ -2,7 +2,6 @@ package ru.heatrk.languageapp.exercises.guess_animal.impl.ui.screens.guess_anima
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -13,14 +12,15 @@ import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.common.utils.strRes
+import ru.heatrk.languageapp.core.design.utils.withReturnToNone
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.exercises.guess_animal.impl.domain.GuessAnimalExercise
-import ru.heatrk.languageapp.core.design.R as DesignR
 import ru.heatrk.languageapp.exercises.guess_animal.impl.domain.GuessAnimalExercisesRepository
 import ru.heatrk.languageapp.exercises.guess_animal.impl.domain.GuessAnimalUseCase
-import ru.heatrk.languageapp.exercises.guess_animal.impl.ui.screens.guess_animal.GuessAnimalContract.State
-import ru.heatrk.languageapp.exercises.guess_animal.impl.ui.screens.guess_animal.GuessAnimalContract.SideEffect
 import ru.heatrk.languageapp.exercises.guess_animal.impl.ui.screens.guess_animal.GuessAnimalContract.Intent
+import ru.heatrk.languageapp.exercises.guess_animal.impl.ui.screens.guess_animal.GuessAnimalContract.SideEffect
+import ru.heatrk.languageapp.exercises.guess_animal.impl.ui.screens.guess_animal.GuessAnimalContract.State
+import ru.heatrk.languageapp.core.design.R as DesignR
 
 private typealias IntentBody = SimpleSyntax<State, SideEffect>
 
@@ -116,18 +116,12 @@ internal class GuessAnimalViewModel(
             onError = {
                 postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
 
-                reduce {
-                    (state as State.Resolving).copy(
-                        checkingAnswerState = ProcessingState.Error
-                    )
-                }
-
-                delay(PROCESSING_STATE_DELAY_MILLIS)
-
-                reduce {
-                    (state as State.Resolving).copy(
-                        checkingAnswerState = ProcessingState.None
-                    )
+                ProcessingState.Error.withReturnToNone { recoveringState ->
+                    reduce {
+                        (state as State.Resolving).copy(
+                            checkingAnswerState = recoveringState
+                        )
+                    }
                 }
             }
         )
@@ -141,9 +135,5 @@ internal class GuessAnimalViewModel(
         reduce {
             State.Resolving(image = painterRes(requireNotNull(currentExercise).imageUrl))
         }
-    }
-
-    companion object {
-        private const val PROCESSING_STATE_DELAY_MILLIS = 1000L
     }
 }

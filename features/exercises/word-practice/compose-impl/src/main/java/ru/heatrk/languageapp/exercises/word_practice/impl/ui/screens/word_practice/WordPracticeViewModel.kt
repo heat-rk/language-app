@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -14,15 +13,16 @@ import org.orbitmvi.orbit.viewmodel.container
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.common.utils.strRes
+import ru.heatrk.languageapp.core.design.utils.withReturnToNone
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.exercises.word_practice.impl.domain.SourceLanguage
 import ru.heatrk.languageapp.exercises.word_practice.impl.domain.WordPracticeExercise
-import ru.heatrk.languageapp.core.design.R as DesignR
 import ru.heatrk.languageapp.exercises.word_practice.impl.domain.WordPracticeExercisesRepository
 import ru.heatrk.languageapp.exercises.word_practice.impl.domain.WordPracticeUseCase
-import ru.heatrk.languageapp.exercises.word_practice.impl.ui.screens.word_practice.WordPracticeContract.State
-import ru.heatrk.languageapp.exercises.word_practice.impl.ui.screens.word_practice.WordPracticeContract.SideEffect
 import ru.heatrk.languageapp.exercises.word_practice.impl.ui.screens.word_practice.WordPracticeContract.Intent
+import ru.heatrk.languageapp.exercises.word_practice.impl.ui.screens.word_practice.WordPracticeContract.SideEffect
+import ru.heatrk.languageapp.exercises.word_practice.impl.ui.screens.word_practice.WordPracticeContract.State
+import ru.heatrk.languageapp.core.design.R as DesignR
 
 private typealias IntentBody = SimpleSyntax<State, SideEffect>
 
@@ -116,46 +116,43 @@ internal class WordPracticeViewModel(
 
                 currentStreak = if (exerciseResult.isCorrect) currentStreak + 1 else 0
 
-                reduce {
-                    (state as State.Resolving).let { state ->
-                        state.copy(
-                            isResolved = true,
-                            checkingAnswerState = if (exerciseResult.isCorrect) {
-                                ProcessingState.Success
-                            } else {
-                                ProcessingState.Error
-                            },
-                            answers = state.answers.withCorrectAnswer(
-                                userAnswerWord = selectedAnswer.word,
-                                correctAnswerWord = exerciseResult.correctAnswer,
+                if (exerciseResult.isCorrect) {
+                    ProcessingState.Success
+                } else {
+                    ProcessingState.Error
+                }.withReturnToNone(
+                    onStartState = { checkingAnswerState ->
+                        reduce {
+                            (state as State.Resolving).let { state ->
+                                state.copy(
+                                    isResolved = true,
+                                    checkingAnswerState = checkingAnswerState,
+                                    answers = state.answers.withCorrectAnswer(
+                                        userAnswerWord = selectedAnswer.word,
+                                        correctAnswerWord = exerciseResult.correctAnswer,
+                                    )
+                                )
+                            }
+                        }
+                    },
+                    onEndState = { checkingAnswerState ->
+                        reduce {
+                            (state as State.Resolving).copy(
+                                checkingAnswerState = checkingAnswerState
                             )
-                        )
+                        }
                     }
-                }
-
-                delay(PROCESSING_STATE_DELAY_MILLIS)
-
-                reduce {
-                    (state as State.Resolving).copy(
-                        checkingAnswerState = ProcessingState.None
-                    )
-                }
+                )
             },
             onError = {
                 postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
 
-                reduce {
-                    (state as State.Resolving).copy(
-                        checkingAnswerState = ProcessingState.Error
-                    )
-                }
-
-                delay(PROCESSING_STATE_DELAY_MILLIS)
-
-                reduce {
-                    (state as State.Resolving).copy(
-                        checkingAnswerState = ProcessingState.None
-                    )
+                ProcessingState.Error.withReturnToNone { checkingAnswerState ->
+                    reduce {
+                        (state as State.Resolving).copy(
+                            checkingAnswerState = checkingAnswerState
+                        )
+                    }
                 }
             }
         )
@@ -203,8 +200,4 @@ internal class WordPracticeViewModel(
 
     private fun ImmutableList<WordPracticeAnswerItem>.getUserSelectedAnswer() =
         find { answer -> answer.selectionType == WordPracticeAnswerSelectionType.User }
-
-    companion object {
-        private const val PROCESSING_STATE_DELAY_MILLIS = 1000L
-    }
 }

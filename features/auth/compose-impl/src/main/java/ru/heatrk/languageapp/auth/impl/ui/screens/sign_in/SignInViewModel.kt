@@ -3,7 +3,6 @@ package ru.heatrk.languageapp.auth.impl.ui.screens.sign_in
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.jan.supabase.exceptions.BadRequestRestException
-import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -24,6 +23,7 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.S
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.common.utils.strRes
+import ru.heatrk.languageapp.core.design.utils.withReturnToNone
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingOption
 import ru.heatrk.languageapp.main.api.ui.navigation.MAIN_SCREEN_ROUTE_PATH
@@ -131,9 +131,9 @@ class SignInViewModel(
                     lastName = lastName,
                 )
 
-                reduce { state.copy(authorizingState = ProcessingState.Success) }
-
-                delay(AUTHORIZING_STATE_DELAY_MILLIS)
+                ProcessingState.Success.withReturnToNone { recoveringState ->
+                    reduce { state.copy(authorizingState = recoveringState) }
+                }
 
                 router.navigate(
                     routePath = MAIN_SCREEN_ROUTE_PATH,
@@ -165,9 +165,9 @@ class SignInViewModel(
                     password = state.password
                 )
 
-                reduce { state.copy(authorizingState = ProcessingState.Success) }
-
-                delay(AUTHORIZING_STATE_DELAY_MILLIS)
+                ProcessingState.Success.withReturnToNone { recoveringState ->
+                    reduce { state.copy(authorizingState = recoveringState) }
+                }
 
                 router.navigate(
                     routePath = MAIN_SCREEN_ROUTE_PATH,
@@ -180,7 +180,9 @@ class SignInViewModel(
                 )
             },
             onError = { throwable ->
-                reduce { state.copy(authorizingState = ProcessingState.Error) }
+                ProcessingState.Error.withReturnToNone { recoveringState ->
+                    reduce { state.copy(authorizingState = recoveringState) }
+                }
 
                 when (throwable) {
                     is InvalidSignInFieldsValuesException -> {
@@ -200,10 +202,6 @@ class SignInViewModel(
                         postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
                     }
                 }
-
-                delay(AUTHORIZING_STATE_DELAY_MILLIS)
-
-                reduce { state.copy(authorizingState = ProcessingState.None) }
             }
         )
     }
@@ -228,9 +226,5 @@ class SignInViewModel(
     private fun InvalidSignInFieldsValuesException.Password?.toStringResource() = when (this) {
         InvalidSignInFieldsValuesException.Password.EMPTY -> strRes(R.string.error_empty_field)
         null -> null
-    }
-
-    companion object {
-        private const val AUTHORIZING_STATE_DELAY_MILLIS = 1000L
     }
 }

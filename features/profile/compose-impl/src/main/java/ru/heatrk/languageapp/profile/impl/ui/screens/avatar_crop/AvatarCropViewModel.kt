@@ -4,7 +4,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -15,13 +14,14 @@ import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.common.utils.strRes
-import ru.heatrk.languageapp.core.design.R as DesignR
+import ru.heatrk.languageapp.core.design.utils.withReturnToNone
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.profile.impl.domain.AvatarCrop
 import ru.heatrk.languageapp.profile.impl.domain.CroppedAvatarUploadUseCase
-import ru.heatrk.languageapp.profile.impl.ui.screens.avatar_crop.AvatarCropContract.State
 import ru.heatrk.languageapp.profile.impl.ui.screens.avatar_crop.AvatarCropContract.Intent
 import ru.heatrk.languageapp.profile.impl.ui.screens.avatar_crop.AvatarCropContract.SideEffect
+import ru.heatrk.languageapp.profile.impl.ui.screens.avatar_crop.AvatarCropContract.State
+import ru.heatrk.languageapp.core.design.R as DesignR
 
 private typealias IntentBody = SimpleSyntax<State, SideEffect>
 
@@ -72,25 +72,19 @@ internal class AvatarCropViewModel(
                     avatarCrop = avatarCrop,
                 )
 
-                reduce { state.copy(savingState = ProcessingState.Success) }
-
-                delay(SAVING_STATE_DELAY_MILLIS)
+                ProcessingState.Success.withReturnToNone { recoveringState ->
+                    reduce { state.copy(savingState = recoveringState) }
+                }
 
                 router.navigateBack()
             },
             onError = {
                 postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
 
-                reduce { state.copy(savingState = ProcessingState.Error) }
-
-                delay(SAVING_STATE_DELAY_MILLIS)
-
-                reduce { state.copy(savingState = ProcessingState.None) }
+                ProcessingState.Error.withReturnToNone { recoveringState ->
+                    reduce { state.copy(savingState = recoveringState) }
+                }
             }
         )
-    }
-
-    companion object {
-        private const val SAVING_STATE_DELAY_MILLIS = 1000L
     }
 }

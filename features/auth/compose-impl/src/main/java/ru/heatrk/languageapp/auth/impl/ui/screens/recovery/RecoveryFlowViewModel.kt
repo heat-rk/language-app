@@ -2,7 +2,6 @@ package ru.heatrk.languageapp.auth.impl.ui.screens.recovery
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -22,6 +21,7 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.common.utils.strRes
+import ru.heatrk.languageapp.core.design.utils.withReturnToNone
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingOption
 import ru.heatrk.languageapp.core.design.R as DesignR
@@ -130,7 +130,9 @@ class RecoveryFlowViewModel(
                 recoveryRouter.navigate(RECOVERY_CHECK_EMAIL_SCREEN_ROUTE_PATH)
             },
             onError = { throwable ->
-                reduce { state.copy(recoveringState = ProcessingState.Error) }
+                ProcessingState.Error.withReturnToNone { recoveringState ->
+                    reduce { state.copy(recoveringState = recoveringState) }
+                }
 
                 when (throwable) {
                     is InvalidRecoveryFieldsValuesException -> {
@@ -141,10 +143,6 @@ class RecoveryFlowViewModel(
                         postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
                     }
                 }
-
-                delay(RECOVERING_STATE_DELAY_MILLIS)
-
-                reduce { state.copy(recoveringState = ProcessingState.None) }
             }
         )
     }
@@ -169,11 +167,9 @@ class RecoveryFlowViewModel(
                     confirmedPassword = state.confirmedPassword,
                 )
 
-                reduce { state.copy(recoveringState = ProcessingState.Success) }
-
-                delay(RECOVERING_STATE_DELAY_MILLIS)
-
-                reduce { state.copy(recoveringState = ProcessingState.None) }
+                ProcessingState.Success.withReturnToNone { recoveringState ->
+                    reduce { state.copy(recoveringState = recoveringState) }
+                }
 
                 recoveryRouter.navigate(
                     routePath = RECOVERY_SUCCESS_SCREEN_ROUTE_PATH,
@@ -186,7 +182,9 @@ class RecoveryFlowViewModel(
                 )
             },
             onError = { throwable ->
-                reduce { state.copy(recoveringState = ProcessingState.Error) }
+                ProcessingState.Error.withReturnToNone { recoveringState ->
+                    reduce { state.copy(recoveringState = recoveringState) }
+                }
 
                 when (throwable) {
                     is InvalidRecoveryFieldsValuesException -> {
@@ -197,10 +195,6 @@ class RecoveryFlowViewModel(
                         postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
                     }
                 }
-
-                delay(RECOVERING_STATE_DELAY_MILLIS)
-
-                reduce { state.copy(recoveringState = ProcessingState.None) }
             }
         )
     }
@@ -240,9 +234,5 @@ class RecoveryFlowViewModel(
     private fun InvalidRecoveryFieldsValuesException.ConfirmedPassword?.toStringResource() = when (this) {
         InvalidRecoveryFieldsValuesException.ConfirmedPassword.MISMATCH -> strRes(R.string.error_password_mismatch)
         null -> null
-    }
-
-    companion object {
-        private const val RECOVERING_STATE_DELAY_MILLIS = 1000L
     }
 }

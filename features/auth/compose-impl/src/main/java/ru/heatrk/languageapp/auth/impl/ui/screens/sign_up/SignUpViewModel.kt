@@ -3,7 +3,6 @@ package ru.heatrk.languageapp.auth.impl.ui.screens.sign_up
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.jan.supabase.exceptions.BadRequestRestException
-import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -11,7 +10,6 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import ru.heatrk.languageapp.auth.impl.R
-import ru.heatrk.languageapp.core.design.R as DesignR
 import ru.heatrk.languageapp.auth.impl.domain.sign_up.InvalidSignUpFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.sign_up.SignUpUseCase
 import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_in.SIGN_IN_SCREEN_ROUTE_PATH
@@ -23,8 +21,10 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract.S
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.common.utils.strRes
+import ru.heatrk.languageapp.core.design.utils.withReturnToNone
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingOption
+import ru.heatrk.languageapp.core.design.R as DesignR
 
 private typealias IntentBody = SimpleSyntax<State, SideEffect>
 
@@ -159,7 +159,9 @@ class SignUpViewModel(
                 signUpRouter.navigate(routePath = SIGN_UP_PASSWORD_SCREEN_ROUTE_PATH)
             },
             onError = { throwable ->
-                reduce { state.copy(registrationState = ProcessingState.Error) }
+                ProcessingState.Error.withReturnToNone { registrationState ->
+                    reduce { state.copy(registrationState = registrationState) }
+                }
 
                 when (throwable) {
                     is InvalidSignUpFieldsValuesException -> {
@@ -169,10 +171,6 @@ class SignUpViewModel(
                         postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
                     }
                 }
-
-                delay(REGISTRATION_STATE_DELAY_MILLIS)
-
-                reduce { state.copy(registrationState = ProcessingState.None) }
             }
         )
     }
@@ -192,16 +190,18 @@ class SignUpViewModel(
                     confirmedPassword = state.confirmedPassword,
                 )
 
-                reduce { state.copy(registrationState = ProcessingState.Success) }
-
-                delay(REGISTRATION_STATE_DELAY_MILLIS)
-
-                reduce { state.copy(registrationState = ProcessingState.None) }
+                ProcessingState.Success.withReturnToNone { registrationState ->
+                    reduce {
+                        state.copy(registrationState = registrationState)
+                    }
+                }
 
                 signUpRouter.navigate(routePath = SIGN_UP_EMAIL_CONFIRM_SCREEN_ROUTE_PATH)
             },
             onError = { throwable ->
-                reduce { state.copy(registrationState = ProcessingState.Error) }
+                ProcessingState.Error.withReturnToNone { registrationState ->
+                    reduce { state.copy(registrationState = registrationState) }
+                }
 
                 when (throwable) {
                     is InvalidSignUpFieldsValuesException -> {
@@ -216,10 +216,6 @@ class SignUpViewModel(
                         postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
                     }
                 }
-
-                delay(REGISTRATION_STATE_DELAY_MILLIS)
-
-                reduce { state.copy(registrationState = ProcessingState.None) }
             }
         )
     }
@@ -270,9 +266,5 @@ class SignUpViewModel(
     private fun InvalidSignUpFieldsValuesException.ConfirmedPassword?.toStringResource() = when (this) {
         InvalidSignUpFieldsValuesException.ConfirmedPassword.MISMATCH -> strRes(R.string.error_password_mismatch)
         null -> null
-    }
-
-    companion object {
-        private const val REGISTRATION_STATE_DELAY_MILLIS = 1000L
     }
 }
