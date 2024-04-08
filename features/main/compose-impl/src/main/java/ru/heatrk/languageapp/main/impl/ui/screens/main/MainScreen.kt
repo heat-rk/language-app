@@ -207,7 +207,6 @@ private fun LazyGridScope.exercisesItems(
             title = stringResource(R.string.main_word_practice),
             backgroundColor = AppTheme.colors.exerciseWordPractice,
             includeSpacer = true,
-            isEnabled = false,
         )
     }
 

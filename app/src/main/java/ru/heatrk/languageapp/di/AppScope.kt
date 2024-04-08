@@ -14,6 +14,7 @@ import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
 import ru.heatrk.languageapp.core.profiles.impl.di.useProfilesBeans
 import ru.heatrk.languageapp.exercises.guess_animal.impl.di.includeGuessAnimalScope
+import ru.heatrk.languageapp.exercises.word_practice.impl.di.includeWordPracticeScope
 import ru.heatrk.languageapp.main.impl.di.includeMainScope
 import ru.heatrk.languageapp.onboarding.impl.di.includeOnboardingScope
 import ru.heatrk.languageapp.onboarding.impl.di.useOnboardingApiBeans
@@ -42,6 +43,7 @@ val appScope = scope("app_scope") {
     includeMainScope()
     includeProfileScope()
     includeGuessAnimalScope()
+    includeWordPracticeScope()
 }
 
 private fun Registry.useComposeNavigationBeans() {

@@ -176,7 +176,7 @@ private fun ScreenResolving(
             Spacer(modifier = Modifier.height(17.dp))
 
             AppButton(
-                text = stringResource(R.string.guess_animal_check),
+                text = stringResource(DesignR.string.check),
                 buttonState = state.checkingAnswerState.toButtonState(),
                 onClick = { onIntent(Intent.OnCheckButtonClick) },
                 modifier = Modifier
@@ -245,7 +245,7 @@ private fun ScreenCorrectAnswer(
         Spacer(modifier = Modifier.height(32.dp))
 
         Image(
-            painter = painterResource(R.drawable.guess_animal_success),
+            painter = painterResource(DesignR.drawable.image_success),
             contentScale = ContentScale.FillWidth,
             contentDescription = null,
             modifier = Modifier
@@ -266,7 +266,7 @@ private fun ScreenCorrectAnswer(
         Spacer(modifier = Modifier.height(40.dp))
 
         AppButton(
-            text = stringResource(R.string.guess_animal_next),
+            text = stringResource(DesignR.string.next),
             onClick = { onIntent(Intent.OnNextButtonClick) },
             modifier = Modifier
                 .fillMaxWidth()
@@ -288,7 +288,7 @@ private fun ScreenIncorrectAnswer(
         Spacer(modifier = Modifier.height(32.dp))
 
         Image(
-            painter = painterResource(R.drawable.guess_animal_failed),
+            painter = painterResource(DesignR.drawable.image_failed),
             contentScale = ContentScale.FillWidth,
             contentDescription = null,
             modifier = Modifier
@@ -309,7 +309,7 @@ private fun ScreenIncorrectAnswer(
         Spacer(modifier = Modifier.height(18.dp))
 
         AppButton(
-            text = stringResource(R.string.guess_animal_next),
+            text = stringResource(DesignR.string.next),
             onClick = { onIntent(Intent.OnNextButtonClick) },
             modifier = Modifier
                 .fillMaxWidth()
@@ -318,7 +318,7 @@ private fun ScreenIncorrectAnswer(
         Spacer(modifier = Modifier.height(11.dp))
 
         AppButton(
-            text = stringResource(R.string.guess_animal_try_again),
+            text = stringResource(DesignR.string.try_again),
             onClick = { onIntent(Intent.OnTryAgainButtonClick) },
             modifier = Modifier
                 .fillMaxWidth()
@@ -339,7 +339,7 @@ private fun ScreenError(
         Spacer(modifier = Modifier.height(32.dp))
 
         Image(
-            painter = painterResource(R.drawable.guess_animal_failed),
+            painter = painterResource(DesignR.drawable.image_failed),
             contentScale = ContentScale.FillWidth,
             contentDescription = null,
             modifier = Modifier
@@ -360,7 +360,7 @@ private fun ScreenError(
         Spacer(modifier = Modifier.height(18.dp))
 
         AppButton(
-            text = stringResource(R.string.guess_animal_try_again),
+            text = stringResource(DesignR.string.try_again),
             onClick = { onIntent(Intent.OnNextButtonClick) },
             modifier = Modifier
                 .fillMaxWidth()

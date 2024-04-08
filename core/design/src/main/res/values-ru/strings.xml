@@ -11,6 +11,9 @@
     <string name="full_name_formatted">%2$s %1$s</string>
     <string name="choose">Выбрать</string>
     <string name="profile_name_unknown">Неизвестен</string>
+    <string name="check">Проверить</string>
+    <string name="next">Дальше</string>
+    <string name="try_again">Попробовать снова</string>
 
     <string name="error_smth_went_wrong">Что-то пошло не так :(</string>
     <string name="error_smth_went_wrong_description">Пожалуйста, попробуйте позже</string>

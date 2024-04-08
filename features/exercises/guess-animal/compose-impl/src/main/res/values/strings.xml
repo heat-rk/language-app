@@ -3,9 +3,6 @@
     <string name="guess_animal_title">Guess the animal</string>
     <string name="guess_animal_input_label">Write who is on image</string>
     <string name="guess_animal_input_placeholder">Write your answer here</string>
-    <string name="guess_animal_check">Check</string>
     <string name="guess_animal_success">Holy Molly! That is Right!</string>
     <string name="guess_animal_error_formatted">Eh? Wrong answer :(\nThat is: %1$s</string>
-    <string name="guess_animal_next">Next</string>
-    <string name="guess_animal_try_again">Try again</string>
 </resources>

@@ -43,4 +43,6 @@ include(
     ":features:profile:compose-impl",
     ":features:exercises:guess-animal:api",
     ":features:exercises:guess-animal:compose-impl",
+    ":features:exercises:word-practice:api",
+    ":features:exercises:word-practice:compose-impl",
 )
