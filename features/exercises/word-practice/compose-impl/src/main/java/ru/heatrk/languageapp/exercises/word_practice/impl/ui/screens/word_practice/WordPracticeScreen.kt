@@ -117,15 +117,17 @@ private fun ScreenResolving(
             color = AppTheme.colors.onBackground,
         )
 
-        Spacer(modifier = Modifier.height(2.dp))
+        if (state.wordTranscription != null) {
+            Spacer(modifier = Modifier.height(2.dp))
 
-        Text(
-            text = state.wordTranscription,
-            textAlign = TextAlign.Center,
-            style = AppTheme.typography.titleMedium,
-            fontWeight = FontWeight.Normal,
-            color = AppTheme.colors.onBackground,
-        )
+            Text(
+                text = state.wordTranscription,
+                textAlign = TextAlign.Center,
+                style = AppTheme.typography.titleMedium,
+                fontWeight = FontWeight.Normal,
+                color = AppTheme.colors.onBackground,
+            )
+        }
 
         Spacer(modifier = Modifier.height(35.dp))
 

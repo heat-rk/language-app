@@ -15,6 +15,7 @@ import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.navigation.api.Router
+import ru.heatrk.languageapp.exercises.word_practice.impl.domain.SourceLanguage
 import ru.heatrk.languageapp.exercises.word_practice.impl.domain.WordPracticeExercise
 import ru.heatrk.languageapp.core.design.R as DesignR
 import ru.heatrk.languageapp.exercises.word_practice.impl.domain.WordPracticeExercisesRepository
@@ -36,6 +37,7 @@ internal class WordPracticeViewModel(
 
     private var currentExercise: WordPracticeExercise? = null
     private var currentStreak = 0
+    private var currentExerciseLanguage = SourceLanguage.Russian
 
     init {
         loadNextExercise()
@@ -60,8 +62,10 @@ internal class WordPracticeViewModel(
                 reduce { State.Loading }
 
                 val exercise = wordPracticeExercisesRepository
-                    .fetchRandomExercise()
+                    .fetchRandomExercise(sourceLanguage = currentExerciseLanguage)
                     .also { currentExercise = it }
+
+                updateCurrentExerciseLanguage()
 
                 reduce {
                     State.Resolving(
@@ -159,6 +163,12 @@ internal class WordPracticeViewModel(
 
     private fun onNextButtonClick() {
         loadNextExercise()
+    }
+
+    private fun updateCurrentExerciseLanguage() {
+        val currentLanguageIndex = SourceLanguage.entries.indexOf(currentExerciseLanguage)
+        val nextLanguageIndex = (currentLanguageIndex + 1) % SourceLanguage.entries.size
+        currentExerciseLanguage = SourceLanguage.entries[nextLanguageIndex]
     }
 
     private fun ImmutableList<WordPracticeAnswerItem>.withUserSelection(

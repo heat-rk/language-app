@@ -10,7 +10,7 @@ data class WordPracticeExerciseData(
     @SerialName("word")
     val word: String,
     @SerialName("word_transcription")
-    val wordTranscription: String,
+    val wordTranscription: String? = null,
     @SerialName("answers")
     val answers: List<String> = emptyList(),
 )

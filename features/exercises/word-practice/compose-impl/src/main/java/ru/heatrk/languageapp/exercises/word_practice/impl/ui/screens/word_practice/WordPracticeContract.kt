@@ -13,7 +13,7 @@ internal object WordPracticeContract {
 
         data class Resolving(
             val word: String,
-            val wordTranscription: String,
+            val wordTranscription: String?,
             val isResolved: Boolean = false,
             val answers: ImmutableList<WordPracticeAnswerItem>,
             val checkingAnswerState: ProcessingState = ProcessingState.None,
