@@ -26,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,15 +33,13 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import ru.heatrk.languageapp.common.utils.PainterResource
-import ru.heatrk.languageapp.common.utils.ImagePainterSize
-import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.painterRes
+import ru.heatrk.languageapp.core.design.composables.AppPainterWrapper
 import ru.heatrk.languageapp.core.design.composables.animation.FadeInAnimatedContent
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.main.impl.R
 import ru.heatrk.languageapp.core.design.R as DesignR
-import kotlin.math.roundToInt
 
 @Composable
 fun MainAppBar(
@@ -77,15 +74,30 @@ private fun MainAppBarOk(
 ) {
     MainAppBarLayout(
         avatarContent = {
-            Image(
-                painter = state.avatar
-                    ?.extract(size = ImagePainterSize(AvatarSize.value.roundToInt()))
-                    ?: painterResource(DesignR.drawable.ic_avatar_placeholder),
-                contentDescription = stringResource(DesignR.string.accessibility_go_to_profile),
-                modifier = Modifier
-                    .size(AvatarSize)
-                    .clip(CircleShape)
-                    .clickable(onClick = onAvatarClick)
+            AppPainterWrapper(
+                painterResource = state.avatar
+                    ?: painterRes(DesignR.drawable.ic_avatar_placeholder),
+                loadingContent = {
+                    Box(
+                        modifier = Modifier
+                            .requiredSize(AvatarSize)
+                            .clip(CircleShape)
+                            .shimmerEffect(
+                                shimmerBackgroundColor = ShimmerBackgroundColor,
+                                shimmerForegroundColor = ShimmerForegroundColor,
+                            )
+                    )
+                },
+                successContent = { painter ->
+                    Image(
+                        painter = painter,
+                        contentDescription = stringResource(DesignR.string.accessibility_go_to_profile),
+                        modifier = Modifier
+                            .size(AvatarSize)
+                            .clip(CircleShape)
+                            .clickable(onClick = onAvatarClick)
+                    )
+                }
             )
         },
         titleContent = {
@@ -118,11 +130,6 @@ private fun MainAppBarLoading(
     modifier: Modifier = Modifier,
     scrollingBehaviour: MainAppBarNestedScrollConnection,
 ) {
-    val shimmerBackgroundColor = AppTheme.colors.shimmerBackground
-        .copy(alpha = 0.5f)
-    
-    val shimmerForegroundColor = AppTheme.colors.shimmerForeground
-
     MainAppBarLayout(
         avatarContent = {
             Box(
@@ -130,8 +137,8 @@ private fun MainAppBarLoading(
                     .requiredSize(AvatarSize)
                     .clip(CircleShape)
                     .shimmerEffect(
-                        shimmerBackgroundColor = shimmerBackgroundColor,
-                        shimmerForegroundColor = shimmerForegroundColor
+                        shimmerBackgroundColor = ShimmerBackgroundColor,
+                        shimmerForegroundColor = ShimmerForegroundColor,
                     )
             )
         },
@@ -141,8 +148,8 @@ private fun MainAppBarLoading(
                     .requiredSize(width = 100.dp, height = 22.dp)
                     .clip(RoundedCornerShape(12.dp))
                     .shimmerEffect(
-                        shimmerBackgroundColor = shimmerBackgroundColor,
-                        shimmerForegroundColor = shimmerForegroundColor
+                        shimmerBackgroundColor = ShimmerBackgroundColor,
+                        shimmerForegroundColor = ShimmerForegroundColor,
                     )
             )
         },
@@ -152,8 +159,8 @@ private fun MainAppBarLoading(
                     .requiredSize(width = 200.dp, height = 17.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .shimmerEffect(
-                        shimmerBackgroundColor = shimmerBackgroundColor,
-                        shimmerForegroundColor = shimmerForegroundColor
+                        shimmerBackgroundColor = ShimmerBackgroundColor,
+                        shimmerForegroundColor = ShimmerForegroundColor,
                     )
             )
         },
@@ -275,6 +282,14 @@ sealed interface MainAppBarState {
         val avatar: PainterResource?
     ) : MainAppBarState
 }
+
+val ShimmerBackgroundColor
+    @Composable
+    get() = AppTheme.colors.shimmerBackground.copy(alpha = 0.5f)
+
+val ShimmerForegroundColor
+    @Composable
+    get() = AppTheme.colors.shimmerForeground
 
 val MainAppBarCollapsedHeight = 102.dp
 val MainAppBarExpandedHeight = 175.dp

@@ -18,22 +18,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.heatrk.languageapp.common.utils.ImagePainterSize
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.common.utils.strRes
+import ru.heatrk.languageapp.core.design.composables.AppPainterWrapper
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.main.impl.R
-import ru.heatrk.languageapp.core.design.R as DesignR
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract
-import kotlin.math.roundToInt
+import ru.heatrk.languageapp.core.design.R as DesignR
 
 @Composable
 fun MainLeaderboardItem(
@@ -52,14 +50,28 @@ fun MainLeaderboardItem(
             )
             .padding(16.dp)
     ) {
-        Image(
-            painter = leader.avatar
-                ?.extract(size = ImagePainterSize(LeaderAvatarSize.value.roundToInt()))
-                ?: painterResource(DesignR.drawable.ic_avatar_placeholder),
-            contentDescription = null,
-            modifier = Modifier
-                .size(LeaderAvatarSize)
-                .clip(AppTheme.shapes.small)
+        AppPainterWrapper(
+            painterResource = leader.avatar
+                ?: painterRes(DesignR.drawable.ic_avatar_placeholder),
+            loadingContent = {
+                Box(
+                    modifier = Modifier
+                        .size(LeaderAvatarSize)
+                        .background(
+                            color = AppTheme.colors.shimmerForeground,
+                            shape = AppTheme.shapes.small,
+                        )
+                )
+            },
+            successContent = { painter ->
+                Image(
+                    painter = painter,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(LeaderAvatarSize)
+                        .clip(AppTheme.shapes.small)
+                )
+            }
         )
 
         Spacer(modifier = Modifier.width(24.dp))

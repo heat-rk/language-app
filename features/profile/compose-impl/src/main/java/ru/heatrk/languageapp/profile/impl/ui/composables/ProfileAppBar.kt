@@ -16,23 +16,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.heatrk.languageapp.common.utils.PainterResource
-import ru.heatrk.languageapp.common.utils.ImagePainterSize
 import ru.heatrk.languageapp.common.utils.StringResource
 import ru.heatrk.languageapp.common.utils.extract
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.design.composables.AppBar
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
+import ru.heatrk.languageapp.core.design.composables.AppPainterWrapper
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.profile.impl.R
-import kotlin.math.roundToInt
 import ru.heatrk.languageapp.core.design.R as DesignR
 
 @Composable
@@ -44,15 +42,30 @@ fun ProfileAppBar(
 ) {
     ProfileHeaderLayout(
         avatarContent = {
-            Image(
-                painter = avatar
-                    ?.extract(size = ImagePainterSize(ProfileAvatarSize.value.roundToInt()))
-                    ?: painterResource(DesignR.drawable.ic_avatar_placeholder),
-                contentDescription = stringResource(DesignR.string.accessibility_go_to_profile),
-                modifier = Modifier
-                    .padding(horizontal = 24.dp)
-                    .size(ProfileAvatarSize)
-                    .clip(CircleShape)
+            AppPainterWrapper(
+                painterResource = avatar ?: painterRes(DesignR.drawable.ic_avatar_placeholder),
+                loadingContent = {
+                    Box(
+                        modifier = Modifier
+                            .padding(horizontal = 24.dp)
+                            .size(ProfileAvatarSize)
+                            .clip(CircleShape)
+                            .shimmerEffect(
+                                shimmerBackgroundColor = ShimmerBackgroundColor,
+                                shimmerForegroundColor = ShimmerForegroundColor,
+                            )
+                    )
+                },
+                successContent = { painter ->
+                    Image(
+                        painter = painter,
+                        contentDescription = stringResource(DesignR.string.accessibility_go_to_profile),
+                        modifier = Modifier
+                            .padding(horizontal = 24.dp)
+                            .size(ProfileAvatarSize)
+                            .clip(CircleShape)
+                    )
+                }
             )
         },
         nameContent = {
@@ -75,11 +88,6 @@ fun ProfileAppBarShimmer(
     onGoBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val shimmerBackgroundColor = AppTheme.colors.shimmerBackground
-        .copy(alpha = 0.5f)
-
-    val shimmerForegroundColor = AppTheme.colors.shimmerForeground
-
     ProfileHeaderLayout(
         avatarContent = {
             Box(
@@ -88,8 +96,8 @@ fun ProfileAppBarShimmer(
                     .size(ProfileAvatarSize)
                     .clip(CircleShape)
                     .shimmerEffect(
-                        shimmerBackgroundColor = shimmerBackgroundColor,
-                        shimmerForegroundColor = shimmerForegroundColor,
+                        shimmerBackgroundColor = ShimmerBackgroundColor,
+                        shimmerForegroundColor = ShimmerForegroundColor,
                     )
             )
         },
@@ -103,8 +111,8 @@ fun ProfileAppBarShimmer(
                     )
                     .clip(AppTheme.shapes.medium)
                     .shimmerEffect(
-                        shimmerBackgroundColor = shimmerBackgroundColor,
-                        shimmerForegroundColor = shimmerForegroundColor,
+                        shimmerBackgroundColor = ShimmerBackgroundColor,
+                        shimmerForegroundColor = ShimmerForegroundColor,
                     )
             )
         },
@@ -139,6 +147,14 @@ private fun ProfileHeaderLayout(
         Spacer(modifier = Modifier.height(20.dp))
     }
 }
+
+val ShimmerBackgroundColor
+    @Composable
+    get() = AppTheme.colors.shimmerBackground.copy(alpha = 0.5f)
+
+val ShimmerForegroundColor
+    @Composable
+    get() = AppTheme.colors.shimmerForeground
 
 private val ProfileAvatarSize = 134.dp
 
