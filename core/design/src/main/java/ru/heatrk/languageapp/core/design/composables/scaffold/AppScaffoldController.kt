@@ -7,7 +7,6 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 
@@ -18,15 +17,6 @@ class AppScaffoldController(
     val appBarStates = mutableStateListOf<AppBarState>()
     val systemBarsColors = mutableStateListOf<AppSystemBarsColors>()
     var isNavigationTransitionRunning by mutableStateOf(false)
-}
-
-@Composable
-fun rememberAppScaffoldController(
-    snackbarHostState: SnackbarHostState,
-) = remember {
-    AppScaffoldController(
-        snackbarHostState = snackbarHostState,
-    )
 }
 
 @Composable

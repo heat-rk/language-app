@@ -6,13 +6,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import ru.heatrk.languageapp.common.utils.consumeClicks
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffold
+import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldController
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppSystemBarsColors
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
-import ru.heatrk.languageapp.core.design.composables.scaffold.rememberAppScaffoldController
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.design.styles.isAppInDarkTheme
 
@@ -25,9 +26,11 @@ fun AppRootContainer(
     ) -> Unit,
 ) {
     AppTheme(isDarkTheme = isDarkTheme) {
-        val appScaffoldController = rememberAppScaffoldController(
-            snackbarHostState = SnackbarHostState(),
-        )
+        val appScaffoldController = remember(isDarkTheme) {
+            AppScaffoldController(
+                snackbarHostState = SnackbarHostState(),
+            )
+        }
 
         val currentAppBarState = appScaffoldController.appBarStates.lastOrNull()
             ?: AppBarState.Hidden

@@ -87,11 +87,11 @@ internal class SelectLanguageViewModel(
                 val language = languageItem.toDomain()
                     ?: throw IllegalStateException("Unknown language")
 
-                settingsRepository.changeLanguage(language)
-
                 reduce { (state as State.Loaded).copy(isChoosingLanguage = false) }
 
                 router.navigateBack()
+
+                settingsRepository.changeLanguage(language)
             },
             onError = {
                 reduce { (state as State.Loaded).copy(isChoosingLanguage = false) }
