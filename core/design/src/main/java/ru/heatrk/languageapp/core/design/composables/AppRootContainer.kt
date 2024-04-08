@@ -24,17 +24,17 @@ fun AppRootContainer(
         systemBarsColors: AppSystemBarsColors
     ) -> Unit,
 ) {
-    val appScaffoldController = rememberAppScaffoldController(
-        snackbarHostState = SnackbarHostState(),
-    )
-
-    val currentAppBarState = appScaffoldController.appBarStates.lastOrNull()
-        ?: AppBarState.Hidden
-
-    val appSystemBarsColors = appScaffoldController.systemBarsColors.lastOrNull()
-        ?: AppSystemBarsColors.Default
-
     AppTheme(isDarkTheme = isDarkTheme) {
+        val appScaffoldController = rememberAppScaffoldController(
+            snackbarHostState = SnackbarHostState(),
+        )
+
+        val currentAppBarState = appScaffoldController.appBarStates.lastOrNull()
+            ?: AppBarState.Hidden
+
+        val appSystemBarsColors = appScaffoldController.systemBarsColors.lastOrNull()
+            ?: AppSystemBarsColors.Default
+
         AppScaffold(
             snackbarHostState = appScaffoldController.snackbarHostState,
             appBarState = currentAppBarState,
