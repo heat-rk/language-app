@@ -116,7 +116,7 @@ internal class GuessAnimalViewModel(
             onError = {
                 postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
 
-                ProcessingState.Error.withReturnToNone { recoveringState ->
+                withReturnToNone(startWith = ProcessingState.Error) { recoveringState ->
                     reduce {
                         (state as State.Resolving).copy(
                             checkingAnswerState = recoveringState

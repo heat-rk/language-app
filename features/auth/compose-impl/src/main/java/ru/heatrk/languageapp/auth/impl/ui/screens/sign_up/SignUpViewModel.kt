@@ -159,7 +159,7 @@ class SignUpViewModel(
                 signUpRouter.navigate(routePath = SIGN_UP_PASSWORD_SCREEN_ROUTE_PATH)
             },
             onError = { throwable ->
-                ProcessingState.Error.withReturnToNone { registrationState ->
+                withReturnToNone(startWith = ProcessingState.Error) { registrationState ->
                     reduce { state.copy(registrationState = registrationState) }
                 }
 
@@ -190,7 +190,7 @@ class SignUpViewModel(
                     confirmedPassword = state.confirmedPassword,
                 )
 
-                ProcessingState.Success.withReturnToNone { registrationState ->
+                withReturnToNone(startWith = ProcessingState.Success) { registrationState ->
                     reduce {
                         state.copy(registrationState = registrationState)
                     }
@@ -199,7 +199,7 @@ class SignUpViewModel(
                 signUpRouter.navigate(routePath = SIGN_UP_EMAIL_CONFIRM_SCREEN_ROUTE_PATH)
             },
             onError = { throwable ->
-                ProcessingState.Error.withReturnToNone { registrationState ->
+                withReturnToNone(startWith = ProcessingState.Error) { registrationState ->
                     reduce { state.copy(registrationState = registrationState) }
                 }
 

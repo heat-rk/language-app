@@ -15,6 +15,7 @@ import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.design.utils.withReturnToNone
 import ru.heatrk.languageapp.core.navigation.api.Router
+import ru.heatrk.languageapp.exercises.word_practice.impl.domain.EmptyInputException
 import ru.heatrk.languageapp.exercises.word_practice.impl.domain.SourceLanguage
 import ru.heatrk.languageapp.exercises.word_practice.impl.domain.WordPracticeExercise
 import ru.heatrk.languageapp.exercises.word_practice.impl.domain.WordPracticeExercisesRepository
@@ -105,8 +106,8 @@ internal class WordPracticeViewModel(
                     )
                 }
 
-                val selectedAnswer =
-                    requireNotNull((state as State.Resolving).answers.getUserSelectedAnswer())
+                val selectedAnswer = (state as State.Resolving).answers.getUserSelectedAnswer()
+                    ?: throw EmptyInputException()
 
                 val exerciseResult = wordPractice(
                     streak = currentStreak,
@@ -116,11 +117,10 @@ internal class WordPracticeViewModel(
 
                 currentStreak = if (exerciseResult.isCorrect) currentStreak + 1 else 0
 
-                if (exerciseResult.isCorrect) {
-                    ProcessingState.Success
-                } else {
-                    ProcessingState.Error
-                }.withReturnToNone(
+                withReturnToNone(
+                    startWith =
+                        if (exerciseResult.isCorrect) ProcessingState.Success
+                        else ProcessingState.Error,
                     onStartState = { checkingAnswerState ->
                         reduce {
                             (state as State.Resolving).let { state ->
@@ -144,15 +144,18 @@ internal class WordPracticeViewModel(
                     }
                 )
             },
-            onError = {
-                postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
-
-                ProcessingState.Error.withReturnToNone { checkingAnswerState ->
+            onError = { throwable ->
+                withReturnToNone(startWith = ProcessingState.Error) { checkingAnswerState ->
                     reduce {
                         (state as State.Resolving).copy(
                             checkingAnswerState = checkingAnswerState
                         )
                     }
+                }
+
+                when(throwable) {
+                    is EmptyInputException -> Unit
+                    else -> postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
                 }
             }
         )

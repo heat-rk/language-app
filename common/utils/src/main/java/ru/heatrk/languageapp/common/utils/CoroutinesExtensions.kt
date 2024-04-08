@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 inline fun CoroutineScope.launchSafe(
     tag: String = "launchSafe",
     crossinline block: suspend CoroutineScope.() -> Unit,
-    crossinline onError: suspend (Throwable) -> Unit,
+    crossinline onError: suspend CoroutineScope.(Throwable) -> Unit,
 ): Job {
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         launch {

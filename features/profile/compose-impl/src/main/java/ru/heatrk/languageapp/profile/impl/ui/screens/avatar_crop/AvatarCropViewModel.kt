@@ -72,7 +72,7 @@ internal class AvatarCropViewModel(
                     avatarCrop = avatarCrop,
                 )
 
-                ProcessingState.Success.withReturnToNone { recoveringState ->
+                withReturnToNone(startWith = ProcessingState.Success) { recoveringState ->
                     reduce { state.copy(savingState = recoveringState) }
                 }
 
@@ -81,7 +81,7 @@ internal class AvatarCropViewModel(
             onError = {
                 postSideEffect(SideEffect.Message(strRes(DesignR.string.error_smth_went_wrong)))
 
-                ProcessingState.Error.withReturnToNone { recoveringState ->
+                withReturnToNone(startWith = ProcessingState.Error) { recoveringState ->
                     reduce { state.copy(savingState = recoveringState) }
                 }
             }

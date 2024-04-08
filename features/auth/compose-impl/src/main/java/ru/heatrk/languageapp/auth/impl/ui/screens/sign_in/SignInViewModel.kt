@@ -131,7 +131,7 @@ class SignInViewModel(
                     lastName = lastName,
                 )
 
-                ProcessingState.Success.withReturnToNone { recoveringState ->
+                withReturnToNone(startWith = ProcessingState.Success) { recoveringState ->
                     reduce { state.copy(authorizingState = recoveringState) }
                 }
 
@@ -165,7 +165,7 @@ class SignInViewModel(
                     password = state.password
                 )
 
-                ProcessingState.Success.withReturnToNone { recoveringState ->
+                withReturnToNone(startWith = ProcessingState.Success) { recoveringState ->
                     reduce { state.copy(authorizingState = recoveringState) }
                 }
 
@@ -180,7 +180,7 @@ class SignInViewModel(
                 )
             },
             onError = { throwable ->
-                ProcessingState.Error.withReturnToNone { recoveringState ->
+                withReturnToNone(startWith = ProcessingState.Error) { recoveringState ->
                     reduce { state.copy(authorizingState = recoveringState) }
                 }
 

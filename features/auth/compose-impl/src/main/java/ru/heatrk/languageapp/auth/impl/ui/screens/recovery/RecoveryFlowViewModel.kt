@@ -130,7 +130,7 @@ class RecoveryFlowViewModel(
                 recoveryRouter.navigate(RECOVERY_CHECK_EMAIL_SCREEN_ROUTE_PATH)
             },
             onError = { throwable ->
-                ProcessingState.Error.withReturnToNone { recoveringState ->
+                withReturnToNone(startWith = ProcessingState.Error) { recoveringState ->
                     reduce { state.copy(recoveringState = recoveringState) }
                 }
 
@@ -167,7 +167,7 @@ class RecoveryFlowViewModel(
                     confirmedPassword = state.confirmedPassword,
                 )
 
-                ProcessingState.Success.withReturnToNone { recoveringState ->
+                withReturnToNone(startWith = ProcessingState.Success) { recoveringState ->
                     reduce { state.copy(recoveringState = recoveringState) }
                 }
 
@@ -182,7 +182,7 @@ class RecoveryFlowViewModel(
                 )
             },
             onError = { throwable ->
-                ProcessingState.Error.withReturnToNone { recoveringState ->
+                withReturnToNone(startWith = ProcessingState.Error) { recoveringState ->
                     reduce { state.copy(recoveringState = recoveringState) }
                 }
 
