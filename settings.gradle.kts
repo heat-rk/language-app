@@ -24,7 +24,6 @@ include(
     ":core:navigation:compose-test",
     ":core:coroutines:dispatchers",
     ":core:coroutines:scopes",
-    ":core:data:db",
     ":core:data:cache",
     ":core:data:http-client",
     ":core:data:serialization",

@@ -6,7 +6,6 @@ import ru.heatrk.languageapp.auth.impl.di.includeAuthScope
 import ru.heatrk.languageapp.auth.impl.di.useAuthApiBeans
 import ru.heatrk.languageapp.core.coroutines.dispatchers.di.useDispatchersBeans
 import ru.heatrk.languageapp.core.coroutines.scopes.di.useCoroutineScopesBeans
-import ru.heatrk.languageapp.core.data.db.di.useDatabaseBeans
 import ru.heatrk.languageapp.core.data.http_client.di.useHttpClientBeans
 import ru.heatrk.languageapp.core.data.serialization.di.useSerializationBeans
 import ru.heatrk.languageapp.core.data.supabase.di.useSupaBaseBeans
@@ -27,7 +26,6 @@ val appScope = scope("app_scope") {
     useApplicationBeans()
     useDispatchersBeans()
     useCoroutineScopesBeans()
-    useDatabaseBeans()
     useHttpClientBeans()
     useSerializationBeans()
     useSupaBaseBeans()
