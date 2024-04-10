@@ -40,7 +40,7 @@ import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.core.design.composables.AppBar
 import ru.heatrk.languageapp.core.design.composables.AppPainterWrapper
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
-import ru.heatrk.languageapp.core.design.composables.animation.RightToLeftAnimatedContent
+import ru.heatrk.languageapp.core.design.composables.animation.FadeInAnimatedContent
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.toButtonState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
@@ -52,10 +52,10 @@ import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.exercises.guess_animal.api.ui.navigation.GUESS_ANIMAL_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.exercises.guess_animal.impl.R
-import ru.heatrk.languageapp.core.design.R as DesignR
-import ru.heatrk.languageapp.exercises.guess_animal.impl.ui.screens.guess_animal.GuessAnimalContract.State
-import ru.heatrk.languageapp.exercises.guess_animal.impl.ui.screens.guess_animal.GuessAnimalContract.SideEffect
 import ru.heatrk.languageapp.exercises.guess_animal.impl.ui.screens.guess_animal.GuessAnimalContract.Intent
+import ru.heatrk.languageapp.exercises.guess_animal.impl.ui.screens.guess_animal.GuessAnimalContract.SideEffect
+import ru.heatrk.languageapp.exercises.guess_animal.impl.ui.screens.guess_animal.GuessAnimalContract.State
+import ru.heatrk.languageapp.core.design.R as DesignR
 
 @Composable
 internal fun GuessAnimalScreen(viewModel: GuessAnimalViewModel) {
@@ -95,9 +95,9 @@ private fun GuessAnimalScreen(
         )
     )
 
-    RightToLeftAnimatedContent(
+    FadeInAnimatedContent(
         targetState = state,
-        contentKey = State::animationKey,
+        contentKey = { contentState -> contentState::class },
         label = "GuessAnimalContentAnimation"
     ) { contentState ->
         when (contentState) {
@@ -394,15 +394,6 @@ private fun ScreenSideEffects(
         }
     }
 }
-
-private val State.animationKey
-    get() = when (this) {
-        State.CorrectAnswer -> "correct_answer"
-        State.Error -> "error"
-        is State.IncorrectAnswer -> "incorrect_answer"
-        State.Loading -> "resolving"
-        is State.Resolving -> "resolving"
-    }
 
 private class PreviewStateProvider : PreviewParameterProvider<State> {
     override val values = sequenceOf(
