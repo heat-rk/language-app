@@ -44,6 +44,7 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
 import ru.heatrk.languageapp.main.api.ui.navigation.MAIN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.main.impl.R
 import ru.heatrk.languageapp.main.impl.ui.composables.app_bar.MainAppBar
@@ -99,7 +100,7 @@ private fun MainScreen(
             .nestedScroll(pullToRefreshState.nestedScrollConnection)
     ) {
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+            columns = GridCells.Adaptive(150.dp),
             state = scrollableState,
             horizontalArrangement = Arrangement.spacedBy(17.dp),
             contentPadding = PaddingValues(
@@ -336,6 +337,29 @@ private fun MainScreenPreviewLight(
 @Composable
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 private fun MainScreenPreviewDark(
+    @PreviewParameter(MainScreenPreviewStateProvider::class) state: State
+) {
+    MainScreenPreview(state = state)
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+)
+private fun MainScreenPreviewLightLarge(
+    @PreviewParameter(MainScreenPreviewStateProvider::class) state: State
+) {
+    MainScreenPreview(state = state)
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+private fun MainScreenPreviewDarkLarge(
     @PreviewParameter(MainScreenPreviewStateProvider::class) state: State
 ) {
     MainScreenPreview(state = state)
