@@ -19,7 +19,7 @@ fun isLargeScreen(): Boolean {
     return configuration.screenWidthDp > SMALL_DEVICE_MAX_WIDTH_DP
 }
 
-fun Modifier.supportLargeScreen() =
+fun Modifier.smallDeviceMaxWidth() =
     then(
         Modifier
             .widthIn(max = SMALL_DEVICE_MAX_WIDTH_DP.dp)

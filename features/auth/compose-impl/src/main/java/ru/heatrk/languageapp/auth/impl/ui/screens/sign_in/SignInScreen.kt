@@ -66,7 +66,7 @@ import ru.heatrk.languageapp.core.design.composables.text_field.AppPasswordTextF
 import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
-import ru.heatrk.languageapp.core.design.utils.supportLargeScreen
+import ru.heatrk.languageapp.core.design.utils.smallDeviceMaxWidth
 
 @Composable
 fun SignInScreen(viewModel: SignInViewModel) {
@@ -159,7 +159,7 @@ private fun SignInEmailPasswordBlock(
 ) {
     Column(
         modifier = Modifier
-            .supportLargeScreen()
+            .smallDeviceMaxWidth()
     ) {
         AppTextField(
             value = email,
@@ -221,7 +221,7 @@ private fun ColumnScope.SignInButtonsBlock(
         buttonState = loginButtonState,
         onClick = { onIntent(Intent.OnLoginButtonClick) },
         modifier = Modifier
-            .supportLargeScreen()
+            .smallDeviceMaxWidth()
             .fillMaxWidth()
     )
 

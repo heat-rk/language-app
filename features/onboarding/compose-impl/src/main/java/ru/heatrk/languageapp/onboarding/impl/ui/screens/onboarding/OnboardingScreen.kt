@@ -47,7 +47,7 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControl
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
-import ru.heatrk.languageapp.core.design.utils.supportLargeScreen
+import ru.heatrk.languageapp.core.design.utils.smallDeviceMaxWidth
 import ru.heatrk.languageapp.onboarding.impl.R
 import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingContract.Intent
 import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingContract.State
@@ -311,12 +311,12 @@ private fun OnboardingScreenLayout(
 
         primaryButtonContent(
             Modifier
-                .supportLargeScreen()
+                .smallDeviceMaxWidth()
                 .padding(horizontal = 24.dp)
         )
 
         secondaryButtonContent(
-            Modifier.supportLargeScreen()
+            Modifier.smallDeviceMaxWidth()
                 .padding(horizontal = 24.dp)
         )
 

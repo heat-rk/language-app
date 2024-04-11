@@ -28,7 +28,7 @@ import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
-import ru.heatrk.languageapp.core.design.utils.supportLargeScreen
+import ru.heatrk.languageapp.core.design.utils.smallDeviceMaxWidth
 
 @Composable
 fun SignUpGeneralInfoScreen(viewModel: SignUpViewModel) {
@@ -53,7 +53,7 @@ private fun SignUpGeneralInfoScreen(
 ) {
     Column(
         modifier = Modifier
-            .supportLargeScreen()
+            .smallDeviceMaxWidth()
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(horizontal = 24.dp)
