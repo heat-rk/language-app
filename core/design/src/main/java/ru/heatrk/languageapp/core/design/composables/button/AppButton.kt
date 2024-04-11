@@ -166,11 +166,13 @@ private fun AppButton(
             .drawWithContent {
                 drawContent()
 
-                drawIntoCanvas { canvas ->
-                    canvas.drawPath(
-                        blurPath,
-                        blurPaint
-                    )
+                if (buttonState != AppButtonState.Disabled) {
+                    drawIntoCanvas { canvas ->
+                        canvas.drawPath(
+                            blurPath,
+                            blurPaint
+                        )
+                    }
                 }
             }
     ) {
