@@ -52,6 +52,8 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControl
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
+import ru.heatrk.languageapp.core.design.utils.smallDeviceMaxWidth
 import ru.heatrk.languageapp.profile.api.ui.navigation.SELECT_LANGUAGE_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.profile.impl.R
 import ru.heatrk.languageapp.profile.impl.ui.screens.select_language.SelectLanguageContract.Intent
@@ -112,6 +114,7 @@ private fun SelectLanguageScreen(
                 bottom  = 12.dp + chooseButtonTopDp,
             ),
             modifier = Modifier
+                .smallDeviceMaxWidth()
                 .fillMaxSize()
         ) {
             titleItem()
@@ -131,6 +134,7 @@ private fun SelectLanguageScreen(
             state = state,
             onClick = { onIntent(Intent.OnChooseButtonClick) },
             modifier = Modifier
+                .smallDeviceMaxWidth()
                 .onGloballyPositioned { coordinates ->
                     chooseButtonTopPx = coordinates.boundsInParent().top
                 }
@@ -304,6 +308,29 @@ private fun SelectLanguageScreenPreviewLight(
 @Composable
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 private fun SelectLanguageScreenPreviewDark(
+    @PreviewParameter(SelectLanguagePreviewStateProvider::class) state: State
+) {
+    SelectLanguageScreenPreview(state)
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+)
+private fun SelectLanguageScreenPreviewLightLarge(
+    @PreviewParameter(SelectLanguagePreviewStateProvider::class) state: State
+) {
+    SelectLanguageScreenPreview(state)
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+private fun SelectLanguageScreenPreviewDarkLarge(
     @PreviewParameter(SelectLanguagePreviewStateProvider::class) state: State
 ) {
     SelectLanguageScreenPreview(state)
