@@ -44,6 +44,7 @@ fun AppButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    lightingEnabled: Boolean = true,
     buttonColors: AppButtonColors = AppButtonDefaults.colors(),
     buttonState: AppButtonState = AppButtonState.Idle,
 ) {
@@ -99,6 +100,7 @@ fun AppButton(
             onClick = onClick,
             buttonShape = buttonShape,
             buttonColors = buttonColors,
+            blurEnabled = lightingEnabled,
             blurPath = blurPath,
             blurPaint = blurPaint,
             modifier = Modifier
@@ -145,6 +147,7 @@ private fun AppButton(
     buttonColors: AppButtonColors,
     blurPath: Path,
     blurPaint: Paint,
+    blurEnabled: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -166,7 +169,7 @@ private fun AppButton(
             .drawWithContent {
                 drawContent()
 
-                if (buttonState != AppButtonState.Disabled) {
+                if (blurEnabled && buttonState != AppButtonState.Disabled) {
                     drawIntoCanvas { canvas ->
                         canvas.drawPath(
                             blurPath,
