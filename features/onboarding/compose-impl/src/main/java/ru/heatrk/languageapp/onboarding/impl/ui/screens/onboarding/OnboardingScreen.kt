@@ -46,6 +46,8 @@ import ru.heatrk.languageapp.core.design.composables.button.AppTextButton
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
+import ru.heatrk.languageapp.core.design.utils.supportLargeScreen
 import ru.heatrk.languageapp.onboarding.impl.R
 import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingContract.Intent
 import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingContract.State
@@ -115,21 +117,20 @@ private fun OnboardingScreenLoading() {
                     .shimmerEffect()
             )
         },
-        primaryButtonContent = {
+        primaryButtonContent = { buttonModifier ->
             Box(
-                modifier = Modifier
+                modifier = buttonModifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
                     .height(56.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .shimmerEffect()
             )
         },
-        secondaryButtonContent = {
+        secondaryButtonContent = { buttonModifier ->
             Spacer(modifier = Modifier.height(16.dp))
 
             Box(
-                modifier = Modifier
+                modifier = buttonModifier
                     .size(width = 111.dp, height = 20.dp)
                     .clip(RoundedCornerShape(12.dp))
                     .shimmerEffect()
@@ -162,20 +163,21 @@ private fun OnboardingScreenLoaded(
         descriptionContent = {
             OnboardingDescription(description = state.description)
         },
-        primaryButtonContent = {
+        primaryButtonContent = { buttonModifier ->
             OnboardingPrimaryButton(
                 progress = state.progress,
                 total = state.total,
-                onClick = { onIntent(Intent.Next) }
+                onClick = { onIntent(Intent.Next) },
+                modifier = buttonModifier
+                    .fillMaxWidth(),
             )
         },
-        secondaryButtonContent = {
+        secondaryButtonContent = { buttonModifier ->
             AppTextButton(
                 text = stringResource(R.string.onboarding_skip),
                 onClick = { onIntent(Intent.Skip) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
+                modifier = buttonModifier
+                    .fillMaxWidth(),
             )
         },
         modifier = modifier
@@ -247,11 +249,13 @@ private fun OnboardingPrimaryButton(
     progress: Int,
     total: Int,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     FadeInAnimatedContent(
         targetState = progress,
         fadeOutTargetAlpha = 1f,
         label = "Onboarding:Button",
+        modifier = modifier,
     ) { progress ->
         AppButton(
             text = when (progress) {
@@ -260,9 +264,6 @@ private fun OnboardingPrimaryButton(
                 else -> stringResource(R.string.onboarding_more)
             },
             onClick = onClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
         )
     }
 }
@@ -273,8 +274,8 @@ private fun OnboardingScreenLayout(
     progressContent: @Composable ColumnScope.() -> Unit,
     titleContent: @Composable ColumnScope.() -> Unit,
     descriptionContent: @Composable ColumnScope.() -> Unit,
-    primaryButtonContent: @Composable ColumnScope.() -> Unit,
-    secondaryButtonContent: @Composable ColumnScope.() -> Unit,
+    primaryButtonContent: @Composable ColumnScope.(Modifier) -> Unit,
+    secondaryButtonContent: @Composable ColumnScope.(Modifier) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -308,9 +309,16 @@ private fun OnboardingScreenLayout(
             descriptionContent()
         }
 
-        primaryButtonContent()
+        primaryButtonContent(
+            Modifier
+                .supportLargeScreen()
+                .padding(horizontal = 24.dp)
+        )
 
-        secondaryButtonContent()
+        secondaryButtonContent(
+            Modifier.supportLargeScreen()
+                .padding(horizontal = 24.dp)
+        )
 
         Spacer(modifier = Modifier.height(34.dp))
     }
@@ -359,6 +367,29 @@ private fun OnboardingScreenPreviewLight(
     uiMode = Configuration.UI_MODE_NIGHT_YES,
 )
 private fun OnboardingScreenPreviewDark(
+    @PreviewParameter(OnboardingScreenPreviewStateProvider::class) state: State
+) {
+    OnboardingScreenPreview(state)
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+)
+private fun OnboardingScreenPreviewLightLarge(
+    @PreviewParameter(OnboardingScreenPreviewStateProvider::class) state: State
+) {
+    OnboardingScreenPreview(state)
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+)
+private fun OnboardingScreenPreviewDarkLarge(
     @PreviewParameter(OnboardingScreenPreviewStateProvider::class) state: State
 ) {
     OnboardingScreenPreview(state)

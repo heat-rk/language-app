@@ -19,8 +19,10 @@
 
         <activity
             android:name=".presentation.RootActivity"
+            android:screenOrientation="portrait"
             android:launchMode="singleTop"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
