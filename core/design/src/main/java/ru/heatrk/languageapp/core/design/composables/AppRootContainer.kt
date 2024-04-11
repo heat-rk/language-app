@@ -12,8 +12,9 @@ import ru.heatrk.languageapp.common.utils.consumeClicks
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffold
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldController
-import ru.heatrk.languageapp.core.design.composables.scaffold.AppSystemBarsColors
+import ru.heatrk.languageapp.core.design.composables.scaffold.AppSystemBarsStyles
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
+import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppSystemBarsStylesDefault
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.design.styles.isAppInDarkTheme
 
@@ -22,7 +23,7 @@ fun AppRootContainer(
     isDarkTheme: Boolean = isAppInDarkTheme(),
     content: @Composable BoxScope.(
         isDarkTheme: Boolean,
-        systemBarsColors: AppSystemBarsColors
+        systemBarsColors: AppSystemBarsStyles
     ) -> Unit,
 ) {
     AppTheme(isDarkTheme = isDarkTheme) {
@@ -35,16 +36,21 @@ fun AppRootContainer(
         val currentAppBarState = appScaffoldController.appBarStates.lastOrNull()
             ?: AppBarState.Hidden
 
-        val appSystemBarsColors = appScaffoldController.systemBarsColors.lastOrNull()
-            ?: AppSystemBarsColors.Default
+        val appSystemBarsStylesDefault = AppSystemBarsStyles.default(isDarkTheme = isDarkTheme)
+
+        val appSystemBarsStyles = appScaffoldController.systemBarsStyles.lastOrNull()
+            ?: appSystemBarsStylesDefault
 
         AppScaffold(
             snackbarHostState = appScaffoldController.snackbarHostState,
             appBarState = currentAppBarState,
             modifier = Modifier.fillMaxSize(),
         ) {
-            CompositionLocalProvider(LocalAppScaffoldController provides appScaffoldController) {
-                content(isDarkTheme, appSystemBarsColors)
+            CompositionLocalProvider(
+                LocalAppScaffoldController provides appScaffoldController,
+                LocalAppSystemBarsStylesDefault provides appSystemBarsStylesDefault,
+            ) {
+                content(isDarkTheme, appSystemBarsStyles)
             }
         }
 

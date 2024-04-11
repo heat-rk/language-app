@@ -1,6 +1,7 @@
 package ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding
 
 import android.content.res.Configuration
+import androidx.activity.SystemBarStyle
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -44,10 +46,15 @@ import ru.heatrk.languageapp.core.design.composables.animation.RightToLeftAnimat
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.AppTextButton
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
+import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppSystemBarsStylesDefault
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.design.styles.AppUiMode
+import ru.heatrk.languageapp.core.design.styles.LocalAppUiMode
+import ru.heatrk.languageapp.core.design.styles.darkAppColors
 import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
 import ru.heatrk.languageapp.core.design.utils.smallDeviceMaxWidth
+import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.onboarding.impl.R
 import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingContract.Intent
 import ru.heatrk.languageapp.onboarding.impl.ui.screens.onboarding.OnboardingContract.State
@@ -67,7 +74,21 @@ private fun OnboardingScreen(
     state: State,
     onIntent: (Intent) -> Unit,
 ) {
-    AppScaffoldControllerEffect()
+    AppScaffoldControllerEffect(
+        appSystemBarsStyles = LocalAppSystemBarsStylesDefault.current.copy(
+            key = ONBOARDING_SCREEN_ROUTE_PATH,
+            statusBar = if (LocalAppUiMode.current == AppUiMode.DARK) {
+                SystemBarStyle.dark(
+                    scrim = AppTheme.colors.background.toArgb()
+                )
+            } else {
+                SystemBarStyle.light(
+                    scrim = AppTheme.colors.background.toArgb(),
+                    darkScrim = darkAppColors.background.toArgb(),
+                )
+            },
+        )
+    )
 
     when (state) {
         is State.Loading -> {

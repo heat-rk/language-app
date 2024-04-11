@@ -1,6 +1,7 @@
 package ru.heatrk.languageapp.profile.impl.ui.screens.avatar_crop
 
 import android.content.res.Configuration
+import androidx.activity.SystemBarStyle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,9 +31,10 @@ import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.toButtonState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
-import ru.heatrk.languageapp.core.design.composables.scaffold.AppSystemBarsColors
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
+import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppSystemBarsStylesDefault
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.design.styles.darkAppColors
 import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
 import ru.heatrk.languageapp.core.design.utils.smallDeviceMaxWidth
 import ru.heatrk.languageapp.profile.impl.R
@@ -67,9 +70,11 @@ private fun AvatarCropScreen(
                 onGoBackClick = { onIntent(Intent.OnGoBackClick) },
             )
         },
-        appSystemBarsColors = AppSystemBarsColors.Default.copy(
+        appSystemBarsStyles = LocalAppSystemBarsStylesDefault.current.copy(
             key = AVATAR_CROP_SCREEN_ROUTE_PATH,
-            navigationBar = AppTheme.colors.imageCropperBackground
+            navigationBar = SystemBarStyle.dark(
+                scrim = darkAppColors.background.toArgb(),
+            )
         )
     )
 

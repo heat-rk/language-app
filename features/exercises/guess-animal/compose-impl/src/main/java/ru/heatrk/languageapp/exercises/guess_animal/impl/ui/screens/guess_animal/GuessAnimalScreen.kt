@@ -1,6 +1,7 @@
 package ru.heatrk.languageapp.exercises.guess_animal.impl.ui.screens.guess_animal
 
 import android.content.res.Configuration
+import androidx.activity.SystemBarStyle
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -45,8 +47,8 @@ import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.toButtonState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
-import ru.heatrk.languageapp.core.design.composables.scaffold.AppSystemBarsColors
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
+import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppSystemBarsStylesDefault
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 import ru.heatrk.languageapp.core.design.styles.AppTheme
@@ -91,9 +93,11 @@ private fun GuessAnimalScreen(
                 onGoBackClick = { onIntent(Intent.OnGoBackClick) }
             )
         },
-        appSystemBarsColors = AppSystemBarsColors.Default.copy(
+        appSystemBarsStyles = LocalAppSystemBarsStylesDefault.current.copy(
             key = "$GUESS_ANIMAL_SCREEN_ROUTE_PATH/${state::class.simpleName}",
-            statusBar = accentColor
+            statusBar = SystemBarStyle.dark(
+                scrim = accentColor.toArgb()
+            )
         )
     )
 
