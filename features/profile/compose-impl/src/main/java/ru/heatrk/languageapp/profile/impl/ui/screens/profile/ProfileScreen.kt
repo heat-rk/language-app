@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -46,6 +47,8 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControl
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.design.styles.isAppInDarkTheme
+import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
+import ru.heatrk.languageapp.core.design.utils.smallDeviceMaxWidth
 import ru.heatrk.languageapp.profile.impl.R
 import ru.heatrk.languageapp.profile.impl.ui.composables.ProfileAppBar
 import ru.heatrk.languageapp.profile.impl.ui.composables.ProfileAppBarShimmer
@@ -106,6 +109,7 @@ private fun ProfileScreen(
 
     Column(
         verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
     ) {
@@ -113,6 +117,7 @@ private fun ProfileScreen(
             state = state,
             onIntent = onIntent,
             modifier = Modifier
+                .smallDeviceMaxWidth()
                 .fillMaxWidth()
                 .wrapContentHeight()
         )
@@ -309,6 +314,29 @@ private fun ProfileScreenPreviewLight(
 @Composable
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 private fun ProfileScreenPreviewDark(
+    @PreviewParameter(ProfileScreenPreviewStateProvider::class) state: State
+) {
+    ProfileScreenPreview(state)
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+)
+private fun ProfileScreenPreviewLightLarge(
+    @PreviewParameter(ProfileScreenPreviewStateProvider::class) state: State
+) {
+    ProfileScreenPreview(state)
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+private fun ProfileScreenPreviewDarkLarge(
     @PreviewParameter(ProfileScreenPreviewStateProvider::class) state: State
 ) {
     ProfileScreenPreview(state)

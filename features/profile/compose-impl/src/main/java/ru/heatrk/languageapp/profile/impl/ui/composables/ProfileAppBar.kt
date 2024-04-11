@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -30,6 +31,8 @@ import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
 import ru.heatrk.languageapp.core.design.composables.AppPainterWrapper
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
+import ru.heatrk.languageapp.core.design.utils.isLargeScreen
 import ru.heatrk.languageapp.profile.impl.R
 import ru.heatrk.languageapp.core.design.R as DesignR
 
@@ -129,6 +132,11 @@ private fun ProfileHeaderLayout(
     modifier: Modifier = Modifier,
 ) {
     Column(
+        horizontalAlignment = if (isLargeScreen()) {
+            Alignment.CenterHorizontally
+        } else {
+            Alignment.Start
+        },
         modifier = modifier
             .background(AppTheme.colors.primary)
     ) {
@@ -156,7 +164,13 @@ val ShimmerForegroundColor
     @Composable
     get() = AppTheme.colors.shimmerForeground
 
-private val ProfileAvatarSize = 134.dp
+private val ProfileAvatarSize
+    @Composable
+    get() = if (isLargeScreen()) {
+        174.dp
+    } else {
+        134.dp
+    }
 
 @Composable
 private fun ProfileHeaderPreview() {
@@ -196,5 +210,24 @@ private fun ProfileHeaderPreviewLight() {
 @Composable
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 private fun ProfileHeaderPreviewDark() {
+    ProfileHeaderPreview()
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+)
+private fun ProfileHeaderPreviewLightLarge() {
+    ProfileHeaderPreview()
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+private fun ProfileHeaderPreviewDarkLarge() {
     ProfileHeaderPreview()
 }
