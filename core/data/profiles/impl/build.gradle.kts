@@ -18,10 +18,6 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("debug")
-
             AppConfig.buildConfigFields(project).forEach { field ->
                 buildConfigField(field.type, field.name, "\"${field.releaseValue}\"")
             }

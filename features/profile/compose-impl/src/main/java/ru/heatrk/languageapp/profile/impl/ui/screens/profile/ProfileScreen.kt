@@ -49,6 +49,7 @@ import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.design.styles.isAppInDarkTheme
 import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
 import ru.heatrk.languageapp.core.design.utils.smallDeviceMaxWidth
+import ru.heatrk.languageapp.profile.impl.BuildConfig
 import ru.heatrk.languageapp.profile.impl.R
 import ru.heatrk.languageapp.profile.impl.ui.composables.ProfileAppBar
 import ru.heatrk.languageapp.profile.impl.ui.composables.ProfileAppBarShimmer
@@ -245,7 +246,7 @@ private fun ScreenSideEffects(
         permission = Manifest.permission.CAMERA,
         onPermissionResult = { granted ->
             if (granted) {
-                takePhotoUri = context.createTempPictureUri()
+                takePhotoUri = context.createTempPictureUri(authority = "${BuildConfig.APPLICATION_ID}.provider")
                 takePhoto.launch(takePhotoUri)
             }
         }

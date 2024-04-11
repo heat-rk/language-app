@@ -34,7 +34,6 @@ android {
             isShrinkResources = true
 
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("debug")
 
             buildConfigFields.forEach { field ->
                 buildConfigField(field.type, field.name, "\"${field.releaseValue}\"")

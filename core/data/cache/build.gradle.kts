@@ -15,26 +15,6 @@ android {
         testInstrumentationRunner = AppConfig.testInstrumentationRunner
     }
 
-    val buildConfigFields = AppConfig.buildConfigFields(project)
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("debug")
-
-            buildConfigFields.forEach { field ->
-                buildConfigField(field.type, field.name, "\"${field.releaseValue}\"")
-            }
-        }
-
-        debug {
-            buildConfigFields.forEach { field ->
-                buildConfigField(field.type, field.name, "\"${field.debugValue}\"")
-            }
-        }
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -42,10 +22,6 @@ android {
 
     kotlinOptions {
         jvmTarget = AppConfig.jvmTarget
-    }
-
-    buildFeatures {
-        buildConfig = true
     }
 }
 

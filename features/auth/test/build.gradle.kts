@@ -15,16 +15,6 @@ android {
         testInstrumentationRunner = AppConfig.testInstrumentationRunner
     }
 
-
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("debug")
-        }
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -32,10 +22,6 @@ android {
 
     kotlinOptions {
         jvmTarget = AppConfig.jvmTarget
-    }
-
-    buildFeatures {
-        buildConfig = true
     }
 }
 

@@ -6,7 +6,7 @@ import androidx.core.content.FileProvider
 import java.io.File
 
 fun Context.createTempPictureUri(
-    authority: String = "${BuildConfig.APPLICATION_ID}.provider",
+    authority: String,
     fileName: String = "picture_${System.currentTimeMillis()}",
     fileExtension: String = ".png"
 ): Uri {
