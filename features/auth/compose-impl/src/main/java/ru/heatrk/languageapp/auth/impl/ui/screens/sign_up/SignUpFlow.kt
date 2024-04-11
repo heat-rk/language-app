@@ -55,6 +55,7 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.design.utils.supportLargeScreen
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
 import ru.heatrk.languageapp.core.navigation.compose_impl.NavHost
 
@@ -81,6 +82,7 @@ fun SignUpFlow(viewModel: SignUpViewModel) {
     )
 
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .padding(vertical = 40.dp)
             .verticalScroll(rememberScrollState())
@@ -124,6 +126,7 @@ private fun ColumnScope.SignUpButtons(
         buttonState = state.registrationState.toButtonState(),
         onClick = buttonsState.onClick,
         modifier = Modifier
+            .supportLargeScreen()
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
     )
@@ -152,8 +155,8 @@ private fun ColumnScope.SignUpButtons(
             ),
             isEnabled = state.registrationState == ProcessingState.None,
             modifier = Modifier
+                .supportLargeScreen()
                 .padding(horizontal = 24.dp)
-                .align(Alignment.CenterHorizontally)
         )
     }
 }

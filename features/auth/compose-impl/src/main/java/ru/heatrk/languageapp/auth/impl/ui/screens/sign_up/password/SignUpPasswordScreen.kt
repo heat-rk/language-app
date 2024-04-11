@@ -20,6 +20,8 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpScreenContract
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpViewModel
 import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
+import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
+import ru.heatrk.languageapp.core.design.utils.supportLargeScreen
 
 @Composable
 fun SignUpPasswordScreen(viewModel: SignUpViewModel) {
@@ -44,6 +46,7 @@ private fun SignUpPasswordScreen(
 
     Column(
         modifier = Modifier
+            .supportLargeScreen()
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(horizontal = 24.dp)
@@ -95,5 +98,24 @@ private fun SignUpPasswordScreenPreviewLight() {
 @Composable
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 private fun SignUpPasswordScreenPreviewDark() {
+    SignUpPasswordScreenPreview()
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+)
+private fun SignUpPasswordScreenPreviewLightLarge() {
+    SignUpPasswordScreenPreview()
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+private fun SignUpPasswordScreenPreviewDarkLarge() {
     SignUpPasswordScreenPreview()
 }
