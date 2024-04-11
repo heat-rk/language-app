@@ -32,6 +32,8 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControl
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppSystemBarsColors
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
+import ru.heatrk.languageapp.core.design.utils.smallDeviceMaxWidth
 import ru.heatrk.languageapp.profile.impl.R
 import ru.heatrk.languageapp.profile.impl.ui.navigation.AVATAR_CROP_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.profile.impl.ui.screens.avatar_crop.AvatarCropContract.Intent
@@ -102,6 +104,7 @@ private fun AvatarCropScreen(
             buttonState = state.savingState.toButtonState(),
             onClick = { onIntent(Intent.OnSaveClick) },
             modifier = Modifier
+                .smallDeviceMaxWidth()
                 .fillMaxWidth()
                 .padding(24.dp)
                 .align(Alignment.BottomCenter)
@@ -150,5 +153,24 @@ private fun AvatarCropScreenPreviewLight() {
 @Composable
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 private fun AvatarCropScreenPreviewDark() {
+    AvatarCropScreenPreview()
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+)
+private fun AvatarCropScreenPreviewLightLarge() {
+    AvatarCropScreenPreview()
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+private fun AvatarCropScreenPreviewDarkLarge() {
     AvatarCropScreenPreview()
 }
