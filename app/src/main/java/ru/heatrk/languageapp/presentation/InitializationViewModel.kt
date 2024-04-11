@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.ktor.http.Url
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -104,7 +105,11 @@ class InitializationViewModel(
     }
 
     private suspend fun handleDeepLinks(intent: Intent) {
-        deepLinkRouters.any { router -> router.handle(intent) }
+        intent.data?.toString()?.let { uriString ->
+            deepLinkRouters.any { router ->
+                router.handle(Url(uriString))
+            }
+        }
     }
 
     companion object {

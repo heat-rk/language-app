@@ -9,6 +9,7 @@ import ru.heatrk.languageapp.core.coroutines.scopes.di.useCoroutineScopesBeans
 import ru.heatrk.languageapp.core.data.http_client.di.useHttpClientBeans
 import ru.heatrk.languageapp.core.data.serialization.di.useSerializationBeans
 import ru.heatrk.languageapp.core.data.supabase.di.useSupaBaseBeans
+import ru.heatrk.languageapp.core.di.useAndroidLoggerBeans
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
 import ru.heatrk.languageapp.core.profiles.impl.di.useProfilesBeans
@@ -31,6 +32,7 @@ val appScope = scope("app_scope") {
     useSupaBaseBeans()
     useComposeNavigationBeans()
     useProfilesBeans()
+    useAndroidLoggerBeans()
 
     useOnboardingApiBeans()
     useAuthApiBeans()

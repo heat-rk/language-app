@@ -1,9 +1,9 @@
 package ru.heatrk.languageapp.auth.impl.ui.navigation
 
-import android.content.Intent
 import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.exceptions.RestException
 import io.ktor.client.plugins.HttpRequestTimeoutException
+import io.ktor.http.Url
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 import ru.heatrk.languageapp.auth.impl.data.AuthRepositoryImpl
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_CHOOSE_PASSWORD_SCREEN_ROUTE_PATH
@@ -20,14 +20,14 @@ internal class AuthDeepLinkRouter(
     private val recoveryRouter: Router,
     private val authRepository: AuthRepository,
 ) : DeepLinkRouter {
-    override suspend fun handle(intent: Intent): Boolean {
+    override suspend fun handle(data: Url): Boolean {
         when {
-            isEmailConfirmDeepLink(intent) -> {
+            isEmailConfirmDeepLink(data) -> {
                 navigateToSignIn()
                 return true
             }
-            isRecoveryConfirmDeepLink(intent) -> {
-                val params = parseParams(intent.data?.query)
+            isRecoveryConfirmDeepLink(data) -> {
+                val params = parseParams(data.encodedQuery)
 
                 try {
                     val code = params[CODE_QUERY_KEY]
@@ -113,11 +113,11 @@ internal class AuthDeepLinkRouter(
         return params
     }
 
-    private fun isEmailConfirmDeepLink(intent: Intent) =
-        intent.data?.pathSegments?.contains(AuthRepositoryImpl.EMAIL_CONFIRM_URL_PATH) ?: false
+    private fun isEmailConfirmDeepLink(data: Url) =
+        data.pathSegments.contains(AuthRepositoryImpl.EMAIL_CONFIRM_URL_PATH)
 
-    private fun isRecoveryConfirmDeepLink(intent: Intent) =
-        intent.data?.pathSegments?.contains(AuthRepositoryImpl.RECOVERY_CONFIRM_URL_PATH) ?: false
+    private fun isRecoveryConfirmDeepLink(data: Url) =
+        data.pathSegments.contains(AuthRepositoryImpl.RECOVERY_CONFIRM_URL_PATH)
 
     companion object {
         private const val CODE_QUERY_KEY = "code"

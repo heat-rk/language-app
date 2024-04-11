@@ -24,6 +24,8 @@ include(
     ":core:navigation:compose-test",
     ":core:coroutines:dispatchers",
     ":core:coroutines:scopes",
+    ":core:logger:api",
+    ":core:logger:android",
     ":core:data:cache",
     ":core:data:http-client",
     ":core:data:serialization",

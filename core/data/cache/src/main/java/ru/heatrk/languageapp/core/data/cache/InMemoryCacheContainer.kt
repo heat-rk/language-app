@@ -30,7 +30,7 @@ class InMemoryCacheContainer<T>(
      * Returns true, if the cache has been expired.
      */
     val isExpired get() =
-        System.currentTimeMillis() - lastUpdateTime >= cacheLifeTime || cache == null
+        System.currentTimeMillis() - lastUpdateTime >= cacheLifeTime || cache.value == null
 
     /**
      * Returns true, if the cache has not been expired.

@@ -86,6 +86,8 @@ dependencies {
         ":core:navigation:compose-impl",
         ":core:coroutines:dispatchers",
         ":core:coroutines:scopes",
+        ":core:logger:api",
+        ":core:logger:android",
         ":core:data:http-client",
         ":core:data:serialization",
         ":core:data:supabase",

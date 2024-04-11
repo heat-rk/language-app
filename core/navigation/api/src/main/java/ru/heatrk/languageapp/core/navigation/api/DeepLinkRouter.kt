@@ -1,7 +1,7 @@
 package ru.heatrk.languageapp.core.navigation.api
 
-import android.content.Intent
+import io.ktor.http.Url
 
 interface DeepLinkRouter {
-    suspend fun handle(intent: Intent): Boolean
+    suspend fun handle(data: Url): Boolean
 }

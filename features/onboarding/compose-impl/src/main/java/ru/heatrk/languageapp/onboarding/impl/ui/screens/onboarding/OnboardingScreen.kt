@@ -256,9 +256,9 @@ private fun OnboardingPrimaryButton(
         fadeOutTargetAlpha = 1f,
         label = "Onboarding:Button",
         modifier = modifier,
-    ) { progress ->
+    ) { buttonStateProgress ->
         AppButton(
-            text = when (progress) {
+            text = when (buttonStateProgress) {
                 total - 1 -> stringResource(R.string.onboarding_log_in)
                 0 -> stringResource(R.string.onboarding_next)
                 else -> stringResource(R.string.onboarding_more)
