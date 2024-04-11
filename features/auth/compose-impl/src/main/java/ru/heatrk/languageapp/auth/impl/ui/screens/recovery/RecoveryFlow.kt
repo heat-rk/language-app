@@ -41,6 +41,7 @@ import ru.heatrk.languageapp.core.design.composables.button.toButtonState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
+import ru.heatrk.languageapp.core.design.utils.supportLargeScreen
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
 import ru.heatrk.languageapp.core.navigation.compose_impl.NavHost
 
@@ -87,6 +88,7 @@ fun RecoveryFlow(viewModel: RecoveryFlowViewModel) {
             buttonState = state.recoveringState.toButtonState(),
             onClick = buttonsController.onClick,
             modifier = Modifier
+                .supportLargeScreen()
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
         )

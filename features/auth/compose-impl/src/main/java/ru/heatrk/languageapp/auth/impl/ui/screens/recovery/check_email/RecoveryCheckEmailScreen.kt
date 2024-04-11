@@ -32,6 +32,7 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowViewModel
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
 
 
 @Composable
@@ -116,5 +117,24 @@ private fun RecoveryCheckEmailScreenPreviewLight() {
 @Composable
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 private fun RecoveryCheckEmailScreenPreviewDark() {
+    RecoveryCheckEmailScreenPreview()
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+)
+private fun RecoveryCheckEmailScreenPreviewLightLarge() {
+    RecoveryCheckEmailScreenPreview()
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+private fun RecoveryCheckEmailScreenPreviewDarkLarge() {
     RecoveryCheckEmailScreenPreview()
 }

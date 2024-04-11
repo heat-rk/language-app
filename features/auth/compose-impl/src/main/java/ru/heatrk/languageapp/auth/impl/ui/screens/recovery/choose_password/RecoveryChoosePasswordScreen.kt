@@ -21,6 +21,8 @@ import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowViewModel
 import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
+import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
+import ru.heatrk.languageapp.core.design.utils.supportLargeScreen
 
 @Composable
 fun RecoveryChoosePasswordScreen(viewModel: RecoveryFlowViewModel) {
@@ -44,6 +46,7 @@ private fun RecoveryChoosePasswordScreen(
 
     Column(
         modifier = Modifier
+            .supportLargeScreen()
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(horizontal = 24.dp)
@@ -95,5 +98,24 @@ private fun RecoveryChoosePasswordScreenPreviewLight() {
 @Composable
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 private fun RecoveryChoosePasswordScreenPreviewDark() {
+    RecoveryChoosePasswordScreenPreview()
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+)
+private fun RecoveryChoosePasswordScreenPreviewLightLarge() {
+    RecoveryChoosePasswordScreenPreview()
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+private fun RecoveryChoosePasswordScreenPreviewDarkLarge() {
     RecoveryChoosePasswordScreenPreview()
 }

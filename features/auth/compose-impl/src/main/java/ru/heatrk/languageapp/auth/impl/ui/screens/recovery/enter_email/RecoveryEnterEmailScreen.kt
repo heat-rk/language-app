@@ -32,6 +32,8 @@ import ru.heatrk.languageapp.common.utils.states.ProcessingState
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
+import ru.heatrk.languageapp.core.design.utils.supportLargeScreen
 
 @Composable
 fun RecoveryEnterEmailScreen(viewModel: RecoveryFlowViewModel) {
@@ -57,6 +59,7 @@ private fun RecoveryEnterEmailScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
+            .supportLargeScreen()
             .wrapContentHeight()
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
@@ -113,5 +116,24 @@ private fun RecoveryEnterEmailPreviewLight() {
 @Composable
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 private fun RecoveryEnterEmailPreviewDark() {
+    RecoveryEnterEmailPreview()
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+)
+private fun RecoveryEnterEmailPreviewLightLarge() {
+    RecoveryEnterEmailPreview()
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+private fun RecoveryEnterEmailPreviewDarkLarge() {
     RecoveryEnterEmailPreview()
 }
