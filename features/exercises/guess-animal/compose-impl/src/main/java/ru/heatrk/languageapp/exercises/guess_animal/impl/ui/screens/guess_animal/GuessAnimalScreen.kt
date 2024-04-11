@@ -50,6 +50,8 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldCo
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
+import ru.heatrk.languageapp.core.design.utils.smallDeviceMaxWidth
 import ru.heatrk.languageapp.exercises.guess_animal.api.ui.navigation.GUESS_ANIMAL_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.exercises.guess_animal.impl.R
 import ru.heatrk.languageapp.exercises.guess_animal.impl.ui.screens.guess_animal.GuessAnimalContract.Intent
@@ -131,6 +133,7 @@ private fun ScreenResolving(
     onIntent: (Intent) -> Unit,
 ) {
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp)
@@ -143,6 +146,7 @@ private fun ScreenResolving(
                     contentScale = ContentScale.FillWidth,
                     contentDescription = null,
                     modifier = Modifier
+                        .smallDeviceMaxWidth()
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .clip(AppTheme.shapes.medium),
@@ -174,6 +178,8 @@ private fun ScreenResolving(
             keyboardActions = KeyboardActions(
                 onDone = { onIntent(Intent.OnCheckButtonClick) }
             ),
+            modifier = Modifier
+                .smallDeviceMaxWidth(),
         )
 
         Spacer(modifier = Modifier.height(17.dp))
@@ -183,6 +189,7 @@ private fun ScreenResolving(
             buttonState = state.checkingAnswerState.toButtonState(),
             onClick = { onIntent(Intent.OnCheckButtonClick) },
             modifier = Modifier
+                .smallDeviceMaxWidth()
                 .fillMaxWidth()
         )
     }
@@ -191,12 +198,14 @@ private fun ScreenResolving(
 @Composable
 private fun ScreenShimmer() {
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp)
     ) {
         Box(
             modifier = Modifier
+                .smallDeviceMaxWidth()
                 .fillMaxWidth()
                 .height(328.dp)
                 .clip(AppTheme.shapes.medium)
@@ -205,27 +214,34 @@ private fun ScreenShimmer() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Box(
+        Column(
             modifier = Modifier
-                .size(width = 100.dp, height = 15.dp)
-                .clip(AppTheme.shapes.small)
-                .shimmerEffect()
-        )
+                .smallDeviceMaxWidth()
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(width = 100.dp, height = 15.dp)
+                    .clip(AppTheme.shapes.small)
+                    .shimmerEffect()
+            )
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .clip(AppTheme.shapes.medium)
-                .shimmerEffect()
-        )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .clip(AppTheme.shapes.medium)
+                    .shimmerEffect()
+            )
+        }
+
 
         Spacer(modifier = Modifier.height(17.dp))
 
         Box(
             modifier = Modifier
+                .smallDeviceMaxWidth()
                 .fillMaxWidth()
                 .height(56.dp)
                 .clip(AppTheme.shapes.medium)
@@ -271,6 +287,7 @@ private fun ScreenCorrectAnswer(
             text = stringResource(DesignR.string.next),
             onClick = { onIntent(Intent.OnNextButtonClick) },
             modifier = Modifier
+                .smallDeviceMaxWidth()
                 .fillMaxWidth()
         )
     }
@@ -314,6 +331,7 @@ private fun ScreenIncorrectAnswer(
             text = stringResource(DesignR.string.next),
             onClick = { onIntent(Intent.OnNextButtonClick) },
             modifier = Modifier
+                .smallDeviceMaxWidth()
                 .fillMaxWidth()
         )
 
@@ -323,6 +341,7 @@ private fun ScreenIncorrectAnswer(
             text = stringResource(DesignR.string.try_again),
             onClick = { onIntent(Intent.OnTryAgainButtonClick) },
             modifier = Modifier
+                .smallDeviceMaxWidth()
                 .fillMaxWidth()
         )
     }
@@ -365,6 +384,7 @@ private fun ScreenError(
             text = stringResource(DesignR.string.try_again),
             onClick = { onIntent(Intent.OnNextButtonClick) },
             modifier = Modifier
+                .smallDeviceMaxWidth()
                 .fillMaxWidth()
         )
     }
@@ -431,6 +451,29 @@ private fun GuessAnimalScreenPreviewLight(
 @Composable
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 private fun GuessAnimalScreenPreviewDark(
+    @PreviewParameter(PreviewStateProvider::class) state: State
+) {
+    GuessAnimalScreenPreview(state = state)
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+)
+private fun GuessAnimalScreenPreviewLightLarge(
+    @PreviewParameter(PreviewStateProvider::class) state: State
+) {
+    GuessAnimalScreenPreview(state = state)
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+private fun GuessAnimalScreenPreviewDarkLarge(
     @PreviewParameter(PreviewStateProvider::class) state: State
 ) {
     GuessAnimalScreenPreview(state = state)
