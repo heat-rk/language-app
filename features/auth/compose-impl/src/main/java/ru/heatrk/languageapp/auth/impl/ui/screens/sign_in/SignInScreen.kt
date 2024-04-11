@@ -3,11 +3,11 @@ package ru.heatrk.languageapp.auth.impl.ui.screens.sign_in
 import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -65,6 +65,8 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldCo
 import ru.heatrk.languageapp.core.design.composables.text_field.AppPasswordTextField
 import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
+import ru.heatrk.languageapp.core.design.utils.supportLargeScreen
 
 @Composable
 fun SignInScreen(viewModel: SignInViewModel) {
@@ -99,8 +101,9 @@ private fun SignInScreen(
     )
 
     Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .fillMaxSize()
             .padding(24.dp)
     ) {
         Image(
@@ -154,52 +157,57 @@ private fun SignInEmailPasswordBlock(
     passwordErrorMessage: String? = null,
     onIntent: (Intent) -> Unit,
 ) {
-    AppTextField(
-        value = email,
-        isEnabled = isInputEnabled,
-        placeholder = stringResource(R.string.email),
-        label = stringResource(R.string.email_address),
-        singleLine = true,
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Next
-        ),
-        errorMessage = emailErrorMessage,
-        onValueChange = { onIntent(Intent.OnEmailTextChanged(it)) },
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-    )
+            .supportLargeScreen()
+    ) {
+        AppTextField(
+            value = email,
+            isEnabled = isInputEnabled,
+            placeholder = stringResource(R.string.email),
+            label = stringResource(R.string.email_address),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            ),
+            errorMessage = emailErrorMessage,
+            onValueChange = { onIntent(Intent.OnEmailTextChanged(it)) },
+            modifier = Modifier
+                .fillMaxWidth()
+        )
 
-    Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-    AppPasswordTextField(
-        value = password,
-        isEnabled = isInputEnabled,
-        isPasswordVisible = isPasswordVisible,
-        label = stringResource(R.string.password),
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = { onIntent(Intent.OnLoginButtonClick) }
-        ),
-        errorMessage = passwordErrorMessage,
-        onValueChange = { onIntent(Intent.OnPasswordTextChanged(it)) },
-        onPasswordVisibilityToggleClick = { onIntent(Intent.OnPasswordVisibilityToggleClick) },
-        modifier = Modifier
-            .fillMaxWidth()
-    )
+        AppPasswordTextField(
+            value = password,
+            isEnabled = isInputEnabled,
+            isPasswordVisible = isPasswordVisible,
+            label = stringResource(R.string.password),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = { onIntent(Intent.OnLoginButtonClick) }
+            ),
+            errorMessage = passwordErrorMessage,
+            onValueChange = { onIntent(Intent.OnPasswordTextChanged(it)) },
+            onPasswordVisibilityToggleClick = { onIntent(Intent.OnPasswordVisibilityToggleClick) },
+            modifier = Modifier
+                .fillMaxWidth()
+        )
 
-    Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
-    AppTextButton(
-        text = stringResource(R.string.sign_in_forgot_password),
-        isEnabled = isInputEnabled,
-        textColor = AppTheme.colors.error,
-        contentPadding = PaddingValues(0.dp),
-        onClick = { onIntent(Intent.OnForgotPasswordButtonClick) },
-        modifier = Modifier
-            .wrapContentWidth()
-    )
+        AppTextButton(
+            text = stringResource(R.string.sign_in_forgot_password),
+            isEnabled = isInputEnabled,
+            textColor = AppTheme.colors.error,
+            contentPadding = PaddingValues(0.dp),
+            onClick = { onIntent(Intent.OnForgotPasswordButtonClick) },
+            modifier = Modifier
+                .wrapContentWidth()
+        )
+    }
 }
 
 @Composable
@@ -213,6 +221,7 @@ private fun ColumnScope.SignInButtonsBlock(
         buttonState = loginButtonState,
         onClick = { onIntent(Intent.OnLoginButtonClick) },
         modifier = Modifier
+            .supportLargeScreen()
             .fillMaxWidth()
     )
 
@@ -381,5 +390,24 @@ private fun LoginScreenPreviewLight() {
     uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 private fun LoginScreenPreviewNight() {
+    LoginScreenPreview()
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+)
+private fun LoginScreenPreviewLightLarge() {
+    LoginScreenPreview()
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+private fun LoginScreenPreviewNightLarge() {
     LoginScreenPreview()
 }

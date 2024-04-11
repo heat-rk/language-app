@@ -41,6 +41,7 @@ fun AppRootContainer(
         AppScaffold(
             snackbarHostState = appScaffoldController.snackbarHostState,
             appBarState = currentAppBarState,
+            modifier = Modifier.fillMaxSize(),
         ) {
             CompositionLocalProvider(LocalAppScaffoldController provides appScaffoldController) {
                 content(isDarkTheme, appSystemBarsColors)
