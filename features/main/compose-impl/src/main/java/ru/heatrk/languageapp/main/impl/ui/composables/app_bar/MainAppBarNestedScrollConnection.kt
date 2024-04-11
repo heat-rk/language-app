@@ -45,10 +45,11 @@ class MainAppBarDefaultNestedScrollConnection(
 
 class MainAppBarSnapNestedScrollConnection(
     density: Density,
+    appBarMaxHeight: Dp,
     private val scrollableState: ScrollableState,
 ) : MainAppBarNestedScrollConnection(
     density = density,
-    appBarMaxHeight = MainAppBarExpandedHeight,
+    appBarMaxHeight = appBarMaxHeight,
 ) {
     private var scrollOffset by mutableFloatStateOf(0f)
 
@@ -85,11 +86,13 @@ fun rememberAppBarSnapScrollConnection(
     scrollableState: ScrollableState
 ): MainAppBarNestedScrollConnection {
     val density = LocalDensity.current
+    val maxHeight = MainAppBarExpandedHeight
 
     return remember(density) {
         MainAppBarSnapNestedScrollConnection(
             density = density,
-            scrollableState = scrollableState
+            scrollableState = scrollableState,
+            appBarMaxHeight = maxHeight
         )
     }
 }

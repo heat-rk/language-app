@@ -38,6 +38,8 @@ import ru.heatrk.languageapp.core.design.composables.AppPainterWrapper
 import ru.heatrk.languageapp.core.design.composables.animation.FadeInAnimatedContent
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
+import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
+import ru.heatrk.languageapp.core.design.utils.isLargeScreen
 import ru.heatrk.languageapp.main.impl.R
 import ru.heatrk.languageapp.core.design.R as DesignR
 
@@ -178,10 +180,12 @@ private fun MainAppBarLayout(
     modifier: Modifier = Modifier,
 ) {
     val scrollProgress by scrollingBehaviour.getAppBarProgressState()
+    val minHeight = MainAppBarCollapsedHeight
+    val maxHeight = MainAppBarExpandedHeight
 
     val appBarHeight by remember {
         derivedStateOf {
-            MainAppBarCollapsedHeight + (MainAppBarExpandedHeight - MainAppBarCollapsedHeight) * scrollProgress
+            minHeight + (maxHeight - minHeight) * scrollProgress
         }
     }
 
@@ -291,9 +295,18 @@ val ShimmerForegroundColor
     @Composable
     get() = AppTheme.colors.shimmerForeground
 
-val MainAppBarCollapsedHeight = 102.dp
-val MainAppBarExpandedHeight = 175.dp
-val AvatarSize = 54.dp
+
+val MainAppBarCollapsedHeight
+    @Composable
+    get() = if (isLargeScreen()) 152.dp else 102.dp
+
+val MainAppBarExpandedHeight
+    @Composable
+    get() = if (isLargeScreen()) 225.dp else 175.dp
+
+val AvatarSize
+    @Composable
+    get() = if (isLargeScreen()) 104.dp else 54.dp
 
 private class MainAppBarPreviewStateProvider : PreviewParameterProvider<MainAppBarState> {
     override val values = sequenceOf(
@@ -325,6 +338,29 @@ private fun MainAppBarPreviewLight(
 @Composable
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 private fun MainAppBarPreviewDark(
+    @PreviewParameter(MainAppBarPreviewStateProvider::class) state: MainAppBarState
+) {
+    MainAppBarPreview(state = state)
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+)
+private fun MainAppBarPreviewLightLarge(
+    @PreviewParameter(MainAppBarPreviewStateProvider::class) state: MainAppBarState
+) {
+    MainAppBarPreview(state = state)
+}
+
+@Composable
+@Preview(
+    showBackground = true,
+    device = COMPOSE_LARGE_DEVICE_SPEC,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+private fun MainAppBarPreviewDarkLarge(
     @PreviewParameter(MainAppBarPreviewStateProvider::class) state: MainAppBarState
 ) {
     MainAppBarPreview(state = state)
