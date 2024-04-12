@@ -49,8 +49,8 @@ class InMemoryCacheContainer<T>(
 
     val valueFlow = cache.asStateFlow()
 
-    fun getValueOrSave(value: T): T {
-        return this.value ?: value.also { this.value = value }
+    suspend fun getValueOrSave(valueProvider: suspend () -> T): T {
+        return this.value ?: valueProvider().also { newValue -> this.value = newValue }
     }
 
     fun valueFlow(defaultDataProvider: suspend () -> T): Flow<T> {

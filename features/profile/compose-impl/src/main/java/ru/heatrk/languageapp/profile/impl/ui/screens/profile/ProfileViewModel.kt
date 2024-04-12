@@ -12,7 +12,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import ru.heatrk.languageapp.auth.api.domain.AuthRepository
+import ru.heatrk.languageapp.auth.api.domain.AuthSignOutUseCase
 import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.common.utils.strRes
@@ -36,7 +36,7 @@ class ProfileViewModel(
     private val router: Router,
     private val profilesRepository: ProfilesRepository,
     private val settingsRepository: SettingsRepository,
-    private val authRepository: AuthRepository,
+    private val signOut: AuthSignOutUseCase,
 ) : ViewModel(), ContainerHost<State, SideEffect> {
     override val container = container<State, SideEffect>(
         initialState = State()
@@ -148,7 +148,7 @@ class ProfileViewModel(
             block = {
                 reduce { state.copy(isSignOutInProcess = true) }
 
-                authRepository.signOut()
+                signOut()
 
                 reduce { state.copy(isSignOutInProcess = false) }
             },

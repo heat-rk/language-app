@@ -6,11 +6,13 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import org.koin.core.module.Module
 import org.koin.core.qualifier.qualifier
 import org.koin.dsl.module
+import ru.heatrk.languageapp.auth.api.domain.AuthSignOutUseCase
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 import ru.heatrk.languageapp.auth.api.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.data.AuthRepositoryImpl
 import ru.heatrk.languageapp.auth.impl.data.AuthStorage
 import ru.heatrk.languageapp.auth.impl.data.google.AuthGoogleNonceProviderImpl
+import ru.heatrk.languageapp.auth.impl.domain.AuthSignOutUseCaseImpl
 import ru.heatrk.languageapp.auth.impl.domain.password_validator.PasswordValidator
 import ru.heatrk.languageapp.auth.impl.domain.recovery.RecoveryUseCase
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
@@ -133,6 +135,13 @@ private fun Module.useUseCasesBeans() {
         RecoveryUseCase(
             repository = get(),
             validatePassword = get()
+        )
+    }
+
+    factory<AuthSignOutUseCase> {
+        AuthSignOutUseCaseImpl(
+            authRepository = get(),
+            profilesRepository = get(),
         )
     }
 }

@@ -42,7 +42,7 @@ private fun Module.useProfileScreenBeans() {
                         router = get(),
                         profilesRepository = get(),
                         settingsRepository = get(),
-                        authRepository = get(),
+                        signOut = get(),
                     )
                 }
             }

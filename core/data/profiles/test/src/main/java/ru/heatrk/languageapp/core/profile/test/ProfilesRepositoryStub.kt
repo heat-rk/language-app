@@ -13,6 +13,8 @@ object ProfilesRepositoryStub : ProfilesRepository {
 
     override suspend fun fetchCurrentProfile() = profileStub
 
+    override suspend fun clearCachedUserProfile() = Unit
+
     override suspend fun observeCurrentProfile(reload: Boolean): Flow<Profile> = emptyFlow()
 
     override suspend fun updateCurrentProfileAvatar(

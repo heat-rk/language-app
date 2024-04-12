@@ -7,6 +7,7 @@ import io.github.jan.supabase.postgrest.query.Order
 import io.github.jan.supabase.storage.storage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import ru.heatrk.languageapp.core.data.cache.InMemoryCacheContainer
@@ -48,16 +49,17 @@ internal class ProfilesRepositoryImpl(
             profileData.toDomain()
         }
 
+    override suspend fun clearCachedUserProfile() {
+        inMemoryUserProfileCacheContainer.clear()
+    }
+
     override suspend fun observeCurrentProfile(reload: Boolean): Flow<Profile> {
-        if (reload) {
+        if (reload || inMemoryUserProfileCacheContainer.isExpired) {
             inMemoryUserProfileCacheContainer.value = fetchCurrentProfile()
         }
 
-        return inMemoryUserProfileCacheContainer.valueFlow(
-            defaultDataProvider = {
-                inMemoryUserProfileCacheContainer.getValueOrSave(fetchCurrentProfile())
-            }
-        )
+        return inMemoryUserProfileCacheContainer.valueFlow
+            .filterNotNull()
     }
 
     override suspend fun getLeaderboard(count: Long): List<Profile> =
