@@ -6,5 +6,5 @@ import org.koin.core.component.get
 
 object GuessAnimalComponent : KoinComponent {
     val guessAnimalViewModelFactory: ViewModelProvider.Factory
-        get() = get<GuessAnimalViewModelFactory>().instance
+        get() = get(GuessAnimalViewModelFactoryQualifier)
 }

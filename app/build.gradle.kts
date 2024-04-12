@@ -136,5 +136,6 @@ dependencies {
 
     testDependencies(
         AppDependencies.Testing.junit,
+        AppDependencies.Koin.test,
     )
 }

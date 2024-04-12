@@ -6,5 +6,5 @@ import org.koin.core.component.get
 
 object WordPracticeComponent : KoinComponent {
     val wordPracticeViewModelFactory: ViewModelProvider.Factory
-        get() = get<WordPracticeViewModelFactory>().instance
+        get() = get(WordPracticeViewModelFactoryQualifier)
 }

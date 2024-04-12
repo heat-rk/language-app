@@ -4,11 +4,6 @@ import androidx.lifecycle.ViewModelProvider
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
-import ru.heatrk.languageapp.auth.impl.di.recovery.RecoveryComposeRouter
-import ru.heatrk.languageapp.auth.impl.di.recovery.RecoveryViewModelFactory
-import ru.heatrk.languageapp.auth.impl.di.sign_in.SignInViewModelFactory
-import ru.heatrk.languageapp.auth.impl.di.sign_up.SignUpComposeRouter
-import ru.heatrk.languageapp.auth.impl.di.sign_up.SignUpViewModelFactory
 import ru.heatrk.languageapp.core.env.EnvironmentConfig
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
 
@@ -17,17 +12,17 @@ object AuthComponent : KoinComponent {
     val environmentConfig: EnvironmentConfig by inject()
 
     val signInViewModelFactory: ViewModelProvider.Factory
-        get() = get<SignInViewModelFactory>().instance
+        get() = get(SignInViewModelFactoryQualifier)
 
     val signUpViewModelFactory: ViewModelProvider.Factory
-        get() = get<SignUpViewModelFactory>().instance
+        get() = get(SignUpViewModelFactoryQualifier)
 
     val recoveryViewModelFactory: ViewModelProvider.Factory
-        get() = get<RecoveryViewModelFactory>().instance
+        get() = get(RecoveryViewModelFactoryQualifier)
 
     val signUpComposeRouter: ComposeRouter
-        get() = get<SignUpComposeRouter>().instance
+        get() = get(SignUpComposeRouterQualifier)
 
     val recoveryRouter: ComposeRouter
-        get() = get<RecoveryComposeRouter>().instance
+        get() = get(RecoveryComposeRouterQualifier)
 }

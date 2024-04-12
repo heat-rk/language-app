@@ -1,9 +1,12 @@
 package ru.heatrk.languageapp.core.coroutines.scopes.di
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import org.koin.core.qualifier.qualifier
 import org.koin.dsl.module
-import ru.heatrk.languageapp.core.coroutines.scopes.LongRunningCoroutineScope
+
+val LongRunningCoroutineScopeQualifier = qualifier("LongRunningCoroutineScope")
 
 val coroutineScopesModule = module {
-    single<LongRunningCoroutineScope> { LongRunningCoroutineScope(MainScope()) }
+    single<CoroutineScope>(LongRunningCoroutineScopeQualifier) { MainScope() }
 }

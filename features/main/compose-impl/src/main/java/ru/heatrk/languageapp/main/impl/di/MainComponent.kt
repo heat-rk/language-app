@@ -6,5 +6,5 @@ import org.koin.core.component.get
 
 object MainComponent : KoinComponent {
     val mainViewModelFactory: ViewModelProvider.Factory
-        get() = get<MainViewModelFactory>().instance
+        get() = get(MainViewModelFactoryQualifier)
 }

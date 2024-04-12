@@ -4,8 +4,8 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import org.koin.core.module.Module
 import org.koin.dsl.module
-import ru.heatrk.languageapp.core.coroutines.dispatchers.DefaultCoroutineDispatcher
-import ru.heatrk.languageapp.core.coroutines.dispatchers.IoCoroutineDispatcher
+import ru.heatrk.languageapp.core.coroutines.dispatchers.di.DefaultCoroutineDispatcherQualifier
+import ru.heatrk.languageapp.core.coroutines.dispatchers.di.IoCoroutineDispatcherQualifier
 import ru.heatrk.languageapp.profile.api.domain.SettingsRepository
 import ru.heatrk.languageapp.profile.impl.data.AvatarCropperImpl
 import ru.heatrk.languageapp.profile.impl.data.SettingsRepositoryImpl
@@ -18,7 +18,7 @@ val profileModule = module {
     single<SettingsStorage> {
         SettingsStorage(
             applicationContext = get(),
-            storageDispatcher = get<IoCoroutineDispatcher>().instance
+            storageDispatcher = get(IoCoroutineDispatcherQualifier)
         )
     }
 
@@ -53,7 +53,7 @@ private fun Module.useProfileScreenBeans() {
 private fun Module.useAvatarCropperBeans() {
     factory<AvatarCropper> {
         AvatarCropperImpl(
-            cropperDispatcher = get<DefaultCoroutineDispatcher>().instance,
+            cropperDispatcher = get(DefaultCoroutineDispatcherQualifier),
             applicationContext = get(),
         )
     }

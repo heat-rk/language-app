@@ -6,5 +6,5 @@ import org.koin.core.component.get
 
 object OnboardingComponent : KoinComponent {
     val onboardingViewModelFactory: ViewModelProvider.Factory
-        get() = get<OnboardingViewModelFactory>().instance
+        get() = get(OnboardingViewModelFactoryQualifier)
 }

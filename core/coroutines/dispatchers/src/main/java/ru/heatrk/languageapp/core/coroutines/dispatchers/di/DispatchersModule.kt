@@ -1,13 +1,16 @@
 package ru.heatrk.languageapp.core.coroutines.dispatchers.di
 
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import org.koin.core.qualifier.qualifier
 import org.koin.dsl.module
-import ru.heatrk.languageapp.core.coroutines.dispatchers.DefaultCoroutineDispatcher
-import ru.heatrk.languageapp.core.coroutines.dispatchers.IoCoroutineDispatcher
-import ru.heatrk.languageapp.core.coroutines.dispatchers.MainCoroutineDispatcher
+
+val MainCoroutineDispatcherQualifier = qualifier("MainCoroutineDispatcher")
+val IoCoroutineDispatcherQualifier = qualifier("IoCoroutineDispatcher")
+val DefaultCoroutineDispatcherQualifier = qualifier("DefaultCoroutineDispatcher")
 
 val dispatchersModule = module {
-    single<MainCoroutineDispatcher> { MainCoroutineDispatcher(Dispatchers.Main) }
-    single<IoCoroutineDispatcher> { IoCoroutineDispatcher(Dispatchers.IO) }
-    single<DefaultCoroutineDispatcher> { DefaultCoroutineDispatcher(Dispatchers.Default) }
+    single<CoroutineDispatcher>(MainCoroutineDispatcherQualifier) { Dispatchers.Main }
+    single<CoroutineDispatcher>(IoCoroutineDispatcherQualifier) { Dispatchers.IO }
+    single<CoroutineDispatcher>(DefaultCoroutineDispatcherQualifier) { Dispatchers.Default }
 }

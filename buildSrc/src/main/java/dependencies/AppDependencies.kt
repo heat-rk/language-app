@@ -79,6 +79,10 @@ object AppDependencies {
         val core = Dependency(
             notation = "io.insert-koin:koin-core",
         )
+
+        val test = Dependency(
+            notation = "io.insert-koin:koin-test",
+        )
     }
 
     object Accompanist {

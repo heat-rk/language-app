@@ -1,22 +1,24 @@
 package ru.heatrk.languageapp.main.impl.di
 
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import org.koin.core.qualifier.qualifier
 import org.koin.dsl.module
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainViewModel
 
+internal val MainViewModelFactoryQualifier = qualifier("MainViewModelFactory")
+
 val mainModule = module {
-    single<MainViewModelFactory> {
-        MainViewModelFactory(
-            viewModelFactory {
-                initializer {
-                    MainViewModel(
-                        profilesRepository = get(),
-                        settingsRepository = get(),
-                        router = get(),
-                    )
-                }
+    single<ViewModelProvider.Factory>(MainViewModelFactoryQualifier) {
+        viewModelFactory {
+            initializer {
+                MainViewModel(
+                    profilesRepository = get(),
+                    settingsRepository = get(),
+                    router = get(),
+                )
             }
-        )
+        }
     }
 }
