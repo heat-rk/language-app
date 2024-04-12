@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,7 +52,8 @@ fun ChoosePassword(
             isEnabled = state.isEnabled,
             label = stringResource(R.string.password),
             keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Password,
             ),
             errorMessage = state.passwordErrorMessage?.extract(),
             onValueChange = { onIntent(Intent.OnPasswordChanged(it)) },
@@ -68,7 +70,8 @@ fun ChoosePassword(
             isEnabled = state.isEnabled,
             label = stringResource(R.string.confirm_password),
             keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Password,
             ),
             keyboardActions = KeyboardActions(
                 onDone = {

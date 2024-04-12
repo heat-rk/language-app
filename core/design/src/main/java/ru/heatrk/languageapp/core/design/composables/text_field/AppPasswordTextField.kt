@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,7 +44,9 @@ fun AppPasswordTextField(
         singleLine = true,
         isEnabled = isEnabled,
         keyboardActions = keyboardActions,
-        keyboardOptions = keyboardOptions,
+        keyboardOptions = keyboardOptions.copy(
+            keyboardType = KeyboardType.Password,
+        ),
         visualTransformation = if (isPasswordVisible) {
             VisualTransformation.None
         } else {
