@@ -40,7 +40,7 @@ fun RecoverySuccessScreen(viewModel: RecoveryFlowViewModel) {
 }
 
 @Composable
-private fun RecoverySuccessScreen(
+internal fun RecoverySuccessScreen(
     onIntent: (Intent) -> Unit
 ) {
     RecoveryButtonsControllerEffect(

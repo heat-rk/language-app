@@ -35,7 +35,7 @@ fun RecoveryChoosePasswordScreen(viewModel: RecoveryFlowViewModel) {
 }
 
 @Composable
-private fun RecoveryChoosePasswordScreen(
+internal fun RecoveryChoosePasswordScreen(
     state: State,
     onIntent: (Intent) -> Unit,
 ) {

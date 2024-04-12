@@ -2,16 +2,14 @@ package ru.heatrk.languageapp.auth.impl.ui.navigation.recovery
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import ru.heatrk.languageapp.auth.impl.di.AuthComponent
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlow
 import ru.heatrk.languageapp.core.navigation.compose_impl.Route
 
-internal class RecoveryFlowRoute(
-    private val recoveryViewModelFactory: ViewModelProvider.Factory
-) : Route.Screen(
+internal object RecoveryFlowRoute : Route.Screen(
     path = RECOVERY_FLOW_ROUTE_PATH
 ) {
     @Composable
@@ -19,7 +17,11 @@ internal class RecoveryFlowRoute(
         navController: NavController,
         navBackStackEntry: NavBackStackEntry
     ) {
-        RecoveryFlow(viewModel = viewModel(factory = recoveryViewModelFactory))
+        RecoveryFlow(
+            viewModel = viewModel(
+                factory = AuthComponent.recoveryViewModelFactory
+            )
+        )
     }
 }
 

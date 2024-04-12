@@ -46,7 +46,7 @@ fun RecoveryCheckEmailScreen(viewModel: RecoveryFlowViewModel) {
 }
 
 @Composable
-private fun RecoveryCheckEmailScreen(
+internal fun RecoveryCheckEmailScreen(
     state: State,
     onIntent: (Intent) -> Unit
 ) {

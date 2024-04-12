@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -79,16 +80,19 @@ fun MainLeaderboardItem(
         Text(
             text = leader.fullName?.extract() ?: stringResource(DesignR.string.profile_name_unknown),
             style = AppTheme.typography.bodyLarge,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             fontSize = 17.sp,
             fontWeight = FontWeight.Medium,
             color = AppTheme.colors.onBackground,
+            modifier = Modifier
+                .weight(2f),
         )
-
-        Spacer(modifier = Modifier.weight(1f))
 
         Text(
             text = stringResource(R.string.main_points_formatted, leader.totalScore),
             style = AppTheme.typography.bodyLarge,
+            maxLines = 1,
             fontSize = 17.sp,
             fontWeight = FontWeight.Medium,
             color = AppTheme.colors.onBackground,
@@ -162,7 +166,18 @@ private fun MainLeaderboardItemPreview() {
             MainLeaderboardItem(
                 leader = MainScreenContract.State.Leaderboard.Item(
                     id = "1",
-                    fullName = strRes("Ivanov Ivan"),
+                    fullName = strRes("Ivan Ivanov"),
+                    avatar = painterRes(DesignR.drawable.ic_avatar_placeholder),
+                    totalScore = 10f
+                )
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            MainLeaderboardItem(
+                leader = MainScreenContract.State.Leaderboard.Item(
+                    id = "1",
+                    fullName = strRes("Thebigname ThebigLastName"),
                     avatar = painterRes(DesignR.drawable.ic_avatar_placeholder),
                     totalScore = 10f
                 )

@@ -53,6 +53,14 @@ class AuthStorage(
             preferences.getString(PREFS_ACCESS_TOKEN_KEY, null)
         }
 
+    suspend fun clearTokens(): Unit =
+        withContext(storageDispatcher) {
+            preferences.edit {
+                remove(PREFS_ACCESS_TOKEN_KEY)
+                remove(PREFS_REFRESH_TOKEN_KEY)
+            }
+        }
+
     data class Tokens(
         val accessToken: String?,
         val refreshToken: String?

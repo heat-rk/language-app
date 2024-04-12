@@ -47,7 +47,7 @@ fun RecoveryEnterEmailScreen(viewModel: RecoveryFlowViewModel) {
 }
 
 @Composable
-private fun RecoveryEnterEmailScreen(
+internal fun RecoveryEnterEmailScreen(
     state: State,
     onIntent: (Intent) -> Unit
 ) {

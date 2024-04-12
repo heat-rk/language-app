@@ -35,12 +35,6 @@ import ru.heatrk.languageapp.core.design.utils.smallDeviceMaxWidth
 fun SignUpGeneralInfoScreen(viewModel: SignUpViewModel) {
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
 
-    SignUpButtonsControllerEffect(
-        text = stringResource(R.string.button_continue),
-        isLoginButtonVisible = true,
-        onClick = { viewModel.processIntent(SignUpScreenContract.Intent.OnContinueButtonClick) }
-    )
-
     SignUpGeneralInfoScreen(
         state = state,
         onIntent = viewModel::processIntent
@@ -48,10 +42,16 @@ fun SignUpGeneralInfoScreen(viewModel: SignUpViewModel) {
 }
 
 @Composable
-private fun SignUpGeneralInfoScreen(
+internal fun SignUpGeneralInfoScreen(
     state: SignUpScreenContract.State,
     onIntent: (SignUpScreenContract.Intent) -> Unit,
 ) {
+    SignUpButtonsControllerEffect(
+        text = stringResource(R.string.button_continue),
+        isLoginButtonVisible = true,
+        onClick = { onIntent(SignUpScreenContract.Intent.OnContinueButtonClick) }
+    )
+
     Column(
         modifier = Modifier
             .smallDeviceMaxWidth()

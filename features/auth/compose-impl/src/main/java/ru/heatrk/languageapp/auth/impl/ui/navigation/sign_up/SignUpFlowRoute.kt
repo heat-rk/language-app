@@ -2,16 +2,14 @@ package ru.heatrk.languageapp.auth.impl.ui.navigation.sign_up
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import ru.heatrk.languageapp.auth.impl.di.AuthComponent
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_up.SignUpFlow
 import ru.heatrk.languageapp.core.navigation.compose_impl.Route
 
-internal class SignUpFlowRoute(
-    private val signUpViewModelFactory: ViewModelProvider.Factory
-) : Route.Screen(
+internal object SignUpFlowRoute : Route.Screen(
     path = SIGN_UP_FLOW_ROUTE_PATH
 ) {
     @Composable
@@ -19,7 +17,11 @@ internal class SignUpFlowRoute(
         navController: NavController,
         navBackStackEntry: NavBackStackEntry
     ) {
-        SignUpFlow(viewModel = viewModel(factory = signUpViewModelFactory))
+        SignUpFlow(
+            viewModel = viewModel(
+                factory = AuthComponent.signUpViewModelFactory
+            )
+        )
     }
 }
 

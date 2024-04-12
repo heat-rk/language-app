@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -20,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -32,10 +31,17 @@ import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_FLOW_ROUT
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RecoveryGraphRoute
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.SideEffect
+import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.State
+import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.check_email.RecoveryCheckEmailScreen
+import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.choose_password.RecoveryChoosePasswordScreen
+import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.enter_email.RecoveryEnterEmailScreen
+import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.error.RecoveryErrorScreen
+import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.success.RecoverySuccessScreen
 import ru.heatrk.languageapp.common.utils.compose.ScreenSideEffectsFlowHandler
 import ru.heatrk.languageapp.common.utils.compose.handleMessageSideEffect
 import ru.heatrk.languageapp.core.design.composables.AppBar
 import ru.heatrk.languageapp.core.design.composables.AppBarTitleGravity
+import ru.heatrk.languageapp.core.design.composables.AppRootContainer
 import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.toButtonState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
@@ -48,19 +54,43 @@ import ru.heatrk.languageapp.core.navigation.compose_impl.NavHost
 @Composable
 fun RecoveryFlow(viewModel: RecoveryFlowViewModel) {
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
-    val appBarTitle = stringResource(R.string.password_recovery)
     val navController = rememberNavController()
-    val buttonsController = rememberRecoveryButtonsController()
     val coroutineScope = rememberCoroutineScope()
 
     RecoveryFlowSideEffects(sideEffects = viewModel.container.sideEffectFlow)
 
+    RecoveryFlow(
+        state = state,
+        onIntent = viewModel::processIntent
+    ) {
+        NavHost(
+            navController = navController,
+            graph = RecoveryGraphRoute(
+                recoveryViewModelProvider = { viewModel }
+            ),
+        )
+
+        RecoveryLaunchedRouterEffect(
+            coroutineScope = coroutineScope,
+            navController = navController
+        )
+    }
+}
+
+@Composable
+private fun RecoveryFlow(
+    state: State,
+    onIntent : (Intent) -> Unit,
+    content: @Composable () -> Unit,
+) {
+    val buttonsController = rememberRecoveryButtonsController()
+
     AppScaffoldControllerEffect(
         appBarState = AppBarState.Custom(key = RECOVERY_FLOW_ROUTE_PATH) {
             AppBar(
-                title = appBarTitle,
+                title = stringResource(R.string.password_recovery),
                 titleGravity = AppBarTitleGravity.CENTER,
-                onGoBackClick = { viewModel.processIntent(Intent.OnGoBackClick) },
+                onGoBackClick = { onIntent(Intent.OnGoBackClick) },
             )
         }
     )
@@ -68,18 +98,13 @@ fun RecoveryFlow(viewModel: RecoveryFlowViewModel) {
     Column(
         modifier = Modifier
             .padding(vertical = 40.dp)
-            .verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier.weight(1f))
 
-        CompositionLocalProvider(LocalRecoveryButtonsController provides buttonsController) {
-            NavHost(
-                navController = navController,
-                graph = RecoveryGraphRoute(
-                    recoveryViewModelProvider = { viewModel }
-                ),
-            )
-        }
+        CompositionLocalProvider(
+            value = LocalRecoveryButtonsController provides buttonsController,
+            content = content,
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -93,11 +118,6 @@ fun RecoveryFlow(viewModel: RecoveryFlowViewModel) {
                 .padding(horizontal = 24.dp)
         )
     }
-
-    RecoveryLaunchedRouterEffect(
-        coroutineScope = coroutineScope,
-        navController = navController
-    )
 }
 
 @Composable
@@ -163,5 +183,74 @@ internal fun RecoveryButtonsControllerEffect(
     LaunchedEffect(recoveryButtonsController) {
         recoveryButtonsController.text = text
         recoveryButtonsController.onClick = onClick
+    }
+}
+
+@Composable
+private fun RecoveryFlowPreview(
+    content: @Composable (State) -> Unit,
+) {
+    val state = State()
+
+    AppRootContainer { _, _ ->
+        RecoveryFlow(
+            state = state,
+            onIntent = {}
+        ) {
+            content(state)
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun RecoveryFlowPreviewEnterEmail() {
+    RecoveryFlowPreview { state ->
+        RecoveryEnterEmailScreen(
+            state = state,
+            onIntent = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun RecoveryFlowPreviewCheckEmail() {
+    RecoveryFlowPreview { state ->
+        RecoveryCheckEmailScreen(
+            state = state,
+            onIntent = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun RecoveryFlowPreviewChoosePassword() {
+    RecoveryFlowPreview { state ->
+        RecoveryChoosePasswordScreen(
+            state = state,
+            onIntent = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun RecoveryFlowPreviewSuccess() {
+    RecoveryFlowPreview {
+        RecoverySuccessScreen(
+            onIntent = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun RecoveryFlowPreviewError() {
+    RecoveryFlowPreview {
+        RecoveryErrorScreen(
+            onIntent = {}
+        )
     }
 }

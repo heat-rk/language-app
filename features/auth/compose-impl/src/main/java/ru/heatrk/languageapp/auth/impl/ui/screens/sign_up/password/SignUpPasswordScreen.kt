@@ -34,7 +34,7 @@ fun SignUpPasswordScreen(viewModel: SignUpViewModel) {
 }
 
 @Composable
-private fun SignUpPasswordScreen(
+internal fun SignUpPasswordScreen(
     state: SignUpScreenContract.State,
     onIntent: (SignUpScreenContract.Intent) -> Unit,
 ) {

@@ -38,7 +38,7 @@ fun SignUpEmailConfirmScreen(viewModel: SignUpViewModel) {
 }
 
 @Composable
-private fun SignUpEmailConfirmScreen(
+internal fun SignUpEmailConfirmScreen(
     onIntent: (SignUpScreenContract.Intent) -> Unit,
 ) {
     SignUpButtonsControllerEffect(

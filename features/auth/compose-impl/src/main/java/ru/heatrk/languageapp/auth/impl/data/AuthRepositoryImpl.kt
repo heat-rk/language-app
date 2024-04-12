@@ -196,6 +196,7 @@ class AuthRepositoryImpl(
 
     override suspend fun signOut(): Unit =
         withContext(supabaseDispatcher) {
+            authStorage.clearTokens()
             supabaseClient.auth.signOut()
         }
 
