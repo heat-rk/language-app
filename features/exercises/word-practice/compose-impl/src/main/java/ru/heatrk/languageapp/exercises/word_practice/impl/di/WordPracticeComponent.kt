@@ -1,9 +1,10 @@
 package ru.heatrk.languageapp.exercises.word_practice.impl.di
 
 import androidx.lifecycle.ViewModelProvider
-import scout.Component
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-object WordPracticeComponent : Component(wordPracticeScope) {
+object WordPracticeComponent : KoinComponent {
     val wordPracticeViewModelFactory: ViewModelProvider.Factory
         get() = get<WordPracticeViewModelFactory>().instance
 }

@@ -1,10 +1,10 @@
 package ru.heatrk.languageapp.core.data.serialization.di
 
 import kotlinx.serialization.json.Json
-import scout.definition.Registry
+import org.koin.dsl.module
 
-fun Registry.useSerializationBeans() {
-    singleton<Json> {
+val serializationModule = module {
+    single<Json> {
         Json {
             encodeDefaults = true
             coerceInputValues = true

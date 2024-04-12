@@ -1,6 +1,9 @@
 package ru.heatrk.languageapp.auth.impl.di
 
 import androidx.lifecycle.ViewModelProvider
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.component.inject
 import ru.heatrk.languageapp.auth.impl.di.recovery.RecoveryComposeRouter
 import ru.heatrk.languageapp.auth.impl.di.recovery.RecoveryViewModelFactory
 import ru.heatrk.languageapp.auth.impl.di.sign_in.SignInViewModelFactory
@@ -8,12 +11,10 @@ import ru.heatrk.languageapp.auth.impl.di.sign_up.SignUpComposeRouter
 import ru.heatrk.languageapp.auth.impl.di.sign_up.SignUpViewModelFactory
 import ru.heatrk.languageapp.core.env.EnvironmentConfig
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
-import scout.Component
 
-object AuthComponent : Component(authScope) {
+object AuthComponent : KoinComponent {
 
-    val environmentConfig: EnvironmentConfig
-        get() = get()
+    val environmentConfig: EnvironmentConfig by inject()
 
     val signInViewModelFactory: ViewModelProvider.Factory
         get() = get<SignInViewModelFactory>().instance

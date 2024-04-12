@@ -1,9 +1,10 @@
 package ru.heatrk.languageapp.exercises.guess_animal.impl.di
 
 import androidx.lifecycle.ViewModelProvider
-import scout.Component
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-object GuessAnimalComponent : Component(guessAnimalScope) {
+object GuessAnimalComponent : KoinComponent {
     val guessAnimalViewModelFactory: ViewModelProvider.Factory
         get() = get<GuessAnimalViewModelFactory>().instance
 }

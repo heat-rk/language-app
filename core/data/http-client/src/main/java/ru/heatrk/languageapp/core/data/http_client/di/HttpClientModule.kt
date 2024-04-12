@@ -6,11 +6,11 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
+import org.koin.dsl.module
 import ru.heatrk.languageapp.core.AppLogger
-import scout.definition.Registry
 
-fun Registry.useHttpClientBeans() {
-    singleton<HttpClient> {
+val httpClientModule = module {
+    single<HttpClient> {
         HttpClient {
             // config ....
             expectSuccess = true

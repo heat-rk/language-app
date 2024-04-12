@@ -16,6 +16,7 @@ dependencies {
         AppDependencies.Ktor.logging,
         AppDependencies.Ktor.serialization,
         AppDependencies.Ktor.negotiation,
-        AppDependencies.Scout.core,
+        AppDependencies.Koin.bom,
+        AppDependencies.Koin.core,
     )
 }

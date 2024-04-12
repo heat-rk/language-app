@@ -3,15 +3,16 @@ package ru.heatrk.languageapp.profile.impl.di
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.component.inject
 import ru.heatrk.languageapp.core.env.EnvironmentConfig
 import ru.heatrk.languageapp.profile.impl.ui.screens.avatar_crop.AvatarCropViewModel
 import ru.heatrk.languageapp.profile.impl.ui.screens.select_language.SelectLanguageViewModel
-import scout.Component
 
-object ProfileComponent : Component(profileScope) {
+object ProfileComponent : KoinComponent {
 
-    val environmentConfig: EnvironmentConfig
-        get() = get()
+    val environmentConfig: EnvironmentConfig by inject()
 
     val profileViewModelFactory: ViewModelProvider.Factory
         get() = get<ProfileViewModelFactory>().instance

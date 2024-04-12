@@ -1,9 +1,10 @@
 package ru.heatrk.languageapp.onboarding.impl.di
 
 import androidx.lifecycle.ViewModelProvider
-import scout.Component
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-object OnboardingComponent : Component(onboardingScope) {
+object OnboardingComponent : KoinComponent {
     val onboardingViewModelFactory: ViewModelProvider.Factory
         get() = get<OnboardingViewModelFactory>().instance
 }

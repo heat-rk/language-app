@@ -7,11 +7,11 @@ import io.github.jan.supabase.gotrue.FlowType
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.serializer.KotlinXSerializer
 import io.github.jan.supabase.storage.Storage
+import org.koin.dsl.module
 import ru.heatrk.languageapp.core.env.EnvironmentConfig
-import scout.definition.Registry
 
-fun Registry.useSupaBaseBeans() {
-    singleton<SupabaseClient> {
+val supabaseModule = module {
+    single<SupabaseClient> {
         val environmentConfig = get<EnvironmentConfig>()
 
         createSupabaseClient(

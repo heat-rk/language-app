@@ -69,20 +69,15 @@ object AppDependencies {
         )
     }
 
-    object Scout {
+    object Koin {
+        val bom = Dependency(
+            notation = "io.insert-koin:koin-bom",
+            version = "3.5.3",
+            isPlatform = true
+        )
+
         val core = Dependency(
-            notation = "com.yandex.scout:scout-core",
-            version = Versions.scout
-        )
-
-        val validator = Dependency(
-            notation = "com.yandex.scout:scout-validator",
-            version = Versions.scout
-        )
-
-        val graphCollector = Dependency(
-            notation = "com.yandex.scout:classgraph-collector",
-            version = Versions.scout
+            notation = "io.insert-koin:koin-core",
         )
     }
 

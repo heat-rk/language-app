@@ -39,7 +39,7 @@ import ru.heatrk.languageapp.profile.api.domain.ForcedTheme
 class RootActivity : ComponentActivity() {
 
     private val initializationViewModel: InitializationViewModel by viewModels(
-        factoryProducer = { AppComponent.getRootViewModelFactory(intent) }
+        factoryProducer = { AppComponent.getInitializationViewModelFactory(intent) }
     )
 
     private val themeViewModel: ThemeViewModel by viewModels(

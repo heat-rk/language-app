@@ -1,9 +1,10 @@
 package ru.heatrk.languageapp.main.impl.di
 
 import androidx.lifecycle.ViewModelProvider
-import scout.Component
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-object MainComponent : Component(mainScope) {
+object MainComponent : KoinComponent {
     val mainViewModelFactory: ViewModelProvider.Factory
         get() = get<MainViewModelFactory>().instance
 }

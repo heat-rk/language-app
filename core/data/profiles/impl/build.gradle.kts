@@ -38,6 +38,7 @@ dependencies {
 
     dependencies(
         AppDependencies.kotlinXSerialization,
-        AppDependencies.Scout.core,
+        AppDependencies.Koin.bom,
+        AppDependencies.Koin.core,
     )
 }

@@ -115,7 +115,8 @@ dependencies {
         AppDependencies.Ktx.core,
         AppDependencies.Coroutines.core,
         AppDependencies.Coroutines.android,
-        AppDependencies.Scout.core,
+        AppDependencies.Koin.bom,
+        AppDependencies.Koin.core,
         AppDependencies.Orbit.viewModel,
         AppDependencies.Orbit.compose,
         AppDependencies.Coil.compose,
@@ -135,7 +136,5 @@ dependencies {
 
     testDependencies(
         AppDependencies.Testing.junit,
-        AppDependencies.Scout.validator,
-        AppDependencies.Scout.graphCollector,
     )
 }

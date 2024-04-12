@@ -48,7 +48,8 @@ dependencies {
 
     dependencies(
         AppDependencies.immutableCollections,
-        AppDependencies.Scout.core,
+        AppDependencies.Koin.bom,
+        AppDependencies.Koin.core,
         AppDependencies.Orbit.viewModel,
         AppDependencies.Orbit.compose,
         AppDependencies.Coroutines.core,

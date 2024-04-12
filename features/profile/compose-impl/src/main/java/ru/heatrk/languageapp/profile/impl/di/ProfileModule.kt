@@ -2,6 +2,8 @@ package ru.heatrk.languageapp.profile.impl.di
 
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import org.koin.core.module.Module
+import org.koin.dsl.module
 import ru.heatrk.languageapp.core.coroutines.dispatchers.DefaultCoroutineDispatcher
 import ru.heatrk.languageapp.core.coroutines.dispatchers.IoCoroutineDispatcher
 import ru.heatrk.languageapp.profile.api.domain.SettingsRepository
@@ -11,40 +13,28 @@ import ru.heatrk.languageapp.profile.impl.data.SettingsStorage
 import ru.heatrk.languageapp.profile.impl.domain.AvatarCropper
 import ru.heatrk.languageapp.profile.impl.domain.CroppedAvatarUploadUseCase
 import ru.heatrk.languageapp.profile.impl.ui.screens.profile.ProfileViewModel
-import scout.Scope
-import scout.definition.Registry
-import scout.scope
 
-private var _profileScope: Scope? = null
-
-internal val profileScope get() = requireNotNull(_profileScope)
-
-fun Scope.includeProfileScope() {
-    _profileScope = scope("profile_scope") {
-        dependsOn(this@includeProfileScope)
-        useProfileScreenBeans()
-        useAvatarCropperBeans()
-    }
-}
-
-fun Registry.useProfileApiBeans() {
-    singleton<SettingsStorage> {
+val profileModule = module {
+    single<SettingsStorage> {
         SettingsStorage(
             applicationContext = get(),
             storageDispatcher = get<IoCoroutineDispatcher>().instance
         )
     }
 
-    reusable<SettingsRepository> {
+    factory<SettingsRepository> {
         SettingsRepositoryImpl(
             settingsStorage = get(),
             applicationContext = get(),
         )
     }
+
+    useProfileScreenBeans()
+    useAvatarCropperBeans()
 }
 
-private fun Registry.useProfileScreenBeans() {
-    singleton<ProfileViewModelFactory> {
+private fun Module.useProfileScreenBeans() {
+    single<ProfileViewModelFactory> {
         ProfileViewModelFactory(
             viewModelFactory {
                 initializer {
@@ -60,15 +50,15 @@ private fun Registry.useProfileScreenBeans() {
     }
 }
 
-private fun Registry.useAvatarCropperBeans() {
-    reusable<AvatarCropper> {
+private fun Module.useAvatarCropperBeans() {
+    factory<AvatarCropper> {
         AvatarCropperImpl(
             cropperDispatcher = get<DefaultCoroutineDispatcher>().instance,
             applicationContext = get(),
         )
     }
 
-    reusable<CroppedAvatarUploadUseCase> {
+    factory<CroppedAvatarUploadUseCase> {
         CroppedAvatarUploadUseCase(
             profilesRepository = get(),
             avatarCropper = get(),

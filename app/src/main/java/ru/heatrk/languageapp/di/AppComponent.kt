@@ -4,23 +4,25 @@ import android.content.Intent
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.component.inject
 import ru.heatrk.languageapp.core.navigation.compose_impl.ComposeRouter
 import ru.heatrk.languageapp.presentation.AuthEventListenerViewModel
 import ru.heatrk.languageapp.presentation.InitializationViewModel
 import ru.heatrk.languageapp.presentation.ThemeViewModel
-import scout.Component
 
-object AppComponent : Component(appScope) {
-    val router: ComposeRouter get() = get()
+object AppComponent : KoinComponent {
+    val router: ComposeRouter by inject()
 
-    fun getRootViewModelFactory(intent: Intent) =
+    fun getInitializationViewModelFactory(intent: Intent) =
         viewModelFactory {
             initializer {
                 InitializationViewModel(
                     onboardingRepository = get(),
                     authRepository = get(),
                     router = get(),
-                    deepLinkRouters = collect(),
+                    deepLinkRouters = getKoin().getAll(),
                     savedStateHandle = createSavedStateHandle(),
                     intent = intent,
                 )

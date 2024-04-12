@@ -4,12 +4,18 @@ import android.app.Application
 import coil.Coil
 import coil.ImageLoader
 import coil.decode.ImageDecoderDecoder
+import org.koin.core.context.startKoin
+import ru.heatrk.languageapp.di.appModules
 
 class LanguageApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
         _instance = this
+
+        startKoin {
+            modules(appModules)
+        }
 
         Coil.setImageLoader {
             ImageLoader.Builder(this)

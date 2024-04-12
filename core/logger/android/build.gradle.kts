@@ -31,6 +31,7 @@ dependencies {
     )
 
     dependencies(
-        AppDependencies.Scout.core,
+        AppDependencies.Koin.bom,
+        AppDependencies.Koin.core,
     )
 }

@@ -8,6 +8,7 @@ plugins {
 dependencies {
     dependencies(
         AppDependencies.Coroutines.core,
-        AppDependencies.Scout.core,
+        AppDependencies.Koin.bom,
+        AppDependencies.Koin.core,
     )
 }
