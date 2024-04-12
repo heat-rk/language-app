@@ -19,8 +19,8 @@ import androidx.navigation.testing.TestNavHostController
 import org.junit.Rule
 import org.junit.Test
 import ru.heatrk.languageapp.auth.api.ui.navigation.AUTH_GRAPH_ROUTE_PATH
-import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
-import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
+import ru.heatrk.languageapp.auth.api.domain.google.AuthGoogleNonce
+import ru.heatrk.languageapp.auth.api.domain.google.AuthGoogleNonceProvider
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInUseCase
 import ru.heatrk.languageapp.auth.impl.domain.sign_in.SignInWithGoogleUseCase
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreen

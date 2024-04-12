@@ -1,6 +1,6 @@
 package ru.heatrk.languageapp.auth.impl.ui.screens.sign_in
 
-import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
+import ru.heatrk.languageapp.auth.api.domain.google.AuthGoogleNonce
 import ru.heatrk.languageapp.common.utils.StringResource
 import ru.heatrk.languageapp.common.utils.states.ProcessingState
 

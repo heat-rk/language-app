@@ -16,20 +16,6 @@ android {
         testInstrumentationRunner = AppConfig.testInstrumentationRunner
     }
 
-    buildTypes {
-        release {
-            AppConfig.buildConfigFields(project).forEach { field ->
-                buildConfigField(field.type, field.name, "\"${field.releaseValue}\"")
-            }
-        }
-
-        debug {
-            AppConfig.buildConfigFields(project).forEach { field ->
-                buildConfigField(field.type, field.name, "\"${field.debugValue}\"")
-            }
-        }
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -41,7 +27,6 @@ android {
 
     buildFeatures {
         compose = true
-        buildConfig = true
     }
 
     composeOptions {
@@ -55,6 +40,7 @@ dependencies {
         ":features:main:api",
         ":core:navigation:api",
         ":core:navigation:compose-impl",
+        ":core:env:api",
         ":core:design",
         ":core:data:supabase",
         ":core:data:profiles:api",

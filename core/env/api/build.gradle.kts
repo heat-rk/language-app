@@ -6,11 +6,8 @@ plugins {
 }
 
 dependencies {
-    modules(
-        ":features:auth:api",
-    )
-
     dependencies(
         AppDependencies.Coroutines.core,
+        AppDependencies.Scout.core,
     )
 }

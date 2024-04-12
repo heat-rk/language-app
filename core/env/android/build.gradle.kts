@@ -3,17 +3,30 @@ import dependencies.AppDependencies
 plugins {
     id(AppPlugins.androidLibrary)
     id(AppPlugins.androidKotlin)
-    id(AppPlugins.serialization)
 }
 
 android {
-    namespace = "ru.heatrk.languageapp.core.data.profiles.impl"
+    namespace = "ru.heatrk.languageapp.core.env.android"
 
     compileSdk = AppConfig.Sdk.compile
 
     defaultConfig {
         minSdk = AppConfig.Sdk.min
         testInstrumentationRunner = AppConfig.testInstrumentationRunner
+    }
+
+    buildTypes {
+        release {
+            AppConfig.buildConfigFields(project).forEach { field ->
+                buildConfigField(field.type, field.name, "\"${field.releaseValue}\"")
+            }
+        }
+
+        debug {
+            AppConfig.buildConfigFields(project).forEach { field ->
+                buildConfigField(field.type, field.name, "\"${field.debugValue}\"")
+            }
+        }
     }
 
     compileOptions {
@@ -24,20 +37,18 @@ android {
     kotlinOptions {
         jvmTarget = AppConfig.jvmTarget
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
     modules(
-        ":core:coroutines:dispatchers",
         ":core:env:api",
-        ":core:data:serialization",
-        ":core:data:supabase",
-        ":core:data:cache",
-        ":core:data:profiles:api",
     )
 
     dependencies(
-        AppDependencies.kotlinXSerialization,
         AppDependencies.Scout.core,
     )
 }

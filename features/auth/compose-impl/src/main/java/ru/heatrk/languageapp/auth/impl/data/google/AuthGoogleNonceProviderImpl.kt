@@ -2,8 +2,8 @@ package ru.heatrk.languageapp.auth.impl.data.google
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
-import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonceProvider
+import ru.heatrk.languageapp.auth.api.domain.google.AuthGoogleNonce
+import ru.heatrk.languageapp.auth.api.domain.google.AuthGoogleNonceProvider
 import java.security.MessageDigest
 import java.util.UUID
 

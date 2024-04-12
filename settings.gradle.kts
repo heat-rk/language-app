@@ -26,6 +26,8 @@ include(
     ":core:coroutines:scopes",
     ":core:logger:api",
     ":core:logger:android",
+    ":core:env:api",
+    ":core:env:android",
     ":core:data:cache",
     ":core:data:http-client",
     ":core:data:serialization",

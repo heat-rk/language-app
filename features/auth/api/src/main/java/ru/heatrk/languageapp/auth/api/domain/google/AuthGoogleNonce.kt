@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.domain.google
+package ru.heatrk.languageapp.auth.api.domain.google
 
 data class AuthGoogleNonce(
     val raw: String,

@@ -1,4 +1,4 @@
-package ru.heatrk.languageapp.auth.impl.domain.google
+package ru.heatrk.languageapp.auth.api.domain.google
 
 interface AuthGoogleNonceProvider {
     suspend fun provideNonce(): AuthGoogleNonce

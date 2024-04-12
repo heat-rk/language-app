@@ -19,10 +19,6 @@ android {
 
     buildTypes {
         release {
-            buildConfigFields.forEach { field ->
-                buildConfigField(field.type, field.name, "\"${field.releaseValue}\"")
-            }
-
             manifestPlaceholders.putAll(
                 buildConfigFields.associate { field ->
                     field.name to field.releaseValue
@@ -31,10 +27,6 @@ android {
         }
 
         debug {
-            buildConfigFields.forEach { field ->
-                buildConfigField(field.type, field.name, "\"${field.debugValue}\"")
-            }
-
             manifestPlaceholders.putAll(
                 buildConfigFields.associate { field ->
                     field.name to field.debugValue
@@ -54,7 +46,6 @@ android {
 
     buildFeatures {
         compose = true
-        buildConfig = true
     }
 
     composeOptions {
@@ -66,6 +57,7 @@ dependencies {
     modules(
         ":features:profile:api",
         ":features:auth:api",
+        ":core:env:api",
         ":core:navigation:api",
         ":core:navigation:compose-impl",
         ":core:design",

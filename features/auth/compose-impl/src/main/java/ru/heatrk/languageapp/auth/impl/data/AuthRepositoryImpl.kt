@@ -14,16 +14,17 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
-import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 import ru.heatrk.languageapp.auth.api.domain.AuthEvent
+import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 import ru.heatrk.languageapp.auth.api.domain.User
-import ru.heatrk.languageapp.auth.impl.BuildConfig
+import ru.heatrk.languageapp.core.env.EnvironmentConfig
 
 class AuthRepositoryImpl(
     private val supabaseClient: SupabaseClient,
     private val authStorage: AuthStorage,
     private val json: Json,
     private val supabaseDispatcher: CoroutineDispatcher,
+    private val environmentConfig: EnvironmentConfig,
 ) : AuthRepository {
 
     override val authEvents =
@@ -146,9 +147,9 @@ class AuthRepositoryImpl(
         supabaseClient.auth.signUpWith(
             provider = Email,
             redirectUrl = buildString {
-                append(BuildConfig.SUPABASE_REDIRECT_SCHEME)
+                append(environmentConfig.supabaseRedirectScheme)
                 append("://")
-                append(BuildConfig.SUPABASE_REDIRECT_HOST)
+                append(environmentConfig.supabaseRedirectHost)
                 append("/")
                 append(EMAIL_CONFIRM_URL_PATH)
             }
@@ -172,9 +173,9 @@ class AuthRepositoryImpl(
             supabaseClient.auth.resetPasswordForEmail(
                 email = email,
                 redirectUrl = buildString {
-                    append(BuildConfig.SUPABASE_REDIRECT_SCHEME)
+                    append(environmentConfig.supabaseRedirectScheme)
                     append("://")
-                    append(BuildConfig.SUPABASE_REDIRECT_HOST)
+                    append(environmentConfig.supabaseRedirectHost)
                     append("/")
                     append(RECOVERY_CONFIRM_URL_PATH)
                 }

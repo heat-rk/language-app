@@ -20,6 +20,7 @@ fun Registry.useProfilesBeans() {
             dispatcher = get<IoCoroutineDispatcher>().instance,
             supabaseClient = get(),
             inMemoryUserProfileCacheContainer = get<ProfileInMemoryCacheContainer>().instance,
+            environmentConfig = get(),
         )
     }
 }

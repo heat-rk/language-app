@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import ru.heatrk.languageapp.core.data.cache.InMemoryCacheContainer
-import ru.heatrk.languageapp.core.data.profiles.impl.BuildConfig
+import ru.heatrk.languageapp.core.env.EnvironmentConfig
 import ru.heatrk.languageapp.core.profiles.api.domain.Profile
 import ru.heatrk.languageapp.core.profiles.api.domain.ProfilesRepository
 import ru.heatrk.languageapp.core.profiles.impl.mappers.toData
@@ -20,6 +20,7 @@ internal class ProfilesRepositoryImpl(
     private val dispatcher: CoroutineDispatcher,
     private val supabaseClient: SupabaseClient,
     private val inMemoryUserProfileCacheContainer: InMemoryCacheContainer<Profile>,
+    private val environmentConfig: EnvironmentConfig,
 ) : ProfilesRepository {
     override suspend fun createProfile(profile: Profile): Unit =
         withContext(dispatcher) {
@@ -101,7 +102,7 @@ internal class ProfilesRepositoryImpl(
                     upsert = true,
                 )
 
-            val avatarUrl = "${BuildConfig.SUPABASE_STORAGE_URL}/$path"
+            val avatarUrl = "${environmentConfig.supabaseStorageUrl}/$path"
 
             val updatedProfile = profile.copy(avatarUrl = avatarUrl)
 

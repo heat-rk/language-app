@@ -38,9 +38,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.flow.Flow
-import ru.heatrk.languageapp.auth.impl.BuildConfig
 import ru.heatrk.languageapp.auth.impl.R
-import ru.heatrk.languageapp.auth.impl.domain.google.AuthGoogleNonce
+import ru.heatrk.languageapp.auth.api.domain.google.AuthGoogleNonce
+import ru.heatrk.languageapp.auth.impl.di.AuthComponent
 import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_in.SIGN_IN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.Intent
 import ru.heatrk.languageapp.auth.impl.ui.screens.sign_in.SignInScreenContract.SideEffect
@@ -336,7 +336,7 @@ private suspend fun requestGoogleCredentials(
     try {
         val googleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
-            .setServerClientId(BuildConfig.GOOGLE_SERVER_CLIENT_ID)
+            .setServerClientId(AuthComponent.environmentConfig.googleServerClientId)
             .setNonce(nonce.encoded)
             .build()
 
