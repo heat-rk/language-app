@@ -1,38 +1,22 @@
-@file:Suppress("DEPRECATION")
-
 package ru.heatrk.languageapp.profile.impl.data
 
-import android.app.Application
-import android.app.LocaleManager
-import android.os.Build
-import android.os.LocaleList
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import kotlinx.coroutines.flow.Flow
 import ru.heatrk.languageapp.profile.api.domain.ForcedTheme
 import ru.heatrk.languageapp.profile.api.domain.Language
 import ru.heatrk.languageapp.profile.api.domain.SettingsRepository
-import java.util.Locale
 
 internal class SettingsRepositoryImpl(
     private val settingsStorage: SettingsStorage,
-    private val applicationContext: Application,
 ) : SettingsRepository {
     override suspend fun getAvailableLanguages(): List<Language> {
         return Language.entries
     }
 
     override suspend fun changeLanguage(language: Language) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            applicationContext.getSystemService(LocaleManager::class.java)
-                .applicationLocales = LocaleList.forLanguageTags(language.tag)
-        } else {
-            val locale = Locale(language.tag)
-            Locale.setDefault(locale)
-            val resources = applicationContext.resources
-            val configuration = resources.configuration
-            configuration.setLocale(locale)
-            resources.updateConfiguration(configuration, resources.displayMetrics)
-        }
-
+        val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(language.tag)
+        AppCompatDelegate.setApplicationLocales(appLocale)
         settingsStorage.saveLanguage(language)
     }
 

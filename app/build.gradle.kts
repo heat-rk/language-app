@@ -112,6 +112,7 @@ dependencies {
 
     dependencies(
         AppDependencies.immutableCollections,
+        AppDependencies.AndroidX.appCompat,
         AppDependencies.Ktx.core,
         AppDependencies.Coroutines.core,
         AppDependencies.Coroutines.android,

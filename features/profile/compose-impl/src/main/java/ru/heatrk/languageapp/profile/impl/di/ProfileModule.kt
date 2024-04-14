@@ -25,7 +25,6 @@ val profileModule = module {
     factory<SettingsRepository> {
         SettingsRepositoryImpl(
             settingsStorage = get(),
-            applicationContext = get(),
         )
     }
 

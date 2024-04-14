@@ -2,12 +2,12 @@ package ru.heatrk.languageapp.presentation
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,7 +36,7 @@ import ru.heatrk.languageapp.di.AppComponent
 import ru.heatrk.languageapp.presentation.navigation.AppNavHost
 import ru.heatrk.languageapp.profile.api.domain.ForcedTheme
 
-class RootActivity : ComponentActivity() {
+class RootActivity : AppCompatActivity() {
 
     private val initializationViewModel: InitializationViewModel by viewModels(
         factoryProducer = { AppComponent.getInitializationViewModelFactory(intent) }

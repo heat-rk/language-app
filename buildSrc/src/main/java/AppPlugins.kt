@@ -12,7 +12,7 @@ object AppPlugins {
     object Versions {
         const val androidApplication = "8.1.2"
         const val androidLibrary = "7.3.1"
-        const val androidKotlin = "1.9.22"
+        const val androidKotlin = "1.9.23"
         const val jvmKotlin = "1.9.0"
         const val detekt = "1.23.5"
     }
