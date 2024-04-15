@@ -1,6 +1,7 @@
 package ru.heatrk.languageapp.core.design.composables.button
 
 import android.graphics.BlurMaskFilter
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -47,6 +48,7 @@ fun AppButton(
     lightingEnabled: Boolean = true,
     buttonColors: AppButtonColors = AppButtonDefaults.colors(),
     buttonState: AppButtonState = AppButtonState.Idle,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val currentDensity = LocalDensity.current
     var buttonWidth by remember { mutableFloatStateOf(0f) }
@@ -103,6 +105,7 @@ fun AppButton(
             blurEnabled = lightingEnabled,
             blurPath = blurPath,
             blurPaint = blurPaint,
+            interactionSource = interactionSource,
             modifier = Modifier
                 .onGloballyPositioned { coordinates ->
                     buttonWidth = coordinates.size.width.toFloat()
@@ -148,6 +151,7 @@ private fun AppButton(
     blurPath: Path,
     blurPaint: Paint,
     blurEnabled: Boolean,
+    interactionSource: MutableInteractionSource,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -162,6 +166,7 @@ private fun AppButton(
             containerColor = containerColor,
             disabledContainerColor = containerColor
         ),
+        interactionSource = interactionSource,
         contentPadding = PaddingValues(),
         modifier = modifier
             .height(56.dp)

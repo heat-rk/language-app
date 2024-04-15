@@ -3,6 +3,7 @@ package ru.heatrk.languageapp.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import ru.heatrk.languageapp.audition.word_practice.impl.ui.navigation.AuditionScreenRoute
 import ru.heatrk.languageapp.auth.impl.ui.navigation.AuthGraphRoute
 import ru.heatrk.languageapp.core.design.navigation.NavigationTransitions
 import ru.heatrk.languageapp.core.navigation.compose_impl.NavGraphBuilder
@@ -25,6 +26,7 @@ private fun NavGraphBuilder.buildGraph() {
     route(ProfileGraphRoute)
     route(GuessAnimalScreenRoute)
     route(WordPracticeScreenRoute)
+    route(AuditionScreenRoute)
 }
 
 @Composable

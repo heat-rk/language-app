@@ -105,6 +105,74 @@ fun AppTextField(
 }
 
 @Composable
+fun AppTextField(
+    value: String,
+    placeholder: String,
+    label: String,
+    modifier: Modifier = Modifier,
+    singleLine: Boolean = false,
+    maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
+    minLines: Int = 1,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    errorMessage: String? = null,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        Text(
+            text = buildAnnotatedString {
+                append(label)
+
+                withStyle(
+                    SpanStyle(
+                        color = AppTheme.colors.error
+                    )
+                ) {
+                    if (!errorMessage.isNullOrBlank()) {
+                        append(" ")
+                        append(errorMessage)
+                    }
+                }
+            },
+            style = AppTheme.typography.bodyMedium
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextField(
+            value = value,
+            onValueChange = {},
+            enabled = false,
+            isError = !errorMessage.isNullOrBlank(),
+            shape = AppTheme.shapes.medium,
+            visualTransformation = visualTransformation,
+            singleLine = singleLine,
+            maxLines = maxLines,
+            minLines = minLines,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
+            trailingIcon = trailingIcon,
+            colors = textFieldColors(
+                isError = !errorMessage.isNullOrBlank(),
+                isEnabled = true
+            ),
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    color = AppTheme.colors.inputFieldHint
+                )
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+        )
+    }
+}
+
+@Composable
 private fun textFieldColors(
     isError: Boolean,
     isEnabled: Boolean,

@@ -1,5 +1,6 @@
 package ru.heatrk.languageapp.di
 
+import ru.heatrk.languageapp.audition.word_practice.impl.di.auditionModule
 import ru.heatrk.languageapp.auth.impl.di.authModule
 import ru.heatrk.languageapp.core.coroutines.dispatchers.di.dispatchersModule
 import ru.heatrk.languageapp.core.coroutines.scopes.di.coroutineScopesModule
@@ -32,4 +33,5 @@ val appModules = listOf(
     profileModule,
     guessAnimalModule,
     wordPracticeModule,
+    auditionModule,
 )

@@ -108,6 +108,8 @@ dependencies {
         ":features:exercises:guess-animal:compose-impl",
         ":features:exercises:word-practice:api",
         ":features:exercises:word-practice:compose-impl",
+        ":features:exercises:audition:api",
+        ":features:exercises:audition:compose-impl",
     )
 
     dependencies(

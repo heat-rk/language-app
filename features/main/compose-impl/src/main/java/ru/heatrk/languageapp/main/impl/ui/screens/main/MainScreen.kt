@@ -214,7 +214,6 @@ private fun LazyGridScope.exercisesItems(
             image = painterResource(R.drawable.audition),
             title = stringResource(R.string.main_audition),
             backgroundColor = AppTheme.colors.exerciseAudition,
-            isEnabled = false,
         )
     }
 

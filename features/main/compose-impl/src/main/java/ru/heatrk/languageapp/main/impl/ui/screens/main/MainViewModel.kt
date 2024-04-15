@@ -23,6 +23,7 @@ import ru.heatrk.languageapp.core.design.utils.formatFullName
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.profiles.api.domain.Profile
 import ru.heatrk.languageapp.core.profiles.api.domain.ProfilesRepository
+import ru.heatrk.languageapp.exercises.audition.api.ui.navigation.AUDITION_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.exercises.guess_animal.api.ui.navigation.GUESS_ANIMAL_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.exercises.word_practice.api.ui.navigation.WORD_PRACTICE_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.main.impl.ui.screens.main.MainScreenContract.Intent
@@ -168,8 +169,8 @@ class MainViewModel(
         router.navigate(routePath = WORD_PRACTICE_SCREEN_ROUTE_PATH)
     }
 
-    private fun onAuditionButtonClick() {
-        // TODO
+    private suspend fun onAuditionButtonClick() {
+        router.navigate(routePath = AUDITION_SCREEN_ROUTE_PATH)
     }
 
     private fun onGameButtonClick() {
