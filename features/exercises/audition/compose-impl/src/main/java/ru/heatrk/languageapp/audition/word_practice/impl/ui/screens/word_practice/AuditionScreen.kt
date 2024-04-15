@@ -42,6 +42,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.flow.Flow
 import ru.heatrk.languageapp.audition.word_practice.impl.ui.screens.word_practice.AuditionContract.Intent
@@ -187,11 +188,6 @@ private fun ResolvingButton(
     onTryAgainClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val buttonState = when (step) {
-        State.Resolving.Step.Loading -> AppButtonState.Loading
-        else -> AppButtonState.Idle
-    }
-
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
@@ -203,13 +199,13 @@ private fun ResolvingButton(
         }
     }
 
-    val buttonScale by auditionButtonScale(step)
+    val buttonScale by step.buttonScale()
 
     AppButton(
         text = step.buttonText(),
         buttonColors = step.buttonColors(),
         interactionSource = interactionSource,
-        buttonState = buttonState,
+        buttonState = step.buttonState(),
         onClick = {
             when (step) {
                 State.Resolving.Step.Success -> onNextClick()
@@ -340,12 +336,7 @@ private fun ScreenSideEffects(
     val snackbarHostState = LocalAppScaffoldController.current.snackbarHostState
 
     val recordAudioPermissionLauncher = rememberPermissionState(
-        permission = Manifest.permission.RECORD_AUDIO,
-        onPermissionResult = { granted ->
-            if (granted) {
-                onIntent(Intent.OnAudioRecordPermissionGranted)
-            }
-        }
+        permission = Manifest.permission.RECORD_AUDIO
     )
 
     ScreenSideEffectsFlowHandler(sideEffects = sideEffects) { sideEffect ->
@@ -359,7 +350,11 @@ private fun ScreenSideEffects(
             }
 
             is SideEffect.RequestAudioRecordPermission -> {
-                recordAudioPermissionLauncher.launchPermissionRequest()
+                if (recordAudioPermissionLauncher.status.isGranted) {
+                    onIntent(Intent.OnAudioRecordPermissionGranted)
+                } else {
+                    recordAudioPermissionLauncher.launchPermissionRequest()
+                }
             }
         }
     }
@@ -395,15 +390,13 @@ private fun State.Resolving.Step.buttonText() =
     )
 
 @Composable
-private fun auditionButtonScale(
-    step: State.Resolving.Step
-): androidx.compose.runtime.State<Float> {
+private fun State.Resolving.Step.buttonScale(): androidx.compose.runtime.State<Float> {
     val infiniteTransition = rememberInfiniteTransition(
         label = "AuditionButtonScale"
     )
 
-    val targetButtonScale = remember(step) {
-        if (step == State.Resolving.Step.Listening) {
+    val targetButtonScale = remember(this) {
+        if (this == State.Resolving.Step.Listening) {
             AUDITION_BUTTON_LISTENING_SCALE
         } else {
             AUDITION_BUTTON_SCALE
@@ -423,6 +416,13 @@ private fun auditionButtonScale(
         ),
     )
 }
+
+@Composable
+private fun State.Resolving.Step.buttonState() =
+    when (this) {
+        State.Resolving.Step.Loading -> AppButtonState.Loading
+        else -> AppButtonState.Idle
+    }
 
 private const val AUDITION_BUTTON_SCALE = 1f
 private const val AUDITION_BUTTON_LISTENING_SCALE = 0.95f
