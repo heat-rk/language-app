@@ -379,7 +379,7 @@ private class PreviewStateProvider : PreviewParameterProvider<State> {
 }
 
 @Composable
-private fun GuessAnimalScreenPreview(state: State) {
+private fun WordPracticeScreenPreview(state: State) {
     AppRootContainer { _, _ ->
         WordPracticeScreen(
             state = state,
@@ -390,18 +390,18 @@ private fun GuessAnimalScreenPreview(state: State) {
 
 @Composable
 @Preview(showBackground = true)
-private fun GuessAnimalScreenPreviewLight(
+private fun WordPracticeScreenPreviewLight(
     @PreviewParameter(PreviewStateProvider::class) state: State
 ) {
-    GuessAnimalScreenPreview(state = state)
+    WordPracticeScreenPreview(state = state)
 }
 
 @Composable
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-private fun GuessAnimalScreenPreviewDark(
+private fun WordPracticeScreenPreviewDark(
     @PreviewParameter(PreviewStateProvider::class) state: State
 ) {
-    GuessAnimalScreenPreview(state = state)
+    WordPracticeScreenPreview(state = state)
 }
 
 @Composable
@@ -409,10 +409,10 @@ private fun GuessAnimalScreenPreviewDark(
     showBackground = true,
     device = COMPOSE_LARGE_DEVICE_SPEC,
 )
-private fun GuessAnimalScreenPreviewLightLarge(
+private fun WordPracticeScreenPreviewLightLarge(
     @PreviewParameter(PreviewStateProvider::class) state: State
 ) {
-    GuessAnimalScreenPreview(state = state)
+    WordPracticeScreenPreview(state = state)
 }
 
 @Composable
@@ -421,8 +421,8 @@ private fun GuessAnimalScreenPreviewLightLarge(
     device = COMPOSE_LARGE_DEVICE_SPEC,
     uiMode = Configuration.UI_MODE_NIGHT_YES,
 )
-private fun GuessAnimalScreenPreviewDarkLarge(
+private fun WordPracticeScreenPreviewDarkLarge(
     @PreviewParameter(PreviewStateProvider::class) state: State
 ) {
-    GuessAnimalScreenPreview(state = state)
+    WordPracticeScreenPreview(state = state)
 }
