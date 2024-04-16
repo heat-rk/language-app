@@ -22,7 +22,7 @@ fun AppTheme(
 
     CompositionLocalProvider(LocalAppColors provides appColors) {
         MaterialTheme(
-            colorScheme = darkAppColors.materialColors,
+            colorScheme = appColors.materialColors,
             shapes = appShapes,
             typography = appTypography,
             content = {
