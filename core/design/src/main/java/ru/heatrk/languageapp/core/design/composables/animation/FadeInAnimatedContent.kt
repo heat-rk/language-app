@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 fun <S> FadeInAnimatedContent(
     targetState: S,
     modifier: Modifier = Modifier,
-    fadeOutTargetAlpha: Float = 0f,
+    outAfterIn: Boolean = false,
     label: String = "AnimatedContent",
     contentKey: (targetState: S) -> Any? = { it },
     content: @Composable AnimatedContentScope.(targetState: S) -> Unit,
@@ -25,8 +25,14 @@ fun <S> FadeInAnimatedContent(
         transitionSpec = {
             fadeIn() togetherWith
                     fadeOut(
-                        animationSpec = tween(FADE_IN_ANIMATION_DURATION_MILLIS),
-                        targetAlpha = fadeOutTargetAlpha
+                        animationSpec = tween(
+                            durationMillis = FADE_IN_ANIMATION_DURATION_MILLIS,
+                            delayMillis = if (outAfterIn) {
+                                FADE_IN_ANIMATION_DURATION_MILLIS
+                            } else {
+                                0
+                            }
+                        )
                     )
         },
         content = content,

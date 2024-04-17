@@ -274,7 +274,7 @@ private fun OnboardingPrimaryButton(
 ) {
     FadeInAnimatedContent(
         targetState = progress,
-        fadeOutTargetAlpha = 1f,
+        outAfterIn = true,
         label = "Onboarding:Button",
         modifier = modifier,
     ) { buttonStateProgress ->

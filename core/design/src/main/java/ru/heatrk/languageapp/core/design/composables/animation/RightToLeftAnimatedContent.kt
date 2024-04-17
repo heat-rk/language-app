@@ -33,4 +33,4 @@ fun <S> RightToLeftAnimatedContent(
     )
 }
 
-private const val RIGHT_TO_LEFT_ANIMATION_DURATION_MILLIS = 200
+private const val RIGHT_TO_LEFT_ANIMATION_DURATION_MILLIS = 350
