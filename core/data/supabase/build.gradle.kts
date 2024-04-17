@@ -41,5 +41,6 @@ dependencies {
         AppDependencies.Supabase.composeAuth,
         AppDependencies.Supabase.postgrest,
         AppDependencies.Supabase.storage,
+        AppDependencies.Supabase.realtime,
     )
 }

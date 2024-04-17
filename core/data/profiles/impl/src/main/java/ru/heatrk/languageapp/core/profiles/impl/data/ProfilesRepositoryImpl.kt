@@ -3,11 +3,17 @@ package ru.heatrk.languageapp.core.profiles.impl.data
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.postgrest.postgrest
-import io.github.jan.supabase.postgrest.query.Order
+import io.github.jan.supabase.realtime.PostgresAction
+import io.github.jan.supabase.realtime.channel
+import io.github.jan.supabase.realtime.postgresChangeFlow
+import io.github.jan.supabase.realtime.realtime
 import io.github.jan.supabase.storage.storage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import ru.heatrk.languageapp.core.data.cache.InMemoryCacheContainer
@@ -62,22 +68,22 @@ internal class ProfilesRepositoryImpl(
             .filterNotNull()
     }
 
-    override suspend fun getLeaderboard(count: Long): List<Profile> =
-        withContext(dispatcher) {
-            val leaderboardData = supabaseClient.postgrest
-                .from("profiles")
-                .select {
-                    order(
-                        column = "total_score",
-                        order = Order.DESCENDING
-                    )
+    override suspend fun observeLeaderboard(): Flow<List<Profile>> {
+        val channel = supabaseClient.realtime
+            .channel("profiles_leaderboard")
 
-                    limit(count)
-                }
-                .decodeList<ProfileData>()
+        val leaderboardFlow = channel
+            .postgresChangeFlow<PostgresAction>(schema = "public") {
+                table = "profiles"
+            }
+            .map { fetchLeaderboard() }
+            .onStart { emit(fetchLeaderboard()) }
+            .distinctUntilChanged()
 
-            leaderboardData.map(ProfileData::toDomain)
-        }
+        channel.subscribe()
+
+        return leaderboardFlow
+    }
 
     override suspend fun updateCurrentProfileAvatar(
         avatarBytes: ByteArray,
@@ -136,4 +142,11 @@ internal class ProfilesRepositoryImpl(
 
         inMemoryUserProfileCacheContainer.value = updatedProfile
     }
+
+    private suspend fun fetchLeaderboard(): List<Profile> =
+        supabaseClient.postgrest
+            .from("profiles_leaderboard")
+            .select()
+            .decodeList<ProfileData>()
+            .map(ProfileData::toDomain)
 }

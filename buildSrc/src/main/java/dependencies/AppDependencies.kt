@@ -40,6 +40,10 @@ object AppDependencies {
         val storage = Dependency(
             notation = "io.github.jan-tennert.supabase:storage-kt"
         )
+
+        val realtime = Dependency(
+            notation = "io.github.jan-tennert.supabase:realtime-kt"
+        )
     }
 
     object Ktor {

@@ -6,9 +6,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -46,6 +48,7 @@ class MainViewModel(
     )
 
     private var observeCurrentProfileJob: Job? = null
+    private var observeLeaderboardJob: Job? = null
 
     init {
         loadData()
@@ -71,7 +74,7 @@ class MainViewModel(
     private fun loadData() {
         checkSavedLanguage()
         observeUserData(reload = false)
-        loadLeaderboard()
+        observeLeaderboard()
     }
 
     private fun checkSavedLanguage() = intent {
@@ -128,24 +131,30 @@ class MainViewModel(
         )
     }
 
-    private fun loadLeaderboard() = intent {
+    private fun observeLeaderboard() = intent {
         viewModelScope.launchSafe(
             block = {
                 reduce { state.copy(leaderboard = State.Leaderboard.Loading) }
 
-                val leaderboard =
-                    profilesRepository.getLeaderboard(LEADERBOARD_ITEMS_COUNT.toLong())
+                observeLeaderboardJob?.cancel()
+                observeLeaderboardJob = null
 
-                reduce {
-                    state.copy(
-                        leaderboard = State.Leaderboard.Loaded(
-                            items = leaderboard.map(::toLeaderboardItem)
-                                .toImmutableList()
-                        )
-                    )
-                }
+                observeLeaderboardJob = profilesRepository.observeLeaderboard()
+                    .onEach { leaderboard ->
+                        reduce {
+                            state.copy(
+                                leaderboard = State.Leaderboard.Loaded(
+                                    items = leaderboard.map(::toLeaderboardItem)
+                                        .toImmutableList()
+                                )
+                            )
+                        }
+                    }
+                    .launchIn(this)
             },
             onError = {
+                postSideEffect(SideEffect.Message(strRes(R.string.error_smth_went_wrong)))
+
                 reduce {
                     state.copy(
                         leaderboard = State.Leaderboard.Loaded(
@@ -154,7 +163,7 @@ class MainViewModel(
                     )
                 }
             }
-        ).join()
+        )
     }
 
     private suspend fun onProfileClick() {
@@ -178,11 +187,13 @@ class MainViewModel(
     }
 
     private suspend fun IntentBody.onPulledToRefresh() {
-        reduce { state.copy(isRefreshing = true) }
+        joinAll(observeUserData(reload = true), observeLeaderboard())
 
-        joinAll(observeUserData(reload = true), loadLeaderboard())
-
-        reduce { state.copy(isRefreshing = false) }
+        viewModelScope.launch {
+            reduce { state.copy(isRefreshing = true) }
+            delay(PULL_TO_REFRESH_DURATION)
+            reduce { state.copy(isRefreshing = false) }
+        }
     }
 
     private fun toLeaderboardItem(profile: Profile) = State.Leaderboard.Item(
@@ -196,6 +207,6 @@ class MainViewModel(
     )
 
     companion object {
-        const val LEADERBOARD_ITEMS_COUNT = 3
+        private const val PULL_TO_REFRESH_DURATION = 1000L
     }
 }

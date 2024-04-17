@@ -24,5 +24,5 @@ object ProfilesRepositoryStub : ProfilesRepository {
 
     override suspend fun increaseProfileTotalPoints(points: Float) = Unit
 
-    override suspend fun getLeaderboard(count: Long) = emptyList<Profile>()
+    override suspend fun observeLeaderboard() = emptyFlow<List<Profile>>()
 }

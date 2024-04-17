@@ -162,11 +162,11 @@ private fun LazyGridScope.topUsers(
     when (state.leaderboard) {
         State.Leaderboard.Loading -> {
             items(
-                count = MainViewModel.LEADERBOARD_ITEMS_COUNT,
+                count = LEADERBOARD_SHIMMER_ITEMS_COUNT,
                 span = { GridItemSpan(maxLineSpan) },
             ) { index ->
                 MainLeaderboardItemShimmer(
-                    includeSpacer = index != MainViewModel.LEADERBOARD_ITEMS_COUNT - 1
+                    includeSpacer = index != LEADERBOARD_SHIMMER_ITEMS_COUNT - 1
                 )
             }
         }
@@ -283,6 +283,8 @@ private fun State.Profile.toAppBarState() = when (this) {
             avatar = avatar
         )
 }
+
+private const val LEADERBOARD_SHIMMER_ITEMS_COUNT = 3
 
 private class MainScreenPreviewStateProvider : PreviewParameterProvider<State> {
     override val values = sequenceOf(

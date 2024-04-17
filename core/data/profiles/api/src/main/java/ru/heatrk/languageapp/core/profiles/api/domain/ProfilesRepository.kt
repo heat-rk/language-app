@@ -7,7 +7,7 @@ interface ProfilesRepository {
     suspend fun fetchCurrentProfile(): Profile
     suspend fun clearCachedUserProfile()
     suspend fun observeCurrentProfile(reload: Boolean = false): Flow<Profile>
-    suspend fun getLeaderboard(count: Long): List<Profile>
+    suspend fun observeLeaderboard(): Flow<List<Profile>>
     suspend fun updateCurrentProfileAvatar(
         avatarBytes: ByteArray,
         extension: String,

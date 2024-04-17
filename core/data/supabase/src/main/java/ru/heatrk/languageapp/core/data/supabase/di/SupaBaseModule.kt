@@ -5,6 +5,7 @@ import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.gotrue.Auth
 import io.github.jan.supabase.gotrue.FlowType
 import io.github.jan.supabase.postgrest.Postgrest
+import io.github.jan.supabase.realtime.Realtime
 import io.github.jan.supabase.serializer.KotlinXSerializer
 import io.github.jan.supabase.storage.Storage
 import org.koin.dsl.module
@@ -28,6 +29,7 @@ val supabaseModule = module {
 
             install(Postgrest)
             install(Storage)
+            install(Realtime)
         }
     }
 }
