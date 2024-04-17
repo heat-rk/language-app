@@ -18,6 +18,7 @@ import ru.heatrk.languageapp.profile.impl.di.profileModule
 
 val appModules = listOf(
     appModule,
+    coilModule,
     dispatchersModule,
     coroutineScopesModule,
     httpClientModule,

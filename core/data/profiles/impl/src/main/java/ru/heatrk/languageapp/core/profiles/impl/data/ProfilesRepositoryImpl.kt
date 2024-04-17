@@ -86,13 +86,13 @@ internal class ProfilesRepositoryImpl(
         withContext(dispatcher) {
             val profile = fetchCurrentProfile()
 
-            supabaseClient.storage
+            val previousAvatarsPaths = supabaseClient.storage
                 .from("avatars")
                 .list(profile.id)
-                .forEach { file ->
-                    supabaseClient.storage.from("avatars")
-                        .delete("${profile.id}/${file.name}")
-                }
+                .map { file -> "${profile.id}/${file.name}" }
+
+            supabaseClient.storage.from("avatars")
+                .delete(previousAvatarsPaths)
 
             val avatarFileName =
                 "avatar_${Clock.System.now().toEpochMilliseconds()}.${extension}"

@@ -54,6 +54,7 @@ private fun Module.useAvatarCropperBeans() {
         AvatarCropperImpl(
             cropperDispatcher = get(DefaultCoroutineDispatcherQualifier),
             applicationContext = get(),
+            imageLoader = get(),
         )
     }
 

@@ -2,8 +2,12 @@ package ru.heatrk.languageapp.profile.impl.data
 
 import android.app.Application
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
+import coil.ImageLoader
+import coil.request.ImageRequest
+import coil.request.SuccessResult
+import coil.size.Size
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.heatrk.languageapp.profile.impl.domain.AvatarCrop
@@ -14,18 +18,20 @@ import java.io.ByteArrayOutputStream
 class AvatarCropperImpl(
     private val cropperDispatcher: CoroutineDispatcher,
     private val applicationContext: Application,
+    private val imageLoader: ImageLoader,
 ) : AvatarCropper {
     override suspend fun crop(avatarUri: String, avatarCrop: AvatarCrop): AvatarCropper.Result =
         withContext(cropperDispatcher) {
-            val sourceByteArray = applicationContext
-                .contentResolver
-                .openInputStream(Uri.parse(avatarUri))
-                ?.use { stream -> stream.buffered().readBytes() }
+            val imageLoadRequest = ImageRequest.Builder(applicationContext)
+                .data(Uri.parse(avatarUri))
+                .allowHardware(false)
+                .size(Size.ORIGINAL)
+                .build()
 
-            check(sourceByteArray != null) { "Avatar Uri read failed" }
+            val result = (imageLoader.execute(imageLoadRequest) as SuccessResult).drawable
+            val bitmap = (result as BitmapDrawable).bitmap
 
-            val bitmap = BitmapFactory
-                .decodeByteArray(sourceByteArray, 0, sourceByteArray.size)
+            check(bitmap != null) { "Avatar Uri read failed" }
 
             val croppedBitmap = when (avatarCrop) {
                 is AvatarCrop.Exactly -> {
@@ -47,7 +53,6 @@ class AvatarCropperImpl(
                 stream.toByteArray()
             }
 
-            bitmap.recycle()
             croppedBitmap.recycle()
 
             AvatarCropper.Result(
