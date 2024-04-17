@@ -15,6 +15,7 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 import ru.heatrk.languageapp.auth.api.ui.navigation.AUTH_GRAPH_ROUTE_PATH
+import ru.heatrk.languageapp.common.utils.launchSafe
 import ru.heatrk.languageapp.core.navigation.api.DeepLinkRouter
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingOption
@@ -60,48 +61,66 @@ class InitializationViewModel(
             return
         }
 
-        viewModelScope.launch {
-            val delayJob = launch {
-                delay(INITIALIZATION_DELAY_MILLIS)
-            }
-
-            val authInitializationJob = launch {
-                authRepository.awaitInitialization()
-            }
-
-            val splashInitializationJob = async {
-                when {
-                    onboardingRepository.getUnwatchedUnits().isNotEmpty() ->
-                        ONBOARDING_SCREEN_ROUTE_PATH
-                    authRepository.hasSavedSession() ->
-                        MAIN_SCREEN_ROUTE_PATH
-                    else ->
-                        AUTH_GRAPH_ROUTE_PATH
+        viewModelScope.launchSafe(
+            block = {
+                val delayJob = launch {
+                    delay(INITIALIZATION_DELAY_MILLIS)
                 }
+
+                val authInitializationJob = launch {
+                    authRepository.awaitInitialization()
+                }
+
+                val splashInitializationJob = async {
+                    when {
+                        onboardingRepository.getUnwatchedUnits().isNotEmpty() ->
+                            ONBOARDING_SCREEN_ROUTE_PATH
+                        authRepository.hasSavedSession() ->
+                            MAIN_SCREEN_ROUTE_PATH
+                        else ->
+                            AUTH_GRAPH_ROUTE_PATH
+                    }
+                }
+
+                joinAll(
+                    delayJob,
+                    authInitializationJob,
+                    splashInitializationJob
+                )
+
+                val nextScreenRoutePath = splashInitializationJob.await()
+
+                onInitializationJobComplete(
+                    nextScreenRoutePath = nextScreenRoutePath,
+                    intent = intent
+                )
+            },
+            onError = {
+                onInitializationJobComplete(
+                    nextScreenRoutePath = AUTH_GRAPH_ROUTE_PATH,
+                    intent = intent
+                )
             }
+        )
+    }
 
-            joinAll(
-                delayJob,
-                authInitializationJob,
-                splashInitializationJob
-            )
-
-            val nextScreenRoutePath = splashInitializationJob.await()
-
-            router.navigate(
-                routePath = nextScreenRoutePath,
-                options = listOf(
-                    RoutingOption.PopUpTo(
-                        routePath = SPLASH_SCREEN_ROUTE_PATH,
-                        inclusive = true
-                    )
+    private suspend fun onInitializationJobComplete(
+        nextScreenRoutePath: String,
+        intent: Intent
+    ) {
+        router.navigate(
+            routePath = nextScreenRoutePath,
+            options = listOf(
+                RoutingOption.PopUpTo(
+                    routePath = SPLASH_SCREEN_ROUTE_PATH,
+                    inclusive = true
                 )
             )
+        )
 
-            handleDeepLinks(intent)
+        handleDeepLinks(intent)
 
-            _isInitializationFinished.value = true
-        }
+        _isInitializationFinished.value = true
     }
 
     private suspend fun handleDeepLinks(intent: Intent) {

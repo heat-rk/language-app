@@ -1,7 +1,6 @@
 package ru.heatrk.languageapp.auth.impl.data
 
 import io.github.jan.supabase.SupabaseClient
-import io.github.jan.supabase.exceptions.RestException
 import io.github.jan.supabase.gotrue.SessionStatus
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.gotrue.providers.Google
@@ -61,9 +60,7 @@ class AuthRepositoryImpl(
             if (savedSession == null) {
                 val refreshToken = authStorage.getRefreshToken()
                 if (refreshToken != null) {
-                    try {
-                        savedSession = supabaseClient.auth.refreshSession(refreshToken)
-                    } catch (ignored: RestException) {}
+                    savedSession = supabaseClient.auth.refreshSession(refreshToken)
                 }
             }
 

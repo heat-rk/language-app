@@ -9,6 +9,7 @@ import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 import ru.heatrk.languageapp.auth.api.ui.navigation.AUTH_GRAPH_ROUTE_PATH
 import ru.heatrk.languageapp.core.navigation.api.Router
 import ru.heatrk.languageapp.core.navigation.api.RoutingOption
+import ru.heatrk.languageapp.features.splash.api.navigation.SPLASH_SCREEN_ROUTE_PATH
 
 class AuthEventListenerViewModel(
     private val authRepository: AuthRepository,
@@ -33,7 +34,11 @@ class AuthEventListenerViewModel(
     }
 
     private suspend fun handleAuthUnauthorizedEvent() {
-        if (router.currentRoute != null && router.parentRoute?.path != AUTH_GRAPH_ROUTE_PATH) {
+        val canBeHandled = router.currentRoute != null &&
+                    router.currentRoute != SPLASH_SCREEN_ROUTE_PATH &&
+                    router.parentRoute?.path != AUTH_GRAPH_ROUTE_PATH
+
+        if (canBeHandled) {
             router.navigate(
                 routePath = AUTH_GRAPH_ROUTE_PATH,
                 options = listOf(
