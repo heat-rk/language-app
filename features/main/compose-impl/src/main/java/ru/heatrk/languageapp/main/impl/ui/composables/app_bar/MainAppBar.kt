@@ -5,29 +5,24 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import ru.heatrk.languageapp.common.utils.PainterResource
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.core.design.composables.AppPainterWrapper
-import ru.heatrk.languageapp.core.design.composables.animation.FadeInAnimatedContent
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
 import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
@@ -183,108 +177,67 @@ private fun MainAppBarLayout(
     modifier: Modifier = Modifier,
 ) {
     val scrollProgress by scrollingBehaviour.getAppBarProgressState()
-    val minHeight = MainAppBarCollapsedHeight
-    val maxHeight = MainAppBarExpandedHeight
-    val density = LocalDensity.current
-    val systemBars = WindowInsets.statusBars
-
-    val statusBarHeight = remember(systemBars, density) {
-        with(density) { systemBars.getTop(density).toDp() }
-    }
-
-    val appBarHeight by remember {
-        derivedStateOf {
-            statusBarHeight + minHeight + (maxHeight - minHeight) * scrollProgress
-        }
-    }
 
     Box(
         contentAlignment = Alignment.BottomStart,
         modifier = modifier
             .fillMaxWidth()
-            .height(appBarHeight)
+            .wrapContentHeight()
             .background(AppTheme.colors.primary)
             .padding(
                 horizontal = 24.dp,
                 vertical = 10.dp,
             )
     ) {
-        FadeInAnimatedContent(
-            label = "AppBarHeightAnimation",
-            targetState = if (scrollProgress > 0.7) {
-                MainAppBarHeightState.Expanded
-            } else {
-                MainAppBarHeightState.Collapsed
-            }
-        ) { heightState ->
-            when (heightState) {
-                MainAppBarHeightState.Expanded -> {
-                    MainAppBarExpandedContent(
-                        avatarContent = avatarContent,
-                        titleContent = titleContent,
-                        descriptionContent = descriptionContent
-                    )
-                }
-                MainAppBarHeightState.Collapsed -> {
-                    MainAppBarCollapsedContent(
-                        avatarContent = avatarContent,
-                        titleContent = titleContent
-                    )
-                }
-            }
-        }
+        MainAppBarContent(
+            scrollProgress = scrollProgress,
+            avatarContent = avatarContent,
+            titleContent = titleContent,
+            descriptionContent = descriptionContent
+        )
     }
 }
 
 @Composable
-private fun MainAppBarExpandedContent(
+private fun MainAppBarContent(
+    scrollProgress: Float,
     avatarContent: @Composable () -> Unit,
     titleContent: @Composable () -> Unit,
     descriptionContent: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(AppTheme.colors.primary)
-    ) {
-        avatarContent()
+    val density = LocalDensity.current
+    val statusBarHeightPx = WindowInsets.statusBars.getTop(density)
 
-        Spacer(modifier = Modifier.height(5.dp))
+    val descriptionAlpha = (scrollProgress - SCROLL_PROGRESS_BREAK)
+        .coerceAtLeast(0f) / (1f - SCROLL_PROGRESS_BREAK)
 
-        titleContent()
-
-        Spacer(modifier = Modifier.height(5.dp))
-
-        descriptionContent()
+    val statusBarHeight = remember(statusBarHeightPx, density) {
+        with(density) { statusBarHeightPx.toDp() }
     }
-}
 
-@Composable
-private fun MainAppBarCollapsedContent(
-    avatarContent: @Composable () -> Unit,
-    titleContent: @Composable () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(AppTheme.colors.primary)
-    ) {
-        avatarContent()
+    Layout(
+        modifier = modifier,
+        content = {
+            avatarContent()
 
-        Spacer(modifier = Modifier.width(16.dp))
+            titleContent()
 
-        titleContent()
-    }
-}
-
-private enum class MainAppBarHeightState {
-    Expanded,
-    Collapsed;
+            Box(
+                modifier = Modifier
+                    .alpha(descriptionAlpha)
+            ) {
+                descriptionContent()
+            }
+        },
+        measurePolicy = MainAppBarContentMeasurePolicy(
+            scrollProgress = scrollProgress,
+            statusBarHeight = statusBarHeight,
+            avatarTitleHorizontalMargin = 16.dp,
+            avatarTitleVerticalMargin = 5.dp,
+            titleDescriptionVerticalMargin = 5.dp
+        )
+    )
 }
 
 sealed interface MainAppBarState {
@@ -296,26 +249,23 @@ sealed interface MainAppBarState {
     ) : MainAppBarState
 }
 
-val ShimmerBackgroundColor
+private val ShimmerBackgroundColor
     @Composable
     get() = AppTheme.colors.shimmerBackground.copy(alpha = 0.5f)
 
-val ShimmerForegroundColor
+private val ShimmerForegroundColor
     @Composable
     get() = AppTheme.colors.shimmerForeground
-
-
-val MainAppBarCollapsedHeight
-    @Composable
-    get() = if (isLargeScreen()) 124.dp else 74.dp
 
 val MainAppBarExpandedHeight
     @Composable
     get() = if (isLargeScreen()) 181.dp else 131.dp
 
-val AvatarSize
+private val AvatarSize
     @Composable
     get() = if (isLargeScreen()) 104.dp else 54.dp
+
+private const val SCROLL_PROGRESS_BREAK = 0.7f
 
 private class MainAppBarPreviewStateProvider : PreviewParameterProvider<MainAppBarState> {
     override val values = sequenceOf(
