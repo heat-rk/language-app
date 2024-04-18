@@ -7,6 +7,7 @@ import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
+import kotlin.math.max
 import kotlin.math.roundToInt
 
 internal class MainAppBarContentMeasurePolicy(
@@ -15,6 +16,7 @@ internal class MainAppBarContentMeasurePolicy(
     private val avatarTitleHorizontalMargin: Dp,
     private val avatarTitleVerticalMargin: Dp,
     private val titleDescriptionVerticalMargin: Dp,
+    private val onStateHeightsMeasured: (Float, Float) -> Unit = { _, _ -> },
 ) : MeasurePolicy {
 
     override fun MeasureScope.measure(
@@ -45,10 +47,20 @@ internal class MainAppBarContentMeasurePolicy(
         val descriptionX = 0f
 
         val descriptionY = placeablePosition(
-            collapsed = 0f,
+            collapsed = avatarY + avatarPlaceable.height - descriptionPlaceable.height,
             expanded = titleY + titleDescriptionVerticalMargin.toPx() + titlePlaceable.height,
             progress = scrollProgress,
         )
+
+        val maxLayoutHeight = statusBarHeight.toPx() +
+                avatarPlaceable.height + avatarTitleVerticalMargin.toPx() +
+                titlePlaceable.height + titleDescriptionVerticalMargin.toPx() +
+                descriptionPlaceable.height
+
+        val minLayoutHeight = statusBarHeight.toPx() +
+                max(avatarPlaceable.height, titlePlaceable.height)
+
+        onStateHeightsMeasured(minLayoutHeight, maxLayoutHeight)
 
         val layoutHeight = arrayOf(
             avatarY + avatarPlaceable.height,

@@ -43,7 +43,7 @@ fun MainAppBar(
     modifier: Modifier = Modifier,
     onAvatarClick: () -> Unit = {},
     scrollingBehaviour: MainAppBarNestedScrollConnection =
-        MainAppBarDefaultNestedScrollConnection(LocalDensity.current),
+        MainAppBarDefaultNestedScrollConnection(),
 ) {
     when (state) {
         MainAppBarState.Loading ->
@@ -209,7 +209,10 @@ private fun MainAppBarLayout(
             statusBarHeight = statusBarHeight,
             avatarTitleHorizontalMargin = 16.dp,
             avatarTitleVerticalMargin = 5.dp,
-            titleDescriptionVerticalMargin = 5.dp
+            titleDescriptionVerticalMargin = 5.dp,
+            onStateHeightsMeasured = { minHeight, maxHeight ->
+                scrollingBehaviour.appBarScrollingDistance = maxHeight - minHeight
+            }
         )
     )
 }
@@ -230,10 +233,6 @@ private val ShimmerBackgroundColor
 private val ShimmerForegroundColor
     @Composable
     get() = AppTheme.colors.shimmerForeground
-
-val MainAppBarExpandedHeight
-    @Composable
-    get() = if (isLargeScreen()) 181.dp else 131.dp
 
 private val AvatarSize
     @Composable

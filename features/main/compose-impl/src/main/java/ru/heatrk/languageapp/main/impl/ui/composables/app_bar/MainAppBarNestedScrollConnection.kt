@@ -14,28 +14,17 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 
 @Immutable
-abstract class MainAppBarNestedScrollConnection(
-    density: Density,
-    protected val appBarMaxHeight: Dp
-) : NestedScrollConnection {
-    val appBarMaxHeightPx = with(density) { appBarMaxHeight.toPx() }
+abstract class MainAppBarNestedScrollConnection : NestedScrollConnection {
+    var appBarScrollingDistance: Float = 0f
 
     @Composable
     @FloatRange(from = 0.0, to = 1.0)
     abstract fun getAppBarProgressState(): State<Float>
 }
 
-class MainAppBarDefaultNestedScrollConnection(
-    density: Density,
-) : MainAppBarNestedScrollConnection(
-    density = density,
-    appBarMaxHeight = 0.dp
-) {
+class MainAppBarDefaultNestedScrollConnection : MainAppBarNestedScrollConnection() {
     @Composable
     override fun getAppBarProgressState(): State<Float> {
         return remember { mutableFloatStateOf(1f) }
@@ -44,20 +33,15 @@ class MainAppBarDefaultNestedScrollConnection(
 
 
 class MainAppBarSnapNestedScrollConnection(
-    density: Density,
-    appBarMaxHeight: Dp,
     private val scrollableState: ScrollableState,
-) : MainAppBarNestedScrollConnection(
-    density = density,
-    appBarMaxHeight = appBarMaxHeight,
-) {
+) : MainAppBarNestedScrollConnection() {
     private var scrollOffset by mutableFloatStateOf(0f)
 
     @Composable
     @FloatRange(from = 0.0, to = 1.0)
     override fun getAppBarProgressState(): State<Float> {
         val scrollProgress = remember(scrollOffset) {
-            (scrollOffset + appBarMaxHeightPx) / appBarMaxHeightPx
+            (scrollOffset + appBarScrollingDistance) / appBarScrollingDistance
         }
 
         return animateFloatAsState(
@@ -74,7 +58,7 @@ class MainAppBarSnapNestedScrollConnection(
         val delta = available.y.toInt()
         val newOffset = scrollOffset + delta
         val previousOffset = scrollOffset
-        scrollOffset = newOffset.coerceIn(-appBarMaxHeightPx, 0f)
+        scrollOffset = newOffset.coerceIn(-appBarScrollingDistance, 0f)
         val consumed = scrollOffset - previousOffset
         return Offset(0f, consumed)
     }
@@ -86,13 +70,10 @@ fun rememberAppBarSnapScrollConnection(
     scrollableState: ScrollableState
 ): MainAppBarNestedScrollConnection {
     val density = LocalDensity.current
-    val maxHeight = MainAppBarExpandedHeight
 
     return remember(density) {
         MainAppBarSnapNestedScrollConnection(
-            density = density,
             scrollableState = scrollableState,
-            appBarMaxHeight = maxHeight
         )
     }
 }
