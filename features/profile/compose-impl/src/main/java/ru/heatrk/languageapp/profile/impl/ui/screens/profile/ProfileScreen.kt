@@ -35,6 +35,7 @@ import kotlinx.coroutines.flow.Flow
 import ru.heatrk.languageapp.common.utils.compose.ScreenSideEffectsFlowHandler
 import ru.heatrk.languageapp.common.utils.compose.handleMessageSideEffect
 import ru.heatrk.languageapp.common.utils.createTempPictureUri
+import ru.heatrk.languageapp.common.utils.grantReadUriPermission
 import ru.heatrk.languageapp.common.utils.painterRes
 import ru.heatrk.languageapp.common.utils.strRes
 import ru.heatrk.languageapp.core.design.composables.AppRootContainer
@@ -230,6 +231,7 @@ private fun ScreenSideEffects(
         contract = ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         if (uri != null) {
+            context.grantReadUriPermission(uri)
             onIntent(Intent.OnAvatarUriReceived(uri))
         }
     }

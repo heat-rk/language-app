@@ -1,13 +1,12 @@
 package ru.heatrk.languageapp
 
 import android.app.Application
-import coil.Coil
 import coil.ImageLoader
-import coil.decode.ImageDecoderDecoder
+import coil.ImageLoaderFactory
 import org.koin.core.context.startKoin
 import ru.heatrk.languageapp.di.appModules
 
-class LanguageApplication : Application() {
+class LanguageApplication : Application(), ImageLoaderFactory {
     override fun onCreate() {
         super.onCreate()
 
@@ -16,15 +15,12 @@ class LanguageApplication : Application() {
         startKoin {
             modules(appModules)
         }
-
-        Coil.setImageLoader {
-            ImageLoader.Builder(this)
-                .components {
-                    add(ImageDecoderDecoder.Factory())
-                }
-                .build()
-        }
     }
+
+    override fun newImageLoader() =
+        ImageLoader.Builder(this)
+            .crossfade(true)
+            .build()
 
     companion object {
         private var _instance: LanguageApplication? = null
