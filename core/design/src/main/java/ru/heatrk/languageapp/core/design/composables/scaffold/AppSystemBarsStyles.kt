@@ -1,5 +1,6 @@
 package ru.heatrk.languageapp.core.design.composables.scaffold
 
+import android.graphics.Color
 import androidx.activity.SystemBarStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -19,9 +20,7 @@ data class AppSystemBarsStyles(
         fun default(isDarkTheme: Boolean): AppSystemBarsStyles {
             return AppSystemBarsStyles(
                 key = "default",
-                statusBar = SystemBarStyle.dark(
-                    scrim = AppTheme.colors.primary.toArgb()
-                ),
+                statusBar = SystemBarStyle.darkTransparent(),
                 navigationBar = if (isDarkTheme) {
                     SystemBarStyle.dark(scrim = AppTheme.colors.background.toArgb())
                 } else {
@@ -38,3 +37,9 @@ data class AppSystemBarsStyles(
 val LocalAppSystemBarsStylesDefault = staticCompositionLocalOf<AppSystemBarsStyles> {
     throw IllegalStateException("No AppSystemBarsStyles provided")
 }
+
+fun SystemBarStyle.Companion.darkTransparent() =
+    dark(scrim = Color.TRANSPARENT)
+
+fun SystemBarStyle.Companion.lightTransparent() =
+    light(scrim = Color.TRANSPARENT, darkScrim = Color.TRANSPARENT)

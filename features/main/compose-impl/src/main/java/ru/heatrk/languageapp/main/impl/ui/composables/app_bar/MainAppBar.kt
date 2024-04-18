@@ -8,11 +8,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
@@ -182,10 +185,16 @@ private fun MainAppBarLayout(
     val scrollProgress by scrollingBehaviour.getAppBarProgressState()
     val minHeight = MainAppBarCollapsedHeight
     val maxHeight = MainAppBarExpandedHeight
+    val density = LocalDensity.current
+    val systemBars = WindowInsets.statusBars
+
+    val statusBarHeight = remember(systemBars, density) {
+        with(density) { systemBars.getTop(density).toDp() }
+    }
 
     val appBarHeight by remember {
         derivedStateOf {
-            minHeight + (maxHeight - minHeight) * scrollProgress
+            statusBarHeight + minHeight + (maxHeight - minHeight) * scrollProgress
         }
     }
 
@@ -298,11 +307,11 @@ val ShimmerForegroundColor
 
 val MainAppBarCollapsedHeight
     @Composable
-    get() = if (isLargeScreen()) 152.dp else 102.dp
+    get() = if (isLargeScreen()) 124.dp else 74.dp
 
 val MainAppBarExpandedHeight
     @Composable
-    get() = if (isLargeScreen()) 225.dp else 175.dp
+    get() = if (isLargeScreen()) 181.dp else 131.dp
 
 val AvatarSize
     @Composable

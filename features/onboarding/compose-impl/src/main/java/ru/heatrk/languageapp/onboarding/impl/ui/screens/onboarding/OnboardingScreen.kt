@@ -22,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -47,11 +46,11 @@ import ru.heatrk.languageapp.core.design.composables.button.AppButton
 import ru.heatrk.languageapp.core.design.composables.button.AppTextButton
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppSystemBarsStylesDefault
+import ru.heatrk.languageapp.core.design.composables.scaffold.darkTransparent
+import ru.heatrk.languageapp.core.design.composables.scaffold.lightTransparent
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.styles.AppTheme
-import ru.heatrk.languageapp.core.design.styles.AppUiMode
-import ru.heatrk.languageapp.core.design.styles.LocalAppUiMode
-import ru.heatrk.languageapp.core.design.styles.darkAppColors
+import ru.heatrk.languageapp.core.design.styles.isAppInDarkTheme
 import ru.heatrk.languageapp.core.design.utils.COMPOSE_LARGE_DEVICE_SPEC
 import ru.heatrk.languageapp.core.design.utils.smallDeviceMaxWidth
 import ru.heatrk.languageapp.onboarding.api.ui.navigation.ONBOARDING_SCREEN_ROUTE_PATH
@@ -77,15 +76,10 @@ private fun OnboardingScreen(
     AppScaffoldControllerEffect(
         appSystemBarsStyles = LocalAppSystemBarsStylesDefault.current.copy(
             key = ONBOARDING_SCREEN_ROUTE_PATH,
-            statusBar = if (LocalAppUiMode.current == AppUiMode.DARK) {
-                SystemBarStyle.dark(
-                    scrim = AppTheme.colors.background.toArgb()
-                )
+            statusBar = if (isAppInDarkTheme()) {
+                SystemBarStyle.darkTransparent()
             } else {
-                SystemBarStyle.light(
-                    scrim = AppTheme.colors.background.toArgb(),
-                    darkScrim = darkAppColors.background.toArgb(),
-                )
+                SystemBarStyle.lightTransparent()
             },
         )
     )
@@ -337,7 +331,8 @@ private fun OnboardingScreenLayout(
         )
 
         secondaryButtonContent(
-            Modifier.smallDeviceMaxWidth()
+            Modifier
+                .smallDeviceMaxWidth()
                 .padding(horizontal = 24.dp)
         )
 

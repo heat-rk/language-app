@@ -21,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -49,6 +48,7 @@ import ru.heatrk.languageapp.core.design.composables.scaffold.AppBarState
 import ru.heatrk.languageapp.core.design.composables.scaffold.AppScaffoldControllerEffect
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppScaffoldController
 import ru.heatrk.languageapp.core.design.composables.scaffold.LocalAppSystemBarsStylesDefault
+import ru.heatrk.languageapp.core.design.composables.scaffold.darkTransparent
 import ru.heatrk.languageapp.core.design.composables.shimmerEffect
 import ru.heatrk.languageapp.core.design.composables.text_field.AppTextField
 import ru.heatrk.languageapp.core.design.styles.AppTheme
@@ -79,25 +79,24 @@ private fun GuessAnimalScreen(
     state: State,
     onIntent: (Intent) -> Unit,
 ) {
-    val accentColor = when (state) {
-        is State.CorrectAnswer -> AppTheme.colors.success
-        is State.IncorrectAnswer -> AppTheme.colors.error
-        else -> AppTheme.colors.primary
-    }
-
     AppScaffoldControllerEffect(
         appBarState = AppBarState.Custom(key = GUESS_ANIMAL_SCREEN_ROUTE_PATH) {
             AppBar(
                 title = stringResource(R.string.guess_animal_title),
-                containerColor = accentColor,
+                containerColor = when (state) {
+                    is State.CorrectAnswer ->
+                        AppTheme.colors.success
+                    is State.IncorrectAnswer ->
+                        AppTheme.colors.error
+                    else ->
+                        AppTheme.colors.primary
+                },
                 onGoBackClick = { onIntent(Intent.OnGoBackClick) }
             )
         },
         appSystemBarsStyles = LocalAppSystemBarsStylesDefault.current.copy(
             key = "$GUESS_ANIMAL_SCREEN_ROUTE_PATH/${state::class.simpleName}",
-            statusBar = SystemBarStyle.dark(
-                scrim = accentColor.toArgb()
-            )
+            statusBar = SystemBarStyle.darkTransparent()
         )
     )
 
