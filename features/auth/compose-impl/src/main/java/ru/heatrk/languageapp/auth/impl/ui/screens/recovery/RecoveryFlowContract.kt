@@ -13,6 +13,7 @@ object RecoveryFlowContract {
         val confirmedPasswordErrorMessage: StringResource? = null,
         val isPasswordVisible: Boolean = false,
         val isConfirmedPasswordVisible: Boolean = false,
+        val isRecoveryCodeHandled: Boolean = false,
         val recoveringState: ProcessingState = ProcessingState.None,
     )
 
@@ -27,6 +28,7 @@ object RecoveryFlowContract {
         data class OnEmailChanged(val text: String) : Intent
         data class OnPasswordChanged(val text: String) : Intent
         data class OnConfirmedPasswordChanged(val text: String) : Intent
+        data class OnRecoveryCodeReceived(val code: String?) : Intent
     }
 
     sealed interface SideEffect {

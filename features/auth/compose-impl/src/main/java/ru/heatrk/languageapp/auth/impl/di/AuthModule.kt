@@ -55,7 +55,6 @@ private fun Module.useNavigationBeans() {
         AuthDeepLinkRouter(
             router = get(),
             recoveryRouter = get(RecoveryRouterQualifier),
-            authRepository = get()
         )
     }
 }
@@ -100,7 +99,8 @@ private fun Module.useViewModelFactoriesBeans() {
                 RecoveryFlowViewModel(
                     resetPassword = get(),
                     router = get(),
-                    recoveryRouter = get(RecoveryRouterQualifier)
+                    recoveryRouter = get(RecoveryRouterQualifier),
+                    authRepository = get(),
                 )
             }
         }

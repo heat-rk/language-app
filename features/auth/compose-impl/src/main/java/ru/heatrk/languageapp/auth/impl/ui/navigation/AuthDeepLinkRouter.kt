@@ -1,15 +1,11 @@
 package ru.heatrk.languageapp.auth.impl.ui.navigation
 
-import io.github.jan.supabase.exceptions.HttpRequestException
-import io.github.jan.supabase.exceptions.RestException
-import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.http.Url
-import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 import ru.heatrk.languageapp.auth.impl.data.AuthRepositoryImpl
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_CHOOSE_PASSWORD_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_ENTER_EMAIL_SCREEN_ROUTE_PATH
-import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_ERROR_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_FLOW_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RecoveryChoosePasswordScreenArgs
 import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_in.SIGN_IN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.core.navigation.api.DeepLinkRouter
 import ru.heatrk.languageapp.core.navigation.api.Router
@@ -18,7 +14,6 @@ import ru.heatrk.languageapp.core.navigation.api.RoutingOption
 internal class AuthDeepLinkRouter(
     private val router: Router,
     private val recoveryRouter: Router,
-    private val authRepository: AuthRepository,
 ) : DeepLinkRouter {
     override suspend fun handle(data: Url): Boolean {
         when {
@@ -29,25 +24,18 @@ internal class AuthDeepLinkRouter(
             isRecoveryConfirmDeepLink(data) -> {
                 val params = parseParams(data.encodedQuery)
 
-                try {
-                    val code = params[CODE_QUERY_KEY]
-                        ?: throw IllegalArgumentException("No code in deeplink")
-                    authRepository.applyRecoveryCode(code)
-                } catch (e: IllegalArgumentException) {
-                    navigateToErrorScreen()
-                } catch (e: HttpRequestException) {
-                    navigateToErrorScreen()
-                } catch (e: HttpRequestTimeoutException) {
-                    navigateToErrorScreen()
-                } catch (e: RestException) {
-                    navigateToErrorScreen()
-                }
+                val recoveryCode = params.getOrDefault(CODE_QUERY_KEY, "")
 
                 if (recoveryRouter.currentRoute == null) {
                     navigateToRecoveryFlow()
-                    navigateToChoosePasswordScreen(skipOtherScreens = true)
+                    navigateToChoosePasswordScreen(
+                        recoveryCode = recoveryCode,
+                        skipOtherScreens = true
+                    )
                 } else {
-                    navigateToChoosePasswordScreen()
+                    navigateToChoosePasswordScreen(
+                        recoveryCode = recoveryCode,
+                    )
                 }
 
                 return true
@@ -74,7 +62,10 @@ internal class AuthDeepLinkRouter(
         router.navigate(routePath = RECOVERY_FLOW_ROUTE_PATH)
     }
 
-    private suspend fun navigateToChoosePasswordScreen(skipOtherScreens: Boolean = false) {
+    private suspend fun navigateToChoosePasswordScreen(
+        recoveryCode: String,
+        skipOtherScreens: Boolean = false
+    ) {
         recoveryRouter.navigate(
             routePath = RECOVERY_CHOOSE_PASSWORD_SCREEN_ROUTE_PATH,
             options = listOf(
@@ -83,18 +74,9 @@ internal class AuthDeepLinkRouter(
                     inclusive = skipOtherScreens,
                 ),
                 RoutingOption.LaunchSingleTop(true),
-            )
-        )
-    }
-
-    private suspend fun navigateToErrorScreen() {
-        recoveryRouter.navigate(
-            routePath = RECOVERY_ERROR_SCREEN_ROUTE_PATH,
-            options = listOf(
-                RoutingOption.PopUpTo(
-                    routePath = RECOVERY_ENTER_EMAIL_SCREEN_ROUTE_PATH,
-                    inclusive = true,
-                )
+            ),
+            arguments = mapOf(
+                RecoveryChoosePasswordScreenArgs.RECOVERY_CODE to recoveryCode
             )
         )
     }

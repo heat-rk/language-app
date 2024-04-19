@@ -8,11 +8,14 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import ru.heatrk.languageapp.auth.api.domain.AuthRepository
 import ru.heatrk.languageapp.auth.impl.R
 import ru.heatrk.languageapp.auth.impl.domain.recovery.InvalidRecoveryFieldsValuesException
 import ru.heatrk.languageapp.auth.impl.domain.recovery.RecoveryUseCase
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_CHECK_EMAIL_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_CHOOSE_PASSWORD_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_ENTER_EMAIL_SCREEN_ROUTE_PATH
+import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_ERROR_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.navigation.recovery.RECOVERY_SUCCESS_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.navigation.sign_in.SIGN_IN_SCREEN_ROUTE_PATH
 import ru.heatrk.languageapp.auth.impl.ui.screens.recovery.RecoveryFlowContract.Intent
@@ -32,6 +35,7 @@ class RecoveryFlowViewModel(
     private val resetPassword: RecoveryUseCase,
     private val router: Router,
     private val recoveryRouter: Router,
+    private val authRepository: AuthRepository,
 ) : ViewModel(), ContainerHost<State, SideEffect> {
     override val container = container<State, SideEffect>(
         initialState = State()
@@ -45,6 +49,8 @@ class RecoveryFlowViewModel(
                 onPasswordChanged(intent.text)
             is Intent.OnConfirmedPasswordChanged ->
                 onConfirmedPasswordChanged(intent.text)
+            is Intent.OnRecoveryCodeReceived ->
+                onRecoveryCodeReceived(intent.code)
             Intent.OnPasswordVisibilityToggleClick ->
                 onPasswordVisibilityToggleClick()
             Intent.OnConfirmedPasswordVisibilityToggleClick ->
@@ -206,6 +212,50 @@ class RecoveryFlowViewModel(
                 RoutingOption.PopUpTo(SIGN_IN_SCREEN_ROUTE_PATH),
                 RoutingOption.LaunchSingleTop(true),
             )
+        )
+    }
+
+    private suspend fun IntentBody.onRecoveryCodeReceived(code: String?) {
+        viewModelScope.launchSafe(
+            block = {
+                reduce {
+                    state.copy(
+                        isRecoveryCodeHandled = true,
+                        recoveringState = ProcessingState.InProgress,
+                    )
+                }
+
+                if (code.isNullOrBlank()) {
+                    throw IllegalArgumentException("Recovery code is null")
+                }
+
+                authRepository.applyRecoveryCode(code)
+
+                reduce {
+                    state.copy(
+                        isRecoveryCodeHandled = true,
+                        recoveringState = ProcessingState.None,
+                    )
+                }
+            },
+            onError = {
+                reduce {
+                    state.copy(
+                        isRecoveryCodeHandled = false,
+                        recoveringState = ProcessingState.None,
+                    )
+                }
+
+                recoveryRouter.navigate(
+                    routePath = RECOVERY_ERROR_SCREEN_ROUTE_PATH,
+                    options = listOf(
+                        RoutingOption.PopUpTo(
+                            routePath = RECOVERY_ENTER_EMAIL_SCREEN_ROUTE_PATH,
+                            inclusive = true,
+                        )
+                    )
+                )
+            }
         )
     }
 
