@@ -1,6 +1,7 @@
 package ru.heatrk.languageapp.main.impl.ui.composables.app_bar
 
 import android.content.res.Configuration
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -173,7 +174,14 @@ private fun MainAppBarLayout(
     descriptionContent: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val scrollProgress by scrollingBehaviour.getAppBarProgressState()
+    val scrollProgress by animateFloatAsState(
+        targetValue = if (scrollingBehaviour.isScrolling) {
+            scrollingBehaviour.scrollProgress
+        } else {
+            if (scrollingBehaviour.scrollProgress > 0.5f) 1f else 0f
+        },
+        label = "DefaultMainAppBarScrollAnimation"
+    )
 
     val density = LocalDensity.current
     val statusBarHeightPx = WindowInsets.statusBars.getTop(density)
@@ -211,7 +219,7 @@ private fun MainAppBarLayout(
             avatarTitleVerticalMargin = 5.dp,
             titleDescriptionVerticalMargin = 5.dp,
             onStateHeightsMeasured = { minHeight, maxHeight ->
-                scrollingBehaviour.appBarScrollingDistance = maxHeight - minHeight
+                scrollingBehaviour.scrollingDistance = maxHeight - minHeight
             }
         )
     )
